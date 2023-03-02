@@ -3,7 +3,7 @@ module ArgCommands
 open Argu
 open CPUImageProcessing
 
-type Processor =
+type Transformations =
     | Gauss
     | Sharpen
     | Lighten
@@ -12,7 +12,7 @@ type Processor =
     | RotationR
     | RotationL
 
-let processorParser p =
+let transformationsParser p =
     match p with
     | Gauss -> applyFilterTo2DArray gaussianBlurKernel
     | Sharpen -> applyFilterTo2DArray sharpenKernel
@@ -23,11 +23,13 @@ let processorParser p =
     | RotationL -> rotate2DArray false
 
 type ClIArguments =
-    | [<Mandatory; AltCommandLine("-pt")>] Paths of inputPath: string * outputPath: string
-    | [<Mandatory; MainCommand>] Process of list<Processor>
+    | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
+    | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
+    | [<Mandatory; MainCommand>] Transform of list<Transformations>
 
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Paths _ -> "input: path to a file or a directory, output: path to a file or directory."
-            | Process _ -> "list of available processors."
+            | InputPath _ -> "path to a file or a directory where the images will be processed from."
+            | OutputPath _ -> "path to a file a directory where the images will be saved."
+            | Transform _ -> "list of available transformations."

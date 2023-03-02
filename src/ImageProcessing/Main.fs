@@ -23,19 +23,21 @@ module Main =
 
         match parser.ParseCommandLine argv with
 
-        | res when res.Contains(Paths) && res.Contains(Process) ->
+        | res when res.Contains(InputPath) && res.Contains(OutputPath) && res.Contains(Transform) ->
 
-            let inputPath, outputPath = res.GetResult(Paths)
+            let inputPath = res.GetResult(InputPath)
+            let outputPath = res.GetResult(OutputPath)
 
             let processor =
-                res.GetResult(Process) |> List.map processorParser |> funcComposition
+                res.GetResult(Transform) |> List.map transformationsParser |> funcComposition
 
-            match System.IO.File.Exists inputPath with
-            | false -> processor |> processAllFiles inputPath outputPath
-            | true ->
+            if System.IO.File.Exists inputPath then
                 let image = loadAs2DArray inputPath
                 let processedImage = processor image
                 save2DArrayAsImage processedImage outputPath
+            else
+                processor |> processAllFiles inputPath outputPath
+
         | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
         0

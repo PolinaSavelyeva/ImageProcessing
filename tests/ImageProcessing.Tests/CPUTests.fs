@@ -33,10 +33,10 @@ module RotationTests =
 
                   let actualResult =
                       expectedResult
-                      |> rotate2DArray true
-                      |> rotate2DArray true
-                      |> rotate2DArray true
-                      |> rotate2DArray true
+                      |> rotate2DArray false
+                      |> rotate2DArray false
+                      |> rotate2DArray false
+                      |> rotate2DArray false
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
