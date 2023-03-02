@@ -1,53 +1,43 @@
 namespace ImageProcessing
 
-open Brahma.FSharp
+open Argu
+open ArgCommands
+open Helper
+open ImageFolderProcessing
+open CPUImageProcessing
 
 module Main =
-    let pathToExamples = "/home/gsv/Projects/TestProj2020/src/ImgProcessing/Examples"
-    let inputFolder = System.IO.Path.Combine(pathToExamples, "input")
-
-    let demoFile =
-        System.IO.Path.Combine(inputFolder, "armin-djuhic-ohc29QXbS-s-unsplash.jpg")
 
     [<EntryPoint>]
-    let main (argv: string array) =
-        let nvidiaDevice =
-            ClDevice.GetAvailableDevices(platform = Platform.Nvidia)
-            |> Seq.head
+    let main argv =
 
-        let intelDevice =
-            ClDevice.GetAvailableDevices(platform = Platform.Intel)
-            |> Seq.head
-        //ClDevice.GetFirstAppropriateDevice()
-        //printfn $"Device: %A{device.Name}"
+        let errorHandler =
+            ProcessExiter(
+                colorizer =
+                    function
+                    | ErrorCode.HelpText -> None
+                    | _ -> Some System.ConsoleColor.DarkYellow
+            )
 
-        let nvContext = ClContext(nvidiaDevice)
-        let applyFiltersOnNvGPU = ImageProcessing.applyFiltersGPU nvContext 64
+        let parser = ArgumentParser.Create<ClIArguments>(errorHandler = errorHandler)
 
-        let intelContext = ClContext(intelDevice)
-        let applyFiltersOnIntelGPU = ImageProcessing.applyFiltersGPU intelContext 64
+        match parser.ParseCommandLine argv with
 
-        let filters = [
-            ImageProcessing.gaussianBlurKernel
-            ImageProcessing.gaussianBlurKernel
-            ImageProcessing.edgesKernel
-        ]
+        | res when res.Contains(InputPath) && res.Contains(OutputPath) && res.Contains(Transform) ->
 
-        //let grayscaleImage = ImageProcessing.loadAs2DArray demoFile
-        //let blur = ImageProcessing.applyFilter ImageProcessing.gaussianBlurKernel grayscaleImage
-        //let edges = ImageProcessing.applyFilter ImageProcessing.edgesKernel blur
-        //let edges =  applyFiltersGPU [ImageProcessing.gaussianBlurKernel; ImageProcessing.edgesKernel] grayscaleImage
-        //ImageProcessing.save2DByteArrayAsImage edges "../../../../../out/demo_grayscale.jpg"
-        let start = System.DateTime.Now
+            let inputPath = res.GetResult(InputPath)
+            let outputPath = res.GetResult(OutputPath)
 
-        Streaming.processAllFiles inputFolder "../../../../../out/" [
-            applyFiltersOnNvGPU filters
-            applyFiltersOnIntelGPU filters
-        ]
+            let processor =
+                res.GetResult(Transform) |> List.map transformationsParser |> funcComposition
 
-        printfn
-            $"TotalTime = %f{(System.DateTime.Now
-                              - start)
-                                 .TotalMilliseconds}"
+            if System.IO.File.Exists inputPath then
+                let image = loadAs2DArray inputPath
+                let processedImage = processor image
+                save2DArrayAsImage processedImage outputPath
+            else
+                processor |> processAllFiles inputPath outputPath
+
+        | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
         0
