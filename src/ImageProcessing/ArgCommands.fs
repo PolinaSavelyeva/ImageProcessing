@@ -31,5 +31,5 @@ type ClIArguments =
         member s.Usage =
             match s with
             | InputPath _ -> "path to a file or a directory where the images will be processed from."
-            | OutputPath _ -> "path to a file a directory where the images will be saved."
+            | OutputPath _ -> "path to a file or a directory where the images will be saved."
             | Transform _ -> "list of available transformations."
