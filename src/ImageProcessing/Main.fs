@@ -2,8 +2,6 @@ namespace ImageProcessing
 
 open Argu
 open ArgCommands
-open Helper
-open ImageFolderProcessing
 open CPUImageProcessing
 
 module Main =
@@ -27,9 +25,8 @@ module Main =
 
             let inputPath = res.GetResult(InputPath)
             let outputPath = res.GetResult(OutputPath)
-
             let processor =
-                res.GetResult(Transform) |> List.map transformationsParser |> funcComposition
+                res.GetResult(Transform) |> List.map transformationsParser |> List.fold (>>) id
 
             if System.IO.File.Exists inputPath then
                 let image = loadAs2DArray inputPath
