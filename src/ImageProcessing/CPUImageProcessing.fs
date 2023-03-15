@@ -87,7 +87,9 @@ let listAllImages directory =
 
     let allowableExtensions =
         [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
+
     let allFilesSeq = System.IO.Directory.EnumerateFiles directory
+
     let allowableFilesSeq =
         Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
 

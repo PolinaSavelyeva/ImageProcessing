@@ -25,6 +25,7 @@ module Main =
 
             let inputPath = res.GetResult(InputPath)
             let outputPath = res.GetResult(OutputPath)
+
             let processor =
                 res.GetResult(Transform) |> List.map transformationsParser |> List.fold (>>) id
 
