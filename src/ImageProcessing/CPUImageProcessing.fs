@@ -93,15 +93,15 @@ let applyFilterToMyImage (filter: float32[,]) (myImage: MyImage) =
 
         let dataToHandle =
             [| for i in ph - filterDiameter .. ph + filterDiameter do
-                 for j in pw - filterDiameter .. pw + filterDiameter do
-                     if i < 0 || i >= myImage.Height || j < 0 || j >= myImage.Width then
-                         float32 myImage.Data[p]
-                     else
-                         float32 myImage.Data[i * myImage.Width + j] |]
+                   for j in pw - filterDiameter .. pw + filterDiameter do
+                       if i < 0 || i >= myImage.Height || j < 0 || j >= myImage.Width then
+                           float32 myImage.Data[p]
+                       else
+                           float32 myImage.Data[i * myImage.Width + j] |]
 
         Array.fold2 (fun acc x y -> acc + x * y) 0.0f filter dataToHandle
 
-    MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) myImage.Data, myImage.Width, myImage.Height,  myImage.Name )
+    MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) myImage.Data, myImage.Width, myImage.Height, myImage.Name)
 
 let rotate2DArray (isClockwise: bool) (image2DArray: byte[,]) =
 
@@ -123,10 +123,10 @@ let rotateMyImage (isClockwise: bool) (myImage: MyImage) =
 
     for j in 0 .. myImage.Width - 1 do
         for i in 0 .. myImage.Height - 1 do
-            buffer[(j * weight + (myImage.Width - 1 - j) * (1 - weight)) + (i * (1 - weight) + (myImage.Height - 1 - i) * weight) * myImage.Width]
-                <- myImage.Data[j + i * myImage.Width]
+            buffer[(i * (1 - weight) + (myImage.Height - 1 - i) * weight)
+                   + (j * weight + (myImage.Width - 1 - j) * (1 - weight)) * myImage.Height] <- myImage.Data[j + i * myImage.Width]
 
-    MyImage(buffer, myImage.Width, myImage.Height, myImage.Name)
+    MyImage(buffer, myImage.Height, myImage.Width, myImage.Name)
 
 let save2DArrayAsImage (image2DArray: byte[,]) filePath =
 
@@ -145,7 +145,9 @@ let listAllImages directory =
 
     let allowableExtensions =
         [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
+
     let allFilesSeq = System.IO.Directory.EnumerateFiles directory
+
     let allowableFilesSeq =
         Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
 
@@ -157,27 +159,9 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList =
     let generatePath (filePath: string) =
         System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileName filePath)
 
-    let composition funcList =
-         List.fold (>>) id funcList
-
     let imageProcessAndSave path =
         let image = loadAs2DArray path
-        let editedImage = image |> composition imageEditorsList
+        let editedImage = image |> List.fold (>>) id imageEditorsList
         generatePath path |> save2DArrayAsImage editedImage
-
-    listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore
-
-let processAllAsMyImage inputDirectory outputDirectory imageEditorsList =
-
-    let generatePath (imageName : string) =
-        System.IO.Path.Combine(outputDirectory, imageName)
-
-    let composition funcList =
-         List.fold (>>) id funcList
-
-    let imageProcessAndSave path =
-        let image = loadAsMyImage path
-        let editedImage = image |> composition imageEditorsList
-        generatePath image.Name |> saveMyImage editedImage
 
     listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore

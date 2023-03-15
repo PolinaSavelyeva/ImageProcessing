@@ -6,33 +6,33 @@ type message =
     | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
 
+let generatePath outputDirectory (imageName: string) =
+    System.IO.Path.Combine(outputDirectory, imageName)
+
 let imageSaver outputDirectory =
 
-    let generatePath (imageName: string) =
-        System.IO.Path.Combine(outputDirectory, imageName)
+    let initial (inbox: MailboxProcessor<message>) =
+        let rec loop () =
+            async {
+                let! message = inbox.Receive()
 
-    let initial (inbox : MailboxProcessor<message>) =
-            let rec loop () =
-                async {
-                    let! message = inbox.Receive()
+                match message with
+                | EOS channel ->
+                    printfn "Image saver is finished!"
+                    channel.Reply()
+                | Image image ->
+                    printfn $"Save: %A{image.Name}"
+                    saveMyImage image (generatePath outputDirectory image.Name)
+                    return! loop ()
+            }
 
-                    match message with
-                    | EOS channel ->
-                        printfn "Image saver is finished!"
-                        channel.Reply()
-                    | Image image ->
-                        printfn $"Save: %A{image.Name}"
-                        saveMyImage image (generatePath image.Name)
-                        return! loop ()
-                }
-
-            loop ()
+        loop ()
 
     MailboxProcessor.Start initial
 
-let imageProcessor imageEditor ( receiver : MailboxProcessor<_>) =
+let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
-    let initial (inbox : MailboxProcessor<message>) =
+    let initial (inbox: MailboxProcessor<message>) =
 
         let rec loop () =
             async {
@@ -52,50 +52,45 @@ let imageProcessor imageEditor ( receiver : MailboxProcessor<_>) =
             }
 
         loop ()
+
     MailboxProcessor.Start initial
 
-let processAllFilesA inputDirectory outputDirectory imageEditorsList  =
+let processAllFilesA inputDirectory outputDirectory imageEditorsList (agentsSupport: bool) =
 
-    (*let imageProcessors outputDirectory =
-        imageEditorsList
-        |> List.map (fun x ->
-            let imageSaver = imageSaver outputDirectory
-            imageProcessor x imageSaver)
-        |> Array.ofList
-
-        let rec inner list =
-            match list with
-            | [] ->
-                failwith "No transformations"
-            | [hd] -> imageProcessor hd (imageSaver outputDirectory), [imageProcessor hd (imageSaver outputDirectory)]
-            | hd1 :: hd2 :: tl ->
-                        let x = inner (hd2 :: tl)
-                        imageProcessor hd1 (fst x), imageProcessor hd1 (fst x) :: snd x
-
-        List.toArray (snd <| inner imageEditorsList)*)
-
-    (*let imageProcessor =
-
-        let rec inner list =
-            match list with
-            | [] ->
-                failwith "No transformations"
-            | [hd] -> imageProcessor hd (imageSaver outputDirectory)
-            | hd1 :: hd2 :: tl ->
-                        imageProcessor hd1 (inner (hd2 :: tl))
-        inner imageEditorsList*)
-    let imageProcessor = List.fold (fun acc x -> imageProcessor x acc) (imageSaver outputDirectory) imageEditorsList
     let filesToProcess = listAllImages inputDirectory
-    for file in filesToProcess do
+
+    if agentsSupport then
+        let imageProcessor =
+            List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
+
+        for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-    imageProcessor.PostAndReply EOS
+        imageProcessor.PostAndReply EOS
+    else
+        let imageProcessAndSave path =
+            let image = loadAsMyImage path
+            let editedImage = image |> List.fold (>>) id imageEditorsList
+            generatePath image.Name outputDirectory |> saveMyImage editedImage
 
-let processAllFilesB inputDirectory outputDirectory imageEditorsList  =
+        List.map imageProcessAndSave filesToProcess |> ignore
 
-    let imageProcessor = imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
+let processAllFilesB inputDirectory outputDirectory imageEditorsList (agentsSupport: bool) =
+
     let filesToProcess = listAllImages inputDirectory
-    for file in filesToProcess do
+
+    if agentsSupport then
+        let imageProcessor =
+            imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
+
+        for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-    imageProcessor.PostAndReply EOS
+        imageProcessor.PostAndReply EOS
+    else
+        let imageProcessAndSave path =
+            let image = loadAsMyImage path
+            let editedImage = image |> List.fold (>>) id imageEditorsList
+            generatePath image.Name outputDirectory |> saveMyImage editedImage
+
+        List.map imageProcessAndSave filesToProcess |> ignore

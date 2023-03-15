@@ -25,6 +25,7 @@ let transformationsParser p =
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
+    | [<AltCommandLine("-agent")>] AgentsSupport
     | [<Mandatory; MainCommand>] Transform of list<Transformations>
 
     interface IArgParserTemplate with
@@ -32,4 +33,5 @@ type ClIArguments =
             match s with
             | InputPath _ -> "path to a file or a directory where the images will be processed from."
             | OutputPath _ -> "path to a file or a directory where the images will be saved."
+            | AgentsSupport _ -> "process files using agents."
             | Transform _ -> "list of available transformations."

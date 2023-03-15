@@ -91,8 +91,10 @@ module RotationTests =
                   let image = MyImage(flatArr, Array2D.length2 arr, Array2D.length1 arr, "Image")
 
                   let resultsArray =
-                      [| (image |> rotateMyImage true |> rotateMyImage true |> rotateMyImage true |> rotateMyImage true).Data
-                         (image |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false).Data |]
+                      [| (image |> rotateMyImage true |> rotateMyImage true |> rotateMyImage true |> rotateMyImage true)
+                             .Data
+                         (image |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false)
+                             .Data |]
 
                   Expect.allEqual resultsArray image.Data $"Unexpected: %A{resultsArray} and original {arr}.\n Expected equality. "
 
