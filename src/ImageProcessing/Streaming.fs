@@ -3,7 +3,7 @@ module Streaming
 open CPUImageProcessing
 
 type message =
-    | Image of byte[,] * string
+    | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
 
 let imageSaver outputDirectory =
@@ -20,9 +20,9 @@ let imageSaver outputDirectory =
                     | EOS channel ->
                         printfn "Image saver is finished!"
                         channel.Reply()
-                    | Image (data, name) ->
-                        printfn $"Save: %A{name}"
-                        save2DArrayAsImage data (generatePath name)
+                    | Image image ->
+                        printfn $"Save: %A{image.Name}"
+                        saveMyImage image (generatePath image.Name)
                         return! loop ()
                 }
 
@@ -44,10 +44,10 @@ let imageProcessor imageEditor ( receiver : MailboxProcessor<_>) =
                     receiver.PostAndReply EOS
                     printfn "Image processor is finished!"
                     channel.Reply()
-                | Image (data, name) ->
-                    printfn $"Filter: %A{name}"
-                    let filtered = imageEditor data
-                    receiver.Post(Image (filtered, name))
+                | Image image ->
+                    printfn $"Filter: %A{image.Name}"
+                    let filtered = imageEditor image
+                    receiver.Post(Image filtered)
                     return! loop ()
             }
 
@@ -85,22 +85,17 @@ let processAllFilesA inputDirectory outputDirectory imageEditorsList  =
                         imageProcessor hd1 (inner (hd2 :: tl))
         inner imageEditorsList*)
     let imageProcessor = List.fold (fun acc x -> imageProcessor x acc) (imageSaver outputDirectory) imageEditorsList
-
     let filesToProcess = listAllImages inputDirectory
-
     for file in filesToProcess do
-            imageProcessor.Post(Image(loadAs2DArray file, System.IO.Path.GetFileName file))
+            imageProcessor.Post(Image(loadAsMyImage file))
 
     imageProcessor.PostAndReply EOS
-//imgSaver.PostAndReply EOS
 
 let processAllFilesB inputDirectory outputDirectory imageEditorsList  =
 
     let imageProcessor = imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
-    
     let filesToProcess = listAllImages inputDirectory
-
     for file in filesToProcess do
-            imageProcessor.Post(Image(loadAs2DArray file, System.IO.Path.GetFileName file))
+            imageProcessor.Post(Image(loadAsMyImage file))
 
     imageProcessor.PostAndReply EOS
