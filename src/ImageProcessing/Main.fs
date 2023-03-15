@@ -26,15 +26,19 @@ module Main =
             let inputPath = res.GetResult(InputPath)
             let outputPath = res.GetResult(OutputPath)
             let processor =
-                res.GetResult(Transform) |> List.map transformationsParser |> List.fold (>>) id
+                res.GetResult(Transform) |> List.map transformationsParser
 
             if System.IO.File.Exists inputPath then
                 let image = loadAs2DArray inputPath
-                let processedImage = processor image
+                let processedImage = List.head processor image
                 save2DArrayAsImage processedImage outputPath
             else
                 processor |> processAllFiles inputPath outputPath
 
         | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
+
+        (*let input = "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/input"
+        let output = "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/output"
+        printf $"{Streaming.processAllFiles input output [rotate2DArray true; applyFilterTo2DArray darkenKernel]}"*)
 
         0

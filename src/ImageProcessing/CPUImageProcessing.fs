@@ -94,14 +94,17 @@ let listAllImages directory =
     printfn $"Images in %A{directory} directory : %A{allowableFilesSeq}"
     List.ofSeq allowableFilesSeq
 
-let processAllFiles inputDirectory outputDirectory imageEditor =
+let processAllFiles inputDirectory outputDirectory imageEditorsList =
 
     let generatePath (filePath: string) =
         System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileName filePath)
 
+    let composition funcList =
+         List.fold (>>) id funcList
+
     let imageProcessAndSave path =
         let image = loadAs2DArray path
-        let editedImage = imageEditor image
+        let editedImage = image |> composition imageEditorsList
         generatePath path |> save2DArrayAsImage editedImage
 
     listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore
