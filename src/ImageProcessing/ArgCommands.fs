@@ -26,7 +26,7 @@ let transformationsParser p =
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
-    | [<AltCommandLine("-agent") ; EqualsAssignment>] AgentsSupport of AgentsSupport
+    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of AgentsSupport
     | [<Mandatory; MainCommand>] Transform of list<Transformations>
 
     interface IArgParserTemplate with

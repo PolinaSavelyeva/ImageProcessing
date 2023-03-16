@@ -98,33 +98,38 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
 
     match agentsSupport with
     | Full ->
-            let imageEditor = List.fold (>>) id imageEditorsList
-            let processorsArray = Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
+        let imageEditor = List.fold (>>) id imageEditorsList
 
-            for file in filesToProcess do
-                 (Array.minBy (fun (p : MailboxProcessor<distribution>) -> p.CurrentQueueLength) processorsArray).Post(Path file)
+        let processorsArray =
+            Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
 
-            for imgProcessor in processorsArray do
-                imgProcessor.PostAndReply distribution.EOS
+        for file in filesToProcess do
+            (Array.minBy (fun (p: MailboxProcessor<distribution>) -> p.CurrentQueueLength) processorsArray)
+                .Post(Path file)
+
+        for imgProcessor in processorsArray do
+            imgProcessor.PostAndReply distribution.EOS
 
     | Partial ->
-            let imageProcessor = List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
+        let imageProcessor =
+            List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
 
-            for file in filesToProcess do
-                imageProcessor.Post(Image(loadAsMyImage file))
+        for file in filesToProcess do
+            imageProcessor.Post(Image(loadAsMyImage file))
 
-            imageProcessor.PostAndReply message.EOS
+        imageProcessor.PostAndReply message.EOS
     | PartialUsingComposition ->
-            let imageProcessor = imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
+        let imageProcessor =
+            imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
 
-            for file in filesToProcess do
-                imageProcessor.Post(Image(loadAsMyImage file))
+        for file in filesToProcess do
+            imageProcessor.Post(Image(loadAsMyImage file))
 
-            imageProcessor.PostAndReply message.EOS
+        imageProcessor.PostAndReply message.EOS
     | No ->
-            let imageProcessAndSave path =
-                let image = loadAsMyImage path
-                let editedImage = image |> List.fold (>>) id imageEditorsList
-                generatePath image.Name outputDirectory |> saveMyImage editedImage
+        let imageProcessAndSave path =
+            let image = loadAsMyImage path
+            let editedImage = image |> List.fold (>>) id imageEditorsList
+            generatePath image.Name outputDirectory |> saveMyImage editedImage
 
-            List.map imageProcessAndSave filesToProcess |> ignore
+        List.map imageProcessAndSave filesToProcess |> ignore

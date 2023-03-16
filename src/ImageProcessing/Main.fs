@@ -22,7 +22,12 @@ module Main =
 
         match parser.ParseCommandLine argv with
 
-        | res when res.Contains(InputPath) && res.Contains(OutputPath) && res.Contains(Transform) && res.Contains(AgentsSupport) ->
+        | res when
+            res.Contains(InputPath)
+            && res.Contains(OutputPath)
+            && res.Contains(Transform)
+            && res.Contains(AgentsSupport)
+            ->
 
             let inputPath = res.GetResult(InputPath)
             let outputPath = res.GetResult(OutputPath)
@@ -34,7 +39,7 @@ module Main =
                 let processedImage = List.head processor image
                 saveMyImage processedImage outputPath
             else
-               processAllFiles inputPath outputPath processor agentsSupport
+                processAllFiles inputPath outputPath processor agentsSupport
 
         | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
