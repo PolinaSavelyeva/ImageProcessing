@@ -18,8 +18,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
     <Compile Include="CPUImageProcessing.fs" />
-    <Compile Include="ArgCommands.fs" />
     <Compile Include="Streaming.fs" />
+    <Compile Include="ArgCommands.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
   <ItemGroup>

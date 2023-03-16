@@ -27,7 +27,6 @@ let loadAs2DArray (filePath: string) =
         for j in 0 .. height - 1 do
             result[j, i] <- image.Item(i, j).PackedValue
 
-    printfn $"H=%A{height} W=%A{width}"
     result
 
 let loadAsMyImage (filePath: string) =
@@ -61,7 +60,7 @@ let lightenKernel = array2D [ [ 2 ] ] |> Array2D.map float32
 let sharpenKernel =
     array2D [ [ 0; -1; 0 ]; [ -1; 5; -1 ]; [ 0; -1; -0 ] ] |> Array2D.map float32
 
-let applyFilterTo2DArray (filter: float32[,]) (image2DArray: byte[,]) =
+let applyFilterTo2DArray filter (image2DArray: byte[,]) =
 
     let height = Array2D.length1 image2DArray
     let width = Array2D.length2 image2DArray
@@ -81,7 +80,7 @@ let applyFilterTo2DArray (filter: float32[,]) (image2DArray: byte[,]) =
 
     Array2D.mapi (fun x y _ -> byte (pixelProcessing x y)) image2DArray
 
-let applyFilterToMyImage (filter: float32[,]) (myImage: MyImage) =
+let applyFilterToMyImage filter (myImage: MyImage) =
 
     let filterDiameter = (Array2D.length1 filter) / 2
     let filter = toFlatArray filter
@@ -103,7 +102,7 @@ let applyFilterToMyImage (filter: float32[,]) (myImage: MyImage) =
 
     MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) myImage.Data, myImage.Width, myImage.Height, myImage.Name)
 
-let rotate2DArray (isClockwise: bool) (image2DArray: byte[,]) =
+let rotate2DArray (isClockwise: bool) image2DArray =
 
     let height = Array2D.length1 image2DArray
     let width = Array2D.length2 image2DArray
@@ -134,11 +133,12 @@ let save2DArrayAsImage (image2DArray: byte[,]) filePath =
     let width = Array2D.length2 image2DArray
     let image = Image.LoadPixelData<L8>(toFlatArray image2DArray, width, height)
 
-    printfn $"H=%A{height} W=%A{width}"
     image.Save filePath
 
 let saveMyImage (myImage: MyImage) filePath =
+
     let image = Image.LoadPixelData<L8>(myImage.Data, myImage.Width, myImage.Height)
+
     image.Save filePath
 
 let listAllImages directory =
@@ -154,14 +154,14 @@ let listAllImages directory =
     printfn $"Images in %A{directory} directory : %A{allowableFilesSeq}"
     List.ofSeq allowableFilesSeq
 
-let processAllFiles inputDirectory outputDirectory imageEditorsList =
+let generatePath outputDirectory (imageName: string) =
+    System.IO.Path.Combine(outputDirectory, imageName)
 
-    let generatePath (filePath: string) =
-        System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileName filePath)
+let processAllAs2DArray inputDirectory outputDirectory imageEditorsList =
 
     let imageProcessAndSave path =
         let image = loadAs2DArray path
         let editedImage = image |> List.fold (>>) id imageEditorsList
-        generatePath path |> save2DArrayAsImage editedImage
+        System.IO.Path.GetFileName path |> generatePath outputDirectory |> save2DArrayAsImage editedImage
 
     listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore

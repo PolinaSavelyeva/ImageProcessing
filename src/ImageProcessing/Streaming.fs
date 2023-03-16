@@ -1,24 +1,23 @@
 module Streaming
 
+open System
 open CPUImageProcessing
 
 type message =
     | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
 
-let generatePath outputDirectory (imageName: string) =
-    System.IO.Path.Combine(outputDirectory, imageName)
-
 let imageSaver outputDirectory =
 
     let initial (inbox: MailboxProcessor<message>) =
+
         let rec loop () =
             async {
                 let! message = inbox.Receive()
 
                 match message with
                 | EOS channel ->
-                    printfn "Image saver is finished!"
+                    printfn $"Image saver across the %A{channel.GetType} is finished!"
                     channel.Reply()
                 | Image image ->
                     printfn $"Save: %A{image.Name}"
@@ -40,9 +39,9 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
                 match message with
                 | EOS channel ->
-                    printfn "Image processor is ready to finish!"
+                    printfn $"Image processor across the %A{channel.GetType} is ready to finish!"
                     receiver.PostAndReply EOS
-                    printfn "Image processor is finished!"
+                    printfn $"Image processor across the %A{channel.GetType} is finished!"
                     channel.Reply()
                 | Image image ->
                     printfn $"Filter: %A{image.Name}"
@@ -55,42 +54,77 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
     MailboxProcessor.Start initial
 
-let processAllFilesA inputDirectory outputDirectory imageEditorsList (agentsSupport: bool) =
+type distribution =
+    | Path of string
+    | EOS of AsyncReplyChannel<unit>
+
+let imageFullProcessor imageEditor outputDirectory =
+
+    let initial (inbox: MailboxProcessor<distribution>) =
+
+        let rec loop () =
+            async {
+                let! distribution = inbox.Receive()
+
+                match distribution with
+                | EOS channel ->
+                    printfn $"Image processor and saver is finished!"
+                    channel.Reply()
+                | Path path ->
+                    let image = loadAsMyImage path
+                    let filtered = imageEditor image
+                    saveMyImage filtered (generatePath outputDirectory image.Name)
+                    return! loop ()
+            }
+
+        loop ()
+
+    MailboxProcessor.Start initial
+
+// Full uses a single agent to open, process and save
+// Partial uses different agents for each transformation and saving
+// PartialUsingComposition uses one agent for transformation and one - for save
+// None uses naive image processing function
+
+type AgentsSupport =
+    | Full
+    | Partial
+    | PartialUsingComposition
+    | No
+
+let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSupport =
 
     let filesToProcess = listAllImages inputDirectory
 
-    if agentsSupport then
-        let imageProcessor =
-            List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
+    match agentsSupport with
+    | Full ->
+            let imageEditor = List.fold (>>) id imageEditorsList
+            let processorsArray = Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
 
-        for file in filesToProcess do
-            imageProcessor.Post(Image(loadAsMyImage file))
+            for file in filesToProcess do
+                 (Array.minBy (fun (p : MailboxProcessor<distribution>) -> p.CurrentQueueLength) processorsArray).Post(Path file)
 
-        imageProcessor.PostAndReply EOS
-    else
-        let imageProcessAndSave path =
-            let image = loadAsMyImage path
-            let editedImage = image |> List.fold (>>) id imageEditorsList
-            generatePath image.Name outputDirectory |> saveMyImage editedImage
+            for imgProcessor in processorsArray do
+                imgProcessor.PostAndReply distribution.EOS
 
-        List.map imageProcessAndSave filesToProcess |> ignore
+    | Partial ->
+            let imageProcessor = List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
 
-let processAllFilesB inputDirectory outputDirectory imageEditorsList (agentsSupport: bool) =
+            for file in filesToProcess do
+                imageProcessor.Post(Image(loadAsMyImage file))
 
-    let filesToProcess = listAllImages inputDirectory
+            imageProcessor.PostAndReply message.EOS
+    | PartialUsingComposition ->
+            let imageProcessor = imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
 
-    if agentsSupport then
-        let imageProcessor =
-            imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
+            for file in filesToProcess do
+                imageProcessor.Post(Image(loadAsMyImage file))
 
-        for file in filesToProcess do
-            imageProcessor.Post(Image(loadAsMyImage file))
+            imageProcessor.PostAndReply message.EOS
+    | No ->
+            let imageProcessAndSave path =
+                let image = loadAsMyImage path
+                let editedImage = image |> List.fold (>>) id imageEditorsList
+                generatePath image.Name outputDirectory |> saveMyImage editedImage
 
-        imageProcessor.PostAndReply EOS
-    else
-        let imageProcessAndSave path =
-            let image = loadAsMyImage path
-            let editedImage = image |> List.fold (>>) id imageEditorsList
-            generatePath image.Name outputDirectory |> saveMyImage editedImage
-
-        List.map imageProcessAndSave filesToProcess |> ignore
+            List.map imageProcessAndSave filesToProcess |> ignore

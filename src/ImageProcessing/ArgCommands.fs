@@ -2,6 +2,7 @@ module ArgCommands
 
 open Argu
 open CPUImageProcessing
+open Streaming
 
 type Transformations =
     | Gauss
@@ -25,7 +26,7 @@ let transformationsParser p =
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
-    | [<AltCommandLine("-agent")>] AgentsSupport
+    | [<AltCommandLine("-agent") ; EqualsAssignment>] AgentsSupport of AgentsSupport
     | [<Mandatory; MainCommand>] Transform of list<Transformations>
 
     interface IArgParserTemplate with
@@ -33,5 +34,5 @@ type ClIArguments =
             match s with
             | InputPath _ -> "path to a file or a directory where the images will be processed from."
             | OutputPath _ -> "path to a file or a directory where the images will be saved."
-            | AgentsSupport _ -> "process files using agents."
+            | AgentsSupport _ -> "process files using different agents strategy."
             | Transform _ -> "list of available transformations."
