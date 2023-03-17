@@ -5,6 +5,7 @@ open CPUImageProcessing
 
 type message =
     | Image of MyImage
+    | Path of string
     | EOS of AsyncReplyChannel<unit>
 
 let imageSaver outputDirectory =
@@ -23,6 +24,7 @@ let imageSaver outputDirectory =
                     printfn $"Save: %A{image.Name}"
                     saveMyImage image (generatePath outputDirectory image.Name)
                     return! loop ()
+                | _ -> failwith "Wrong message was received in imageSaver. Expected MyImage or AsyncReplyChannel<unit> message type. "
             }
 
         loop ()
@@ -48,25 +50,22 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
                     let filtered = imageEditor image
                     receiver.Post(Image filtered)
                     return! loop ()
+                | _ -> failwith "Wrong message was received in imageProcessor. Expected MyImage or AsyncReplyChannel<unit> message type. "
             }
 
         loop ()
 
     MailboxProcessor.Start initial
 
-type distribution =
-    | Path of string
-    | EOS of AsyncReplyChannel<unit>
-
 let imageFullProcessor imageEditor outputDirectory =
 
-    let initial (inbox: MailboxProcessor<distribution>) =
+    let initial (inbox: MailboxProcessor<message>) =
 
         let rec loop () =
             async {
-                let! distribution = inbox.Receive()
+                let! message = inbox.Receive()
 
-                match distribution with
+                match message with
                 | EOS channel ->
                     printfn $"Image processor and saver is finished!"
                     channel.Reply()
@@ -75,6 +74,7 @@ let imageFullProcessor imageEditor outputDirectory =
                     let filtered = imageEditor image
                     saveMyImage filtered (generatePath outputDirectory image.Name)
                     return! loop ()
+                | _ -> failwith "Wrong message was received in imageFullProcessor. Expected string or AsyncReplyChannel<unit> message type. "
             }
 
         loop ()
@@ -104,11 +104,11 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
             Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
 
         for file in filesToProcess do
-            (Array.minBy (fun (p: MailboxProcessor<distribution>) -> p.CurrentQueueLength) processorsArray)
+            (Array.minBy (fun (p: MailboxProcessor<message>) -> p.CurrentQueueLength) processorsArray)
                 .Post(Path file)
 
         for imgProcessor in processorsArray do
-            imgProcessor.PostAndReply distribution.EOS
+            imgProcessor.PostAndReply EOS
 
     | Partial ->
         let imageProcessor =
@@ -117,7 +117,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-        imageProcessor.PostAndReply message.EOS
+        imageProcessor.PostAndReply EOS
     | PartialUsingComposition ->
         let imageProcessor =
             imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
@@ -125,7 +125,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-        imageProcessor.PostAndReply message.EOS
+        imageProcessor.PostAndReply EOS
     | No ->
         let imageProcessAndSave path =
             let image = loadAsMyImage path
