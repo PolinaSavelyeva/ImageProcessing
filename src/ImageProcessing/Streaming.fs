@@ -3,40 +3,36 @@ module Streaming
 open System
 open CPUImageProcessing
 
-type message =
+type imageMessage =
     | Image of MyImage
-    | Path of string
     | EOS of AsyncReplyChannel<unit>
 
 let imageSaver outputDirectory =
 
-    let initial (inbox: MailboxProcessor<message>) =
+    let initial (inbox: MailboxProcessor<imageMessage>) =
 
-        let rec loop () =
-            async {
+        async {
+            while true do
                 let! message = inbox.Receive()
 
                 match message with
                 | EOS channel ->
                     printfn $"Image saver across the %A{channel.GetType} is finished!"
                     channel.Reply()
+
                 | Image image ->
                     printfn $"Save: %A{image.Name}"
                     saveMyImage image (generatePath outputDirectory image.Name)
-                    return! loop ()
-                | _ -> failwith "Wrong message was received in imageSaver. Expected MyImage or AsyncReplyChannel<unit> message type. "
-            }
-
-        loop ()
+        }
 
     MailboxProcessor.Start initial
 
 let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
-    let initial (inbox: MailboxProcessor<message>) =
+    let initial (inbox: MailboxProcessor<imageMessage>) =
 
-        let rec loop () =
-            async {
+        async {
+            while true do
                 let! message = inbox.Receive()
 
                 match message with
@@ -49,35 +45,32 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
                     printfn $"Filter: %A{image.Name}"
                     let filtered = imageEditor image
                     receiver.Post(Image filtered)
-                    return! loop ()
-                | _ -> failwith "Wrong message was received in imageProcessor. Expected MyImage or AsyncReplyChannel<unit> message type. "
-            }
-
-        loop ()
+        }
 
     MailboxProcessor.Start initial
 
+type pathMessage =
+    | Path of string
+    | EOS of AsyncReplyChannel<unit>
+
 let imageFullProcessor imageEditor outputDirectory =
 
-    let initial (inbox: MailboxProcessor<message>) =
+    let initial (inbox: MailboxProcessor<pathMessage>) =
 
-        let rec loop () =
-            async {
+        async {
+            while true do
                 let! message = inbox.Receive()
 
                 match message with
                 | EOS channel ->
                     printfn $"Image processor and saver is finished!"
                     channel.Reply()
+
                 | Path path ->
                     let image = loadAsMyImage path
                     let filtered = imageEditor image
                     saveMyImage filtered (generatePath outputDirectory image.Name)
-                    return! loop ()
-                | _ -> failwith "Wrong message was received in imageFullProcessor. Expected string or AsyncReplyChannel<unit> message type. "
-            }
-
-        loop ()
+        }
 
     MailboxProcessor.Start initial
 
@@ -98,13 +91,13 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
 
     match agentsSupport with
     | Full ->
-        let imageEditor = List.fold (>>) id imageEditorsList
+        let imageEditor = List.reduce (>>) imageEditorsList
 
         let processorsArray =
             Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
 
         for file in filesToProcess do
-            (Array.minBy (fun (p: MailboxProcessor<message>) -> p.CurrentQueueLength) processorsArray)
+            (Array.minBy (fun (p: MailboxProcessor<pathMessage>) -> p.CurrentQueueLength) processorsArray)
                 .Post(Path file)
 
         for imgProcessor in processorsArray do
@@ -117,7 +110,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-        imageProcessor.PostAndReply EOS
+        imageProcessor.PostAndReply imageMessage.EOS
     | PartialUsingComposition ->
         let imageProcessor =
             imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
@@ -125,7 +118,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
 
-        imageProcessor.PostAndReply EOS
+        imageProcessor.PostAndReply imageMessage.EOS
     | No ->
         let imageProcessAndSave path =
             let image = loadAsMyImage path

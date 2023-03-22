@@ -161,7 +161,7 @@ let processAllAs2DArray inputDirectory outputDirectory imageEditorsList =
 
     let imageProcessAndSave path =
         let image = loadAs2DArray path
-        let editedImage = image |> List.fold (>>) id imageEditorsList
+        let editedImage = image |> List.reduce (>>) imageEditorsList
         System.IO.Path.GetFileName path |> generatePath outputDirectory |> save2DArrayAsImage editedImage
 
     listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore
