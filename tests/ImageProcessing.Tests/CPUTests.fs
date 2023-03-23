@@ -8,48 +8,7 @@ module RotationTests =
     let tests =
         testList
             "RotationTests"
-            [ testCase "360 degree image clockwise rotation is equal to the original"
-              <| fun _ ->
-                  let actualResultPath =
-                      __SOURCE_DIRECTORY__ + "/Images/input/bobby-milan-46dEIq91kHg-unsplash.jpg"
-
-                  let expectedResult = loadAs2DArray actualResultPath
-
-                  let actualResult =
-                      expectedResult
-                      |> rotate2DArray true
-                      |> rotate2DArray true
-                      |> rotate2DArray true
-                      |> rotate2DArray true
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              testCase "360 degree image counterclockwise rotation is equal to the original"
-              <| fun _ ->
-                  let actualResultPath =
-                      __SOURCE_DIRECTORY__ + "/Images/input/fallon-michael-g3czzez5lh4-unsplash.jpg"
-
-                  let expectedResult = loadAs2DArray actualResultPath
-
-                  let actualResult =
-                      expectedResult
-                      |> rotate2DArray false
-                      |> rotate2DArray false
-                      |> rotate2DArray false
-                      |> rotate2DArray false
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              testProperty "360 degree byte array2D counter/clockwise rotation is equal to the original"
-              <| fun (arr: byte[,]) ->
-
-                  let resultsArray =
-                      [| arr |> rotate2DArray true |> rotate2DArray true |> rotate2DArray true |> rotate2DArray true
-                         arr |> rotate2DArray false |> rotate2DArray false |> rotate2DArray false |> rotate2DArray false |]
-
-                  Expect.allEqual resultsArray arr $"Unexpected: %A{resultsArray} and original {arr}.\n Expected equality. "
-
-              testCase "360 degree MyImage clockwise rotation is equal to the original"
+            [ testCase "360 degree MyImage clockwise rotation is equal to the original"
               <| fun _ ->
                   let actualResultPath =
                       __SOURCE_DIRECTORY__ + "/Images/input/bobby-milan-46dEIq91kHg-unsplash.jpg"
@@ -96,6 +55,4 @@ module RotationTests =
                          (image |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false |> rotateMyImage false)
                              .Data |]
 
-                  Expect.allEqual resultsArray image.Data $"Unexpected: %A{resultsArray} and original {arr}.\n Expected equality. "
-
-              ]
+                  Expect.allEqual resultsArray image.Data $"Unexpected: %A{resultsArray} and original {arr}.\n Expected equality. " ]

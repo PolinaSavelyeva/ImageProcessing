@@ -16,19 +16,6 @@ type MyImage =
           Height = height
           Name = name }
 
-let loadAs2DArray (filePath: string) =
-
-    let image = Image.Load<L8> filePath
-    let height = image.Height
-    let width = image.Width
-    let result = Array2D.zeroCreate height width
-
-    for i in 0 .. width - 1 do
-        for j in 0 .. height - 1 do
-            result[j, i] <- image.Item(i, j).PackedValue
-
-    result
-
 let loadAsMyImage (filePath: string) =
 
     let image = Image.Load<L8> filePath
@@ -60,26 +47,6 @@ let lightenKernel = array2D [ [ 2 ] ] |> Array2D.map float32
 let sharpenKernel =
     array2D [ [ 0; -1; 0 ]; [ -1; 5; -1 ]; [ 0; -1; -0 ] ] |> Array2D.map float32
 
-let applyFilterTo2DArray filter (image2DArray: byte[,]) =
-
-    let height = Array2D.length1 image2DArray
-    let width = Array2D.length2 image2DArray
-    let filterDiameter = (Array2D.length1 filter) / 2
-    let filter = toFlatArray filter
-
-    let pixelProcessing px py =
-        let dataToHandle =
-            [| for i in px - filterDiameter .. px + filterDiameter do
-                   for j in py - filterDiameter .. py + filterDiameter do
-                       if i < 0 || i >= height || j < 0 || j >= width then
-                           float32 image2DArray[px, py]
-                       else
-                           float32 image2DArray[i, j] |]
-
-        Array.fold2 (fun acc x y -> acc + x * y) 0.0f filter dataToHandle
-
-    Array2D.mapi (fun x y _ -> byte (pixelProcessing x y)) image2DArray
-
 let applyFilterToMyImage filter (myImage: MyImage) =
 
     let filterDiameter = (Array2D.length1 filter) / 2
@@ -102,19 +69,6 @@ let applyFilterToMyImage filter (myImage: MyImage) =
 
     MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) myImage.Data, myImage.Width, myImage.Height, myImage.Name)
 
-let rotate2DArray (isClockwise: bool) image2DArray =
-
-    let height = Array2D.length1 image2DArray
-    let width = Array2D.length2 image2DArray
-    let buffer = Array2D.zeroCreate width height
-    let weight = Convert.ToInt32 isClockwise
-
-    for j in 0 .. width - 1 do
-        for i in 0 .. height - 1 do
-            buffer[j * weight + (width - 1 - j) * (1 - weight), i * (1 - weight) + (height - 1 - i) * weight] <- image2DArray[i, j]
-
-    buffer
-
 let rotateMyImage (isClockwise: bool) (myImage: MyImage) =
 
     let buffer = Array.zeroCreate (myImage.Width * myImage.Height)
@@ -126,14 +80,6 @@ let rotateMyImage (isClockwise: bool) (myImage: MyImage) =
                    + (j * weight + (myImage.Width - 1 - j) * (1 - weight)) * myImage.Height] <- myImage.Data[j + i * myImage.Width]
 
     MyImage(buffer, myImage.Height, myImage.Width, myImage.Name)
-
-let save2DArrayAsImage (image2DArray: byte[,]) filePath =
-
-    let height = Array2D.length1 image2DArray
-    let width = Array2D.length2 image2DArray
-    let image = Image.LoadPixelData<L8>(toFlatArray image2DArray, width, height)
-
-    image.Save filePath
 
 let saveMyImage (myImage: MyImage) filePath =
 
@@ -156,12 +102,3 @@ let listAllImages directory =
 
 let generatePath outputDirectory (imageName: string) =
     System.IO.Path.Combine(outputDirectory, imageName)
-
-let processAllAs2DArray inputDirectory outputDirectory imageEditorsList =
-
-    let imageProcessAndSave path =
-        let image = loadAs2DArray path
-        let editedImage = image |> List.reduce (>>) imageEditorsList
-        System.IO.Path.GetFileName path |> generatePath outputDirectory |> save2DArrayAsImage editedImage
-
-    listAllImages inputDirectory |> List.map imageProcessAndSave |> ignore

@@ -113,7 +113,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         imageProcessor.PostAndReply imageMessage.EOS
     | PartialUsingComposition ->
         let imageProcessor =
-            imageProcessor (List.fold (>>) id imageEditorsList) (imageSaver outputDirectory)
+            imageProcessor (List.reduce (>>) imageEditorsList) (imageSaver outputDirectory)
 
         for file in filesToProcess do
             imageProcessor.Post(Image(loadAsMyImage file))
@@ -122,7 +122,7 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
     | No ->
         let imageProcessAndSave path =
             let image = loadAsMyImage path
-            let editedImage = image |> List.fold (>>) id imageEditorsList
+            let editedImage = image |> List.reduce (>>) imageEditorsList
             generatePath image.Name outputDirectory |> saveMyImage editedImage
 
         List.map imageProcessAndSave filesToProcess |> ignore
