@@ -2,6 +2,7 @@ module ArgCommands
 
 open Argu
 open CPUImageProcessing
+open Streaming
 
 type Transformations =
     | Gauss
@@ -14,17 +15,18 @@ type Transformations =
 
 let transformationsParser p =
     match p with
-    | Gauss -> applyFilterTo2DArray gaussianBlurKernel
-    | Sharpen -> applyFilterTo2DArray sharpenKernel
-    | Lighten -> applyFilterTo2DArray lightenKernel
-    | Darken -> applyFilterTo2DArray darkenKernel
-    | Edges -> applyFilterTo2DArray edgesKernel
-    | RotationR -> rotate2DArray true
-    | RotationL -> rotate2DArray false
+    | Gauss -> applyFilterToMyImage gaussianBlurKernel
+    | Sharpen -> applyFilterToMyImage sharpenKernel
+    | Lighten -> applyFilterToMyImage lightenKernel
+    | Darken -> applyFilterToMyImage darkenKernel
+    | Edges -> applyFilterToMyImage edgesKernel
+    | RotationR -> rotateMyImage true
+    | RotationL -> rotateMyImage false
 
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
+    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of AgentsSupport
     | [<Mandatory; MainCommand>] Transform of list<Transformations>
 
     interface IArgParserTemplate with
@@ -32,4 +34,5 @@ type ClIArguments =
             match s with
             | InputPath _ -> "path to a file or a directory where the images will be processed from."
             | OutputPath _ -> "path to a file or a directory where the images will be saved."
+            | AgentsSupport _ -> "process files using different agents strategy."
             | Transform _ -> "list of available transformations."

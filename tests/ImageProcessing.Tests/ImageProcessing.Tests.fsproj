@@ -53,12 +53,7 @@
       </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Images\input\bobby-milan-46dEIq91kHg-unsplash.jpg" />
-      <Content Include="Images\input\karolina-bobek-buUkxvClBEw-unsplash.png" />
-      <Content Include="Images\input\dhruv-N9UuFddi7hs-unsplash.jpg" />
-      <Content Include="Images\input\nikita-pishchugin-9EHWNh6na60-unsplash.jpg" />
-      <Content Include="Images\input\rory-mckeever-M-d1qoOMHmA-unsplash.jpg" />
-      <Content Include="Images\input\yaroslav-beregovyi-g--c9rWAiCY-unsplash.jpg" />
+      <Folder Include="Images\input" />
       <Folder Include="Images\output" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />

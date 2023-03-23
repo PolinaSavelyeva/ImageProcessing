@@ -3,6 +3,7 @@ namespace ImageProcessing
 open Argu
 open ArgCommands
 open CPUImageProcessing
+open Streaming
 
 module Main =
 
@@ -21,20 +22,24 @@ module Main =
 
         match parser.ParseCommandLine argv with
 
-        | res when res.Contains(InputPath) && res.Contains(OutputPath) && res.Contains(Transform) ->
+        | res when
+            res.Contains(InputPath)
+            && res.Contains(OutputPath)
+            && res.Contains(Transform)
+            && res.Contains(AgentsSupport)
+            ->
 
             let inputPath = res.GetResult(InputPath)
             let outputPath = res.GetResult(OutputPath)
-
-            let processor =
-                res.GetResult(Transform) |> List.map transformationsParser |> List.fold (>>) id
+            let processor = res.GetResult(Transform) |> List.map transformationsParser
+            let agentsSupport = res.GetResult(AgentsSupport)
 
             if System.IO.File.Exists inputPath then
-                let image = loadAs2DArray inputPath
-                let processedImage = processor image
-                save2DArrayAsImage processedImage outputPath
+                let image = loadAsMyImage inputPath
+                let processedImage = List.head processor image
+                saveMyImage processedImage outputPath
             else
-                processor |> processAllFiles inputPath outputPath
+                processAllFiles inputPath outputPath processor agentsSupport
 
         | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
