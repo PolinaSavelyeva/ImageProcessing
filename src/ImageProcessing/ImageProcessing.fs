@@ -1,8 +1,9 @@
-module CPUImageProcessing
+module ImageProcessing
 
 open System
 open SixLabors.ImageSharp
 open SixLabors.ImageSharp.PixelFormats
+open Brahma.FSharp
 
 type MyImage =
     val Data: array<byte>
@@ -102,3 +103,66 @@ let listAllImages directory =
 
 let generatePath outputDirectory (imageName: string) =
     System.IO.Path.Combine(outputDirectory, imageName)
+
+let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
+
+    let kernel =
+        <@
+            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (filter: ClArray<float32>) filterDiameter (result: ClArray<byte>) ->
+                let p = range.GlobalID0
+                let pw = p % imageWidth
+                let ph = p / imageWidth
+                let mutable res = 0.0f
+
+                for i in ph - filterDiameter .. ph + filterDiameter do
+                    for j in pw - filterDiameter .. pw + filterDiameter do
+
+                        let f = filter[(i - ph + filterDiameter) * (2 * filterDiameter + 1) + (j - pw + filterDiameter)]
+
+                        if i < 0 || i >= imageHeight || j < 0 || j >= imageWidth then
+                            res <- res + (float32 image[p]) * f
+                        else
+                            res <- res + (float32 image[i * imageWidth + j]) * f
+
+                result[p] <- byte (int res)
+        @>
+
+    let kernel = clContext.Compile kernel
+
+    fun (commandQueue: MailboxProcessor<_>) (filter: ClArray<float32>) filterDiameter (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+
+        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
+
+        let kernel = kernel.GetKernel()
+        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight filter filterDiameter result))
+        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        result
+
+let applyFiltersGPU (clContext: ClContext) localWorkSize =
+    let kernel = applyFilterGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
+
+    fun (filters: list<float32[,]>) (image: MyImage) ->
+
+        let mutable input =
+            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible)
+
+        let mutable output = clContext.CreateClArray( image.Data.Length, HostAccessMode.NotAccessible, allocationMode = AllocationMode.Default )
+
+        for filter in filters do
+
+            let filterDiameter = (Array2D.length1 filter) / 2
+            let filter = toFlatArray filter
+            let clFilter = clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+            let oldInput = input
+
+            input <- kernel queue clFilter filterDiameter input image.Height image.Width output
+            output <- oldInput
+            queue.Post(Msg.CreateFreeMsg clFilter)
+
+        let result = Array.zeroCreate (image.Height * image.Width)
+
+        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(input, result, ch))
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
+        MyImage(result, image.Width, image.Height, image.Name)

@@ -1,7 +1,7 @@
 module Streaming
 
 open System
-open CPUImageProcessing
+open ImageProcessing
 
 type imageMessage =
     | Image of MyImage

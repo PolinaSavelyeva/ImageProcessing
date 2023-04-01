@@ -1,7 +1,7 @@
-namespace CPUTests
+namespace Tests
 
 open Expecto
-open CPUImageProcessing
+open ImageProcessing
 
 module RotationTests =
     [<Tests>]
