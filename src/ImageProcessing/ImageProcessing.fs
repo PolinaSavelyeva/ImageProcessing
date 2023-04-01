@@ -77,10 +77,28 @@ let rotateMyImage (isClockwise: bool) (myImage: MyImage) =
 
     for j in 0 .. myImage.Width - 1 do
         for i in 0 .. myImage.Height - 1 do
-            buffer[(i * (1 - weight) + (myImage.Height - 1 - i) * weight)
-                   + (j * weight + (myImage.Width - 1 - j) * (1 - weight)) * myImage.Height] <- myImage.Data[j + i * myImage.Width]
+
+            let pw = j * weight + (myImage.Width - 1 - j) * (1 - weight)
+            let ph = i * (1 - weight) + (myImage.Height - 1 - i) * weight
+
+            buffer[ ph + pw * myImage.Height] <- myImage.Data[j + i * myImage.Width]
 
     MyImage(buffer, myImage.Height, myImage.Width, myImage.Name)
+
+let flipMyImage (isVertical: bool) (myImage: MyImage) =
+
+    let buffer = Array.zeroCreate (myImage.Height * myImage.Width)
+    let weight = Convert.ToInt32 isVertical
+
+    for j in 0 .. myImage.Width - 1 do
+        for i in 0 .. myImage.Height - 1 do
+
+            let pw = (myImage.Width - j - 1) * weight + j * (1 - weight)
+            let ph = i * weight + (myImage.Height - i - 1) * (1 - weight)
+
+            buffer[pw + ph * myImage.Width] <- myImage.Data[j + i * myImage.Width]
+
+    MyImage(buffer, myImage.Width, myImage.Height, myImage.Name)
 
 let saveMyImage (myImage: MyImage) filePath =
 
@@ -134,35 +152,140 @@ let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
         let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
 
         let kernel = kernel.GetKernel()
+
         commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight filter filterDiameter result))
         commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
         result
 
+let rotateGPUKernel (clContext: ClContext) localWorkSize =
+
+    let kernel =
+        <@
+            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: int) (result: ClArray<byte>) ->
+                let p = range.GlobalID0
+
+                let i = p / imageWidth
+                let j = p % imageWidth
+
+                let pw = j * weight + (imageWidth - 1 - j) * (1 - weight)
+                let ph = i * (1 - weight) + (imageHeight - 1 - i) * weight
+
+                result[ ph + pw * imageHeight ] <- image[p]
+        @>
+
+    let kernel = clContext.Compile kernel
+
+    fun (commandQueue: MailboxProcessor<_>) (weight: int) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+
+        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
+
+        let kernel = kernel.GetKernel()
+
+        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
+        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        result
+
+let flipGPUKernel (clContext: ClContext) localWorkSize =
+
+    let kernel =
+        <@
+            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: int) (result: ClArray<byte>) ->
+                let p = range.GlobalID0
+
+                let i = p / imageWidth
+                let j = p % imageWidth
+
+                let pw = (imageWidth - j - 1) * weight + j * (1 - weight)
+                let ph = i * weight + (imageHeight - i - 1) * (1 - weight)
+
+                result[ pw + ph * imageWidth ] <- image[p]
+        @>
+
+    let kernel = clContext.Compile kernel
+
+    fun (commandQueue: MailboxProcessor<_>) (weight: int) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+
+        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
+
+        let kernel = kernel.GetKernel()
+
+        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
+        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        result
+
 let applyFiltersGPU (clContext: ClContext) localWorkSize =
+
     let kernel = applyFilterGPUKernel clContext localWorkSize
     let queue = clContext.QueueProvider.CreateQueue()
 
     fun (filters: list<float32[,]>) (image: MyImage) ->
 
-        let mutable input =
-            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible)
+        let input =
+            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-        let mutable output = clContext.CreateClArray( image.Data.Length, HostAccessMode.NotAccessible, allocationMode = AllocationMode.Default )
+        let output = clContext.CreateClArray( image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default )
 
         for filter in filters do
 
             let filterDiameter = (Array2D.length1 filter) / 2
             let filter = toFlatArray filter
             let clFilter = clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-            let oldInput = input
+            kernel queue clFilter filterDiameter input image.Height image.Width output |> ignore
 
-            input <- kernel queue clFilter filterDiameter input image.Height image.Width output
-            output <- oldInput
             queue.Post(Msg.CreateFreeMsg clFilter)
 
         let result = Array.zeroCreate (image.Height * image.Width)
+        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
 
-        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(input, result, ch))
         queue.Post(Msg.CreateFreeMsg input)
         queue.Post(Msg.CreateFreeMsg output)
+
+        MyImage(result, image.Width, image.Height, image.Name)
+
+let rotateGPU (clContext: ClContext) localWorkSize =
+
+    let kernel = rotateGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
+
+    fun (isClockwise: bool) (image: MyImage) ->
+
+        let weight = Convert.ToInt32 isClockwise
+
+        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+
+        let output = clContext.CreateClArray( image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default )
+
+        kernel queue weight input image.Height image.Width output |> ignore
+
+        let result = Array.zeroCreate (image.Height * image.Width)
+
+        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
+
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
+
+        MyImage(result, image.Height, image.Width, image.Name)
+
+let flipGPU (clContext: ClContext) localWorkSize =
+
+    let kernel = flipGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
+
+    fun (isVertical: bool) (image: MyImage) ->
+
+        let weight = Convert.ToInt32 isVertical
+
+        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+
+        let output = clContext.CreateClArray( image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default )
+
+        kernel queue weight input image.Height image.Width output |> ignore
+
+        let result = Array.zeroCreate (image.Height * image.Width)
+
+        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
+
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
+
         MyImage(result, image.Width, image.Height, image.Name)

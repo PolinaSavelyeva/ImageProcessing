@@ -1,7 +1,7 @@
 module ArgCommands
 
 open Argu
-open CPUImageProcessing
+open ImageProcessing
 open Streaming
 
 type Transformations =
@@ -10,8 +10,10 @@ type Transformations =
     | Lighten
     | Darken
     | Edges
-    | RotationR
-    | RotationL
+    | RotationR // Clockwise rotation
+    | RotationL // Counterclockwise rotation
+    | FlipV // Vertical flip
+    | FlipH // Horizontal flip
 
 let transformationsParser p =
     match p with
@@ -22,6 +24,8 @@ let transformationsParser p =
     | Edges -> applyFilterToMyImage edgesKernel
     | RotationR -> rotateMyImage true
     | RotationL -> rotateMyImage false
+    | FlipV -> flipMyImage true
+    | FlipH -> flipMyImage false
 
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string

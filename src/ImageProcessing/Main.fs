@@ -43,16 +43,16 @@ let main argv =
 
     | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
-    let device = ClDevice.GetFirstAppropriateDevice()
+    (*let device = ClDevice.GetFirstAppropriateDevice()
     let context = ClContext(device)
-    let applyFiltersOnGPU = applyFiltersGPU context 64
+    //let applyFiltersOnGPU = applyFiltersGPU context 64
+    let rotateFunc = flipGPU context 64
 
-    let filters = [
-        gaussianBlurKernel
-        gaussianBlurKernel
-        edgesKernel
-    ]
-
-    processAllFiles "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/input" "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/output" applyFiltersOnGPU Full
-
+    let filters = [ darkenKernel; darkenKernel ]
+    let image = loadAsMyImage "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/input/bobby-milan-46dEIq91kHg-unsplash.jpg"
+    //let res = applyFiltersOnGPU filters image
+    let res = rotateFunc false image
+    saveMyImage res "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/output/1.jpg"
+    //processAllFiles "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/input" "/Users/polinas/Documents/ImageProcessing/tests/ImageProcessing.Tests/Images/output" applyFiltersOnGPU Full
+    *)
     0
