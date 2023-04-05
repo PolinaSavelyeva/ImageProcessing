@@ -1,12 +1,13 @@
 module Streaming
 
-open System
-open ImageProcessing
-open Brahma.FSharp
+open MyImage
 
 type imageMessage =
     | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
+
+let generatePath outputDirectory (imageName: string) =
+    System.IO.Path.Combine(outputDirectory, imageName)
 
 let imageSaver outputDirectory =
 
@@ -23,7 +24,7 @@ let imageSaver outputDirectory =
 
                 | Image image ->
                     printfn $"Save: %A{image.Name}"
-                    saveMyImage image (generatePath outputDirectory image.Name)
+                    save image (generatePath outputDirectory image.Name)
         }
 
     MailboxProcessor.Start initial
@@ -64,115 +65,13 @@ let imageFullProcessor imageEditor outputDirectory =
 
                 match message with
                 | EOS channel ->
-                    printfn $"Image processor and saver is finished!"
+                    printfn "Image processor and saver is finished!"
                     channel.Reply()
 
                 | Path path ->
-                    let image = loadAsMyImage path
+                    let image = load path
                     let filtered = imageEditor image
-                    saveMyImage filtered (generatePath outputDirectory image.Name)
+                    save filtered (generatePath outputDirectory image.Name)
         }
 
     MailboxProcessor.Start initial
-
-// Full uses a single agent to open, process and save
-// Partial uses different agents for each transformation and saving
-// PartialUsingComposition uses one agent for transformation and one - for save
-// None uses naive image processing function
-
-// TODO replace types
-type AgentsSupport =
-    | Full
-    | Partial
-    | PartialUsingComposition
-    | No
-type Transformations =
-    | Gauss
-    | Sharpen
-    | Lighten
-    | Darken
-    | Edges
-    | RotationR // Clockwise rotation
-    | RotationL // Counterclockwise rotation
-    | FlipV // Vertical flip
-    | FlipH // Horizontal flip
-
-type ProcessingUnits =
-    | CPU
-    | GPU
-
-// TODO delete clContext localWorkSize
-let transformationsParserGPU clContext localWorkSize t =
-    match t with
-    | Gauss -> applyFiltersGPU clContext localWorkSize gaussianBlurKernel
-    | Sharpen -> applyFiltersGPU clContext localWorkSize sharpenKernel
-    | Lighten -> applyFiltersGPU clContext localWorkSize lightenKernel
-    | Darken -> applyFiltersGPU clContext localWorkSize darkenKernel
-    | Edges -> applyFiltersGPU clContext localWorkSize edgesKernel
-    | RotationR -> rotateGPU clContext localWorkSize true
-    | RotationL -> rotateGPU clContext localWorkSize false
-    | FlipV -> flipGPU clContext localWorkSize true
-    | FlipH -> flipGPU clContext localWorkSize false
-
-let transformationsParserCPU t =
-    match t with
-    | Gauss -> applyFilterToMyImage gaussianBlurKernel
-    | Sharpen -> applyFilterToMyImage sharpenKernel
-    | Lighten -> applyFilterToMyImage lightenKernel
-    | Darken -> applyFilterToMyImage darkenKernel
-    | Edges -> applyFilterToMyImage edgesKernel
-    | RotationR -> rotateMyImage true
-    | RotationL -> rotateMyImage false
-    | FlipV -> flipMyImage true
-    | FlipH -> flipMyImage false
-
-let processAllFiles inputDirectory outputDirectory processingUnit imageEditorsList agentsSupport =
-
-    let filesToProcess = listAllImages inputDirectory
-
-    let imageEditorsList =
-        match processingUnit with
-        | CPU -> List.map transformationsParserCPU imageEditorsList
-        | GPU ->
-            let device = ClDevice.GetFirstAppropriateDevice()
-            let clContext = ClContext(device)
-
-            List.map (transformationsParserGPU clContext 64) imageEditorsList
-
-    match agentsSupport with
-    | Full ->
-        let imageEditor = List.reduce (>>) imageEditorsList
-
-        let processorsArray =
-            Array.init Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
-
-        for file in filesToProcess do
-            (Array.minBy (fun (p: MailboxProcessor<pathMessage>) -> p.CurrentQueueLength) processorsArray)
-                .Post(Path file)
-
-        for imgProcessor in processorsArray do
-            imgProcessor.PostAndReply EOS
-
-    | Partial ->
-        let imageProcessor =
-            List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
-
-        for file in filesToProcess do
-            imageProcessor.Post(Image(loadAsMyImage file))
-
-        imageProcessor.PostAndReply imageMessage.EOS
-    | PartialUsingComposition ->
-        let imageProcessor =
-            imageProcessor (List.reduce (>>) imageEditorsList) (imageSaver outputDirectory)
-
-        for file in filesToProcess do
-            imageProcessor.Post(Image(loadAsMyImage file))
-
-        imageProcessor.PostAndReply imageMessage.EOS
-    | No ->
-        let imageProcessAndSave path =
-            let image = loadAsMyImage path
-            let editedImage = image |> List.reduce (>>) imageEditorsList
-            generatePath outputDirectory image.Name |> saveMyImage editedImage
-
-        List.iter imageProcessAndSave filesToProcess

@@ -1,291 +1,115 @@
 module ImageProcessing
 
-open System
-open SixLabors.ImageSharp
-open SixLabors.ImageSharp.PixelFormats
+open MyImage
+open Kernels
+open Streaming
 open Brahma.FSharp
 
-type MyImage =
-    val Data: array<byte>
-    val Width: int
-    val Height: int
-    val Name: string
-
-    new(data, width, height, name) =
-        { Data = data
-          Width = width
-          Height = height
-          Name = name }
-
-let loadAsMyImage (filePath: string) =
-
-    let image = Image.Load<L8> filePath
-    let buffer = Array.zeroCreate<byte> (image.Width * image.Height)
-    image.CopyPixelDataTo(Span<byte> buffer)
-
-    MyImage(buffer, image.Width, image.Height, System.IO.Path.GetFileName filePath)
-
-let toFlatArray array2D =
-    seq {
-        for x in [ 0 .. (Array2D.length1 array2D) - 1 ] do
-            for y in [ 0 .. (Array2D.length2 array2D) - 1 ] do
-                yield array2D[x, y]
-    }
-    |> Array.ofSeq
-
-let gaussianBlurKernel =
-    array2D [ [ 1; 4; 6; 4; 1 ]; [ 4; 16; 24; 16; 4 ]; [ 6; 24; 36; 24; 6 ]; [ 4; 16; 24; 16; 4 ]; [ 1; 4; 6; 4; 1 ] ]
-    |> Array2D.map (fun x -> (float32 x) / 256.0f)
-
-let edgesKernel =
-    array2D [ [ 0; 0; -1; 0; 0 ]; [ 0; 0; -1; 0; 0 ]; [ 0; 0; 2; 0; 0 ]; [ 0; 0; 0; 0; 0 ]; [ 0; 0; 0; 0; 0 ] ]
-    |> Array2D.map float32
-
-let darkenKernel = array2D [ [ 2 ] ] |> Array2D.map (fun x -> (float32 x) / 10.0f)
-
-let lightenKernel = array2D [ [ 2 ] ] |> Array2D.map float32
-
-let sharpenKernel =
-    array2D [ [ 0; -1; 0 ]; [ -1; 5; -1 ]; [ 0; -1; -0 ] ] |> Array2D.map float32
-
-let applyFilterToMyImage filter (myImage: MyImage) =
-
-    let filterDiameter = (Array2D.length1 filter) / 2
-    let filter = toFlatArray filter
-
-    let pixelProcessing p =
-
-        let pw = p % myImage.Width
-        let ph = p / myImage.Width
-
-        let dataToHandle =
-            [| for i in ph - filterDiameter .. ph + filterDiameter do
-                   for j in pw - filterDiameter .. pw + filterDiameter do
-                       if i < 0 || i >= myImage.Height || j < 0 || j >= myImage.Width then
-                           float32 myImage.Data[p]
-                       else
-                           float32 myImage.Data[i * myImage.Width + j] |]
-
-        Array.fold2 (fun acc x y -> acc + x * y) 0.0f filter dataToHandle
-
-    MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) myImage.Data, myImage.Width, myImage.Height, myImage.Name)
-
-let rotateMyImage (isClockwise: bool) (myImage: MyImage) =
-
-    let buffer = Array.zeroCreate (myImage.Width * myImage.Height)
-    let weight = Convert.ToInt32 isClockwise
-
-    for j in 0 .. myImage.Width - 1 do
-        for i in 0 .. myImage.Height - 1 do
-
-            let pw = j * weight + (myImage.Width - 1 - j) * (1 - weight)
-            let ph = i * (1 - weight) + (myImage.Height - 1 - i) * weight
-
-            buffer[ph + pw * myImage.Height] <- myImage.Data[j + i * myImage.Width]
-
-    MyImage(buffer, myImage.Height, myImage.Width, myImage.Name)
-
-let flipMyImage (isVertical: bool) (myImage: MyImage) =
-
-    let buffer = Array.zeroCreate (myImage.Height * myImage.Width)
-    let weight = Convert.ToInt32 isVertical
-
-    for j in 0 .. myImage.Width - 1 do
-        for i in 0 .. myImage.Height - 1 do
-
-            let pw = (myImage.Width - j - 1) * weight + j * (1 - weight)
-            let ph = i * weight + (myImage.Height - i - 1) * (1 - weight)
-
-            buffer[pw + ph * myImage.Width] <- myImage.Data[j + i * myImage.Width]
-
-    MyImage(buffer, myImage.Width, myImage.Height, myImage.Name)
-
-let saveMyImage (myImage: MyImage) filePath =
-
-    let image = Image.LoadPixelData<L8>(myImage.Data, myImage.Width, myImage.Height)
-
-    image.Save filePath
-
-let listAllImages directory =
-
-    let allowableExtensions =
-        [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
-
-    let allFilesSeq = System.IO.Directory.EnumerateFiles directory
-
-    let allowableFilesSeq =
-        Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
-
-    printfn $"Images in %A{directory} directory : %A{allowableFilesSeq}"
-    List.ofSeq allowableFilesSeq
-
-let generatePath outputDirectory (imageName: string) =
-    System.IO.Path.Combine(outputDirectory, imageName)
-
-let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
-
-    let kernel =
-        <@
-            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (filter: ClArray<float32>) filterDiameter (result: ClArray<byte>) ->
-                let p = range.GlobalID0
-                let pw = p % imageWidth
-                let ph = p / imageWidth
-                let mutable res = 0.0f
-
-                for i in ph - filterDiameter .. ph + filterDiameter do
-                    for j in pw - filterDiameter .. pw + filterDiameter do
-                        let f =
-                            filter[(i - ph + filterDiameter) * (2 * filterDiameter + 1) + (j - pw + filterDiameter)]
-
-                        if i < 0 || i >= imageHeight || j < 0 || j >= imageWidth then
-                            res <- res + (float32 image[p]) * f
-                        else
-                            res <- res + (float32 image[i * imageWidth + j]) * f
-
-                result[p] <- byte (int res)
-        @>
-
-    let kernel = clContext.Compile kernel
-
-    fun (commandQueue: MailboxProcessor<Msg>) (filter: ClArray<float32>) filterDiameter (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
-
-        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
-
-        let kernel = kernel.GetKernel()
-
-        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight filter filterDiameter result))
-        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
-        result
-
-let rotateGPUKernel (clContext: ClContext) localWorkSize =
-
-    let kernel =
-        <@
-            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: ClCell<int>) (result: ClArray<byte>) ->
-                let p = range.GlobalID0
-                let i = p / imageWidth
-                let j = p % imageWidth
-                let weight = weight.Value
-
-                let pw = j * weight + (imageWidth - 1 - j) * (1 - weight)
-                let ph = i * (1 - weight) + (imageHeight - 1 - i) * weight
-
-                result[ph + pw * imageHeight] <- image[p]
-        @>
-
-    let kernel = clContext.Compile kernel
-
-    fun (commandQueue: MailboxProcessor<Msg>) (weight: ClCell<int>) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
-
-        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
-
-        let kernel = kernel.GetKernel()
-
-        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
-        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
-        result
-
-let flipGPUKernel (clContext: ClContext) localWorkSize =
-
-    let kernel =
-        <@
-            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: ClCell<int>) (result: ClArray<byte>) ->
-                let p = range.GlobalID0
-                let i = p / imageWidth
-                let j = p % imageWidth
-                let weight = weight.Value
-
-                let pw = (imageWidth - j - 1) *weight+ j * (1 - weight)
-                let ph = i * weight + (imageHeight - i - 1) * (1 - weight)
-
-                result[pw + ph * imageWidth] <- image[p]
-        @>
-
-    let kernel = clContext.Compile kernel
-
-    fun (commandQueue: MailboxProcessor<Msg>) (weight: ClCell<int>) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
-
-        let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
-
-        let kernel = kernel.GetKernel()
-
-        commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
-        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
-        result
-
-// TODO composite all functions
-let applyFiltersGPU (clContext: ClContext) localWorkSize =
-
-    let kernel = applyFilterGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
-
-    fun (filter: float32[,]) (image: MyImage) ->
-
-        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
-
-        let filterDiameter = (Array2D.length1 filter) / 2
-        let filter = toFlatArray filter
-        let clFilter = clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-
-        kernel queue clFilter filterDiameter input image.Height image.Width output |> ignore
-
-        queue.Post(Msg.CreateFreeMsg clFilter)
-
-        let result = Array.zeroCreate (image.Height * image.Width)
-        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
-        queue.Post(Msg.CreateFreeMsg input)
-        queue.Post(Msg.CreateFreeMsg output)
-
-        MyImage(result, image.Width, image.Height, image.Name)
-
-let rotateGPU (clContext: ClContext) localWorkSize =
-
-    let kernel = rotateGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
-
-    fun (isClockwise: bool) (image: MyImage) ->
-
-        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
-
-        let weight = Convert.ToInt32 isClockwise
-        let clWeight = clContext.CreateClCell(weight)
-
-        kernel queue clWeight input image.Height image.Width output |> ignore
-
-        queue.Post(Msg.CreateFreeMsg clWeight)
-
-        let result = Array.zeroCreate (image.Height * image.Width)
-        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
-        queue.Post(Msg.CreateFreeMsg input)
-        queue.Post(Msg.CreateFreeMsg output)
-
-        MyImage(result, image.Height, image.Width, image.Name)
-
-let flipGPU (clContext: ClContext) localWorkSize =
-
-    let kernel = flipGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
-
-    fun (isVertical: bool) (image: MyImage) ->
-
-        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
-
-        let weight = Convert.ToInt32 isVertical
-        let clWeight = clContext.CreateClCell(weight)
-
-        kernel queue clWeight input image.Height image.Width output |> ignore
-
-        queue.Post(Msg.CreateFreeMsg clWeight)
-
-        let result = Array.zeroCreate (image.Height * image.Width)
-        let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
-        queue.Post(Msg.CreateFreeMsg input)
-        queue.Post(Msg.CreateFreeMsg output)
-
-        MyImage(result, image.Width, image.Height, image.Name)
+type AgentsSupport =
+    | Full // Uses a single agent to open, process and save
+    | Partial // Uses different agents for each transformation and saving
+    | PartialUsingComposition // Uses one agent for transformation and one for save
+    | No // Uses naive image processing function
+
+type Transformations =
+    | Gauss
+    | Sharpen
+    | Lighten
+    | Darken
+    | Edges
+    | RotationR // Clockwise rotation
+    | RotationL // Counterclockwise rotation
+    | FlipV // Vertical flip
+    | FlipH // Horizontal flip
+
+type ProcessingUnits =
+    | CPU
+    | GPU
+
+let transformationsParserCPU t =
+    match t with
+    | Gauss -> CPUProcessing.applyFilter gaussianBlurKernel
+    | Sharpen -> CPUProcessing.applyFilter sharpenKernel
+    | Lighten -> CPUProcessing.applyFilter lightenKernel
+    | Darken -> CPUProcessing.applyFilter darkenKernel
+    | Edges -> CPUProcessing.applyFilter edgesKernel
+    | RotationR -> CPUProcessing.rotate true
+    | RotationL -> CPUProcessing.rotate false
+    | FlipV -> CPUProcessing.rotate true
+    | FlipH -> CPUProcessing.flip false
+
+let transformationsParserGPU t =
+    match t with
+    | Gauss -> GPUProcessing.applyFilter gaussianBlurKernel
+    | Sharpen -> GPUProcessing.applyFilter sharpenKernel
+    | Lighten -> GPUProcessing.applyFilter lightenKernel
+    | Darken -> GPUProcessing.applyFilter darkenKernel
+    | Edges -> GPUProcessing.applyFilter edgesKernel
+    | RotationR -> GPUProcessing.rotate true
+    | RotationL -> GPUProcessing.rotate false
+    | FlipV -> GPUProcessing.flip true
+    | FlipH -> GPUProcessing.flip false
+
+let processAllFiles inputDirectory outputDirectory processingUnit imageEditorsList agentsSupport =
+
+    let listAllImages directory =
+
+        let allowableExtensions =
+            [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
+
+        let allFilesSeq = System.IO.Directory.EnumerateFiles directory
+
+        let allowableFilesSeq =
+            Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
+
+        printfn $"Images in %A{directory} directory : %A{allowableFilesSeq}"
+        List.ofSeq allowableFilesSeq
+
+    let filesToProcess = listAllImages inputDirectory
+
+    let imageEditorsList =
+        match processingUnit with
+        | CPU -> List.map transformationsParserCPU imageEditorsList
+        | GPU ->
+            let device = ClDevice.GetFirstAppropriateDevice()
+            let clContext = ClContext(device)
+
+            List.map (fun n -> transformationsParserGPU n clContext 64) imageEditorsList
+
+    match agentsSupport with
+    | Full ->
+        let imageEditor = List.reduce (>>) imageEditorsList
+
+        let processorsArray =
+            Array.init System.Environment.ProcessorCount (fun _ -> imageFullProcessor imageEditor outputDirectory)
+
+        for file in filesToProcess do
+            (Array.minBy (fun (p: MailboxProcessor<pathMessage>) -> p.CurrentQueueLength) processorsArray)
+                .Post(Path file)
+
+        for imgProcessor in processorsArray do
+            imgProcessor.PostAndReply EOS
+
+    | Partial ->
+        let imageProcessor =
+            List.foldBack imageProcessor imageEditorsList (imageSaver outputDirectory)
+
+        for file in filesToProcess do
+            imageProcessor.Post(Image(load file))
+
+        imageProcessor.PostAndReply imageMessage.EOS
+    | PartialUsingComposition ->
+        let imageProcessor =
+            imageProcessor (List.reduce (>>) imageEditorsList) (imageSaver outputDirectory)
+
+        for file in filesToProcess do
+            imageProcessor.Post(Image(load file))
+
+        imageProcessor.PostAndReply imageMessage.EOS
+    | No ->
+        let imageProcessAndSave path =
+            let image = load path
+            let editedImage = image |> List.reduce (>>) imageEditorsList
+            generatePath outputDirectory image.Name |> save editedImage
+
+        List.iter imageProcessAndSave filesToProcess

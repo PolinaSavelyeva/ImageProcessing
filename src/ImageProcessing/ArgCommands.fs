@@ -1,14 +1,13 @@
 module ArgCommands
 
 open Argu
-open Streaming
 
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
-    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of AgentsSupport
-    | [<AltCommandLine("-unit"); EqualsAssignment>] ProcessingUnit of ProcessingUnits
-    | [<Mandatory; MainCommand>] Transformations of list<Transformations>
+    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of ImageProcessing.AgentsSupport
+    | [<AltCommandLine("-unit"); EqualsAssignment>] ProcessingUnit of ImageProcessing.ProcessingUnits
+    | [<Mandatory; MainCommand>] Transformations of list<ImageProcessing.Transformations>
 
     interface IArgParserTemplate with
         member s.Usage =

@@ -17,8 +17,12 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
-    <Compile Include="ImageProcessing.fs" />
+    <Compile Include="MyImage.fs" />
+    <Compile Include="CPUProcessing.fs" />
+    <Compile Include="GPUProcessing.fs" />
+    <Compile Include="Kernels.fs" />
     <Compile Include="Streaming.fs" />
+    <Compile Include="ImageProcessing.fs" />
     <Compile Include="ArgCommands.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
