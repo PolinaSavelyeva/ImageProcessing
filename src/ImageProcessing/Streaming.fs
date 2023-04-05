@@ -2,6 +2,7 @@ module Streaming
 
 open System
 open ImageProcessing
+open Brahma.FSharp
 
 type imageMessage =
     | Image of MyImage
@@ -79,15 +80,64 @@ let imageFullProcessor imageEditor outputDirectory =
 // PartialUsingComposition uses one agent for transformation and one - for save
 // None uses naive image processing function
 
+// TODO replace types
 type AgentsSupport =
     | Full
     | Partial
     | PartialUsingComposition
     | No
+type Transformations =
+    | Gauss
+    | Sharpen
+    | Lighten
+    | Darken
+    | Edges
+    | RotationR // Clockwise rotation
+    | RotationL // Counterclockwise rotation
+    | FlipV // Vertical flip
+    | FlipH // Horizontal flip
 
-let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSupport =
+type ProcessingUnits =
+    | CPU
+    | GPU
+
+// TODO delete clContext localWorkSize
+let transformationsParserGPU clContext localWorkSize t =
+    match t with
+    | Gauss -> applyFiltersGPU clContext localWorkSize gaussianBlurKernel
+    | Sharpen -> applyFiltersGPU clContext localWorkSize sharpenKernel
+    | Lighten -> applyFiltersGPU clContext localWorkSize lightenKernel
+    | Darken -> applyFiltersGPU clContext localWorkSize darkenKernel
+    | Edges -> applyFiltersGPU clContext localWorkSize edgesKernel
+    | RotationR -> rotateGPU clContext localWorkSize true
+    | RotationL -> rotateGPU clContext localWorkSize false
+    | FlipV -> flipGPU clContext localWorkSize true
+    | FlipH -> flipGPU clContext localWorkSize false
+
+let transformationsParserCPU t =
+    match t with
+    | Gauss -> applyFilterToMyImage gaussianBlurKernel
+    | Sharpen -> applyFilterToMyImage sharpenKernel
+    | Lighten -> applyFilterToMyImage lightenKernel
+    | Darken -> applyFilterToMyImage darkenKernel
+    | Edges -> applyFilterToMyImage edgesKernel
+    | RotationR -> rotateMyImage true
+    | RotationL -> rotateMyImage false
+    | FlipV -> flipMyImage true
+    | FlipH -> flipMyImage false
+
+let processAllFiles inputDirectory outputDirectory processingUnit imageEditorsList agentsSupport =
 
     let filesToProcess = listAllImages inputDirectory
+
+    let imageEditorsList =
+        match processingUnit with
+        | CPU -> List.map transformationsParserCPU imageEditorsList
+        | GPU ->
+            let device = ClDevice.GetFirstAppropriateDevice()
+            let clContext = ClContext(device)
+
+            List.map (transformationsParserGPU clContext 64) imageEditorsList
 
     match agentsSupport with
     | Full ->
@@ -123,6 +173,6 @@ let processAllFiles inputDirectory outputDirectory imageEditorsList agentsSuppor
         let imageProcessAndSave path =
             let image = loadAsMyImage path
             let editedImage = image |> List.reduce (>>) imageEditorsList
-            generatePath image.Name outputDirectory |> saveMyImage editedImage
+            generatePath outputDirectory image.Name |> saveMyImage editedImage
 
-        List.map imageProcessAndSave filesToProcess |> ignore
+        List.iter imageProcessAndSave filesToProcess

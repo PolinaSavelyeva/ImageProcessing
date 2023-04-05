@@ -147,90 +147,90 @@ let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
 
     let kernel = clContext.Compile kernel
 
-    fun (commandQueue: MailboxProcessor<_>) (filter: ClArray<float32>) filterDiameter (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+    fun (commandQueue: MailboxProcessor<Msg>) (filter: ClArray<float32>) filterDiameter (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
 
         let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
 
         let kernel = kernel.GetKernel()
 
         commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight filter filterDiameter result))
-        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
         result
 
 let rotateGPUKernel (clContext: ClContext) localWorkSize =
 
     let kernel =
         <@
-            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: int) (result: ClArray<byte>) ->
+            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: ClCell<int>) (result: ClArray<byte>) ->
                 let p = range.GlobalID0
                 let i = p / imageWidth
                 let j = p % imageWidth
+                let weight = weight.Value
+
                 let pw = j * weight + (imageWidth - 1 - j) * (1 - weight)
                 let ph = i * (1 - weight) + (imageHeight - 1 - i) * weight
+
                 result[ph + pw * imageHeight] <- image[p]
         @>
 
     let kernel = clContext.Compile kernel
 
-    fun (commandQueue: MailboxProcessor<_>) (weight: int) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+    fun (commandQueue: MailboxProcessor<Msg>) (weight: ClCell<int>) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
 
         let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
 
         let kernel = kernel.GetKernel()
 
         commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
-        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
         result
 
 let flipGPUKernel (clContext: ClContext) localWorkSize =
 
     let kernel =
         <@
-            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: int) (result: ClArray<byte>) ->
+            fun (range: Range1D) (image: ClArray<byte>) imageWidth imageHeight (weight: ClCell<int>) (result: ClArray<byte>) ->
                 let p = range.GlobalID0
                 let i = p / imageWidth
                 let j = p % imageWidth
-                let pw = (imageWidth - j - 1) * weight + j * (1 - weight)
+                let weight = weight.Value
+
+                let pw = (imageWidth - j - 1) *weight+ j * (1 - weight)
                 let ph = i * weight + (imageHeight - i - 1) * (1 - weight)
+
                 result[pw + ph * imageWidth] <- image[p]
         @>
 
     let kernel = clContext.Compile kernel
 
-    fun (commandQueue: MailboxProcessor<_>) (weight: int) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
+    fun (commandQueue: MailboxProcessor<Msg>) (weight: ClCell<int>) (image: ClArray<byte>) imageHeight imageWidth (result: ClArray<byte>) ->
 
         let ndRange = Range1D.CreateValid(imageHeight * imageWidth, localWorkSize)
 
         let kernel = kernel.GetKernel()
 
         commandQueue.Post(Msg.MsgSetArguments(fun () -> kernel.KernelFunc ndRange image imageWidth imageHeight weight result))
-        commandQueue.Post(Msg.CreateRunMsg<_, _> kernel)
+        commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
         result
 
+// TODO composite all functions
 let applyFiltersGPU (clContext: ClContext) localWorkSize =
 
     let kernel = applyFilterGPUKernel clContext localWorkSize
     let queue = clContext.QueueProvider.CreateQueue()
 
-    fun (filters: list<float32[,]>) (image: MyImage) ->
+    fun (filter: float32[,]) (image: MyImage) ->
 
-        let input =
-            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
 
-        let output =
-            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+        let filterDiameter = (Array2D.length1 filter) / 2
+        let filter = toFlatArray filter
+        let clFilter = clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-        for filter in filters do
+        kernel queue clFilter filterDiameter input image.Height image.Width output |> ignore
 
-            let filterDiameter = (Array2D.length1 filter) / 2
-            let filter = toFlatArray filter
-
-            let clFilter =
-                clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
-
-            kernel queue clFilter filterDiameter input image.Height image.Width output |> ignore
-
-            queue.Post(Msg.CreateFreeMsg clFilter)
+        queue.Post(Msg.CreateFreeMsg clFilter)
 
         let result = Array.zeroCreate (image.Height * image.Width)
         let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
@@ -247,18 +247,17 @@ let rotateGPU (clContext: ClContext) localWorkSize =
 
     fun (isClockwise: bool) (image: MyImage) ->
 
+        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+
         let weight = Convert.ToInt32 isClockwise
+        let clWeight = clContext.CreateClCell(weight)
 
-        let input =
-            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        kernel queue clWeight input image.Height image.Width output |> ignore
 
-        let output =
-            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
-
-        kernel queue weight input image.Height image.Width output |> ignore
+        queue.Post(Msg.CreateFreeMsg clWeight)
 
         let result = Array.zeroCreate (image.Height * image.Width)
-
         let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
 
         queue.Post(Msg.CreateFreeMsg input)
@@ -273,18 +272,17 @@ let flipGPU (clContext: ClContext) localWorkSize =
 
     fun (isVertical: bool) (image: MyImage) ->
 
+        let input = clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        let output = clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+
         let weight = Convert.ToInt32 isVertical
+        let clWeight = clContext.CreateClCell(weight)
 
-        let input =
-            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        kernel queue clWeight input image.Height image.Width output |> ignore
 
-        let output =
-            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
-
-        kernel queue weight input image.Height image.Width output |> ignore
+        queue.Post(Msg.CreateFreeMsg clWeight)
 
         let result = Array.zeroCreate (image.Height * image.Width)
-
         let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
 
         queue.Post(Msg.CreateFreeMsg input)
