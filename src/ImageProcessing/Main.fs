@@ -34,24 +34,7 @@ let main argv =
         let unit = res.GetResult(ProcessingUnit)
         let agentsSupport = res.GetResult(AgentsSupport)
 
-        if System.IO.File.Exists inputPath then
-
-            let image = load inputPath
-
-            let processor =
-                match unit with
-                | CPU -> List.map transformationsParserCPU processors |> List.reduce (>>)
-
-                | GPU ->
-                    let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
-                    let clContext = Brahma.FSharp.ClContext(device)
-
-                    List.map (fun n -> transformationsParserGPU n clContext 64) processors |> List.reduce (>>)
-
-            let processedImage = processor image
-            save processedImage outputPath
-        else
-            processAllFiles inputPath outputPath unit processors agentsSupport
+        processAllFiles inputPath outputPath (unit |> argProcessingUnitsParser) processors agentsSupport
 
     | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 

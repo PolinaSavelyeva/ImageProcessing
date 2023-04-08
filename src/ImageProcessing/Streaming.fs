@@ -2,6 +2,15 @@ module Streaming
 
 open MyImage
 
+let logger =
+
+    MailboxProcessor.Start (fun inbox ->
+        async {
+            while true do
+                let! message = inbox.Receive()
+                printfn $"{message}"
+        })
+
 type imageMessage =
     | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
@@ -19,12 +28,12 @@ let imageSaver outputDirectory =
 
                 match message with
                 | EOS channel ->
-                    printfn $"Image saver across the %A{channel.GetType} is finished!"
+                    logger.Post "Image saver is finished! "
                     channel.Reply()
 
                 | Image image ->
-                    printfn $"Save: %A{image.Name}"
                     save image (generatePath outputDirectory image.Name)
+                    logger.Post $"Saved: %A{image.Name}! "
         }
 
     MailboxProcessor.Start initial
@@ -39,16 +48,14 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
                 match message with
                 | EOS channel ->
-                    printfn $"Image processor across the %A{channel.GetType} is ready to finish!"
+                    logger.Post "Image processor is finished! "
                     receiver.PostAndReply EOS
-                    printfn $"Image processor across the %A{channel.GetType} is finished!"
                     channel.Reply()
                 | Image image ->
-                    printfn $"Filter: %A{image.Name}"
                     let filtered = imageEditor image
+                    logger.Post $"Edited: %A{image.Name}! "
                     receiver.Post(Image filtered)
         }
-
     MailboxProcessor.Start initial
 
 type pathMessage =
@@ -65,13 +72,16 @@ let imageFullProcessor imageEditor outputDirectory =
 
                 match message with
                 | EOS channel ->
-                    printfn "Image processor and saver is finished!"
+                    logger.Post "Image processor and saver is finished! "
                     channel.Reply()
 
                 | Path path ->
                     let image = load path
+                    logger.Post $"Opened: %A{image.Name}! "
                     let filtered = imageEditor image
+                    logger.Post $"Edited: %A{image.Name}! "
                     save filtered (generatePath outputDirectory image.Name)
-        }
+                    logger.Post $"Saved: %A{image.Name}! "
 
+        }
     MailboxProcessor.Start initial
