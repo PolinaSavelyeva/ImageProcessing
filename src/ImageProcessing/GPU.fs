@@ -1,6 +1,5 @@
-module GPUProcessing
+module GPU
 
-open MyImage
 open Brahma.FSharp
 
 let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
@@ -87,7 +86,7 @@ let flipGPUKernel (clContext: ClContext) localWorkSize =
         commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
         result
 
-let applyFilter (filter: float32[,]) (clContext: ClContext) localWorkSize (image: MyImage) =
+let applyFilter (filter: float32[,]) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
 
     let kernel = applyFilterGPUKernel clContext localWorkSize
     let queue = clContext.QueueProvider.CreateQueue()
@@ -99,24 +98,23 @@ let applyFilter (filter: float32[,]) (clContext: ClContext) localWorkSize (image
         clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
 
     let filterDiameter = (Array2D.length1 filter) / 2
-    let filter = toFlatArray filter
+    let filter = Helper.toFlatArray filter
 
     let clFilter =
         clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-    kernel queue clFilter filterDiameter input image.Height image.Width output |> ignore
+    let result = Array.zeroCreate (image.Height * image.Width)
+
+    let result =
+        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clFilter filterDiameter input image.Height image.Width output, result, ch))
 
     queue.Post(Msg.CreateFreeMsg clFilter)
-
-    let result = Array.zeroCreate (image.Height * image.Width)
-    let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
     queue.Post(Msg.CreateFreeMsg input)
     queue.Post(Msg.CreateFreeMsg output)
 
-    MyImage(result, image.Width, image.Height, image.Name)
+    MyImage.MyImage(result, image.Width, image.Height, image.Name)
 
-let rotate (isClockwise: bool) (clContext: ClContext) localWorkSize (image: MyImage) =
+let rotate (isClockwise: bool) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
 
     let kernel = rotateGPUKernel clContext localWorkSize
     let queue = clContext.QueueProvider.CreateQueue()
@@ -130,19 +128,18 @@ let rotate (isClockwise: bool) (clContext: ClContext) localWorkSize (image: MyIm
     let weight = System.Convert.ToInt32 isClockwise
     let clWeight = clContext.CreateClCell(weight)
 
-    kernel queue clWeight input image.Height image.Width output |> ignore
+    let result = Array.zeroCreate (image.Height * image.Width)
+
+    let result =
+        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clWeight input image.Height image.Width output, result, ch))
 
     queue.Post(Msg.CreateFreeMsg clWeight)
-
-    let result = Array.zeroCreate (image.Height * image.Width)
-    let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
     queue.Post(Msg.CreateFreeMsg input)
     queue.Post(Msg.CreateFreeMsg output)
 
-    MyImage(result, image.Height, image.Width, image.Name)
+    MyImage.MyImage(result, image.Height, image.Width, image.Name)
 
-let flip (isVertical: bool) (clContext: ClContext) localWorkSize (image: MyImage) =
+let flip (isVertical: bool) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
 
     let kernel = flipGPUKernel clContext localWorkSize
     let queue = clContext.QueueProvider.CreateQueue()
@@ -156,14 +153,13 @@ let flip (isVertical: bool) (clContext: ClContext) localWorkSize (image: MyImage
     let weight = System.Convert.ToInt32 isVertical
     let clWeight = clContext.CreateClCell(weight)
 
-    kernel queue clWeight input image.Height image.Width output |> ignore
+    let result = Array.zeroCreate (image.Height * image.Width)
+
+    let result =
+        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clWeight input image.Height image.Width output, result, ch))
 
     queue.Post(Msg.CreateFreeMsg clWeight)
-
-    let result = Array.zeroCreate (image.Height * image.Width)
-    let result = queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(output, result, ch))
-
     queue.Post(Msg.CreateFreeMsg input)
     queue.Post(Msg.CreateFreeMsg output)
 
-    MyImage(result, image.Width, image.Height, image.Name)
+    MyImage.MyImage(result, image.Width, image.Height, image.Name)

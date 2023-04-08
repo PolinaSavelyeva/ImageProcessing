@@ -23,16 +23,8 @@ let load (filePath: string) =
 
     MyImage(buffer, image.Width, image.Height, System.IO.Path.GetFileName filePath)
 
-let save (myImage: MyImage) filePath =
+let save (image: MyImage) filePath =
 
-    let image = Image.LoadPixelData<L8>(myImage.Data, myImage.Width, myImage.Height)
+    let image = Image.LoadPixelData<L8>(image.Data, image.Width, image.Height)
 
     image.Save filePath
-
-let toFlatArray array2D =
-    seq {
-        for x in [ 0 .. (Array2D.length1 array2D) - 1 ] do
-            for y in [ 0 .. (Array2D.length2 array2D) - 1 ] do
-                yield array2D[x, y]
-    }
-    |> Array.ofSeq

@@ -18,13 +18,14 @@
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
     <Compile Include="MyImage.fs" />
-    <Compile Include="CPUProcessing.fs" />
-    <Compile Include="GPUProcessing.fs" />
+    <Compile Include="Helper.fs" />
+    <Compile Include="CPU.fs" />
+    <Compile Include="GPU.fs" />
     <Compile Include="Kernels.fs" />
-    <Compile Include="Streaming.fs" />
-    <Compile Include="ImageProcessing.fs" />
-    <Compile Include="ArgCommands.fs" />
-    <Compile Include="Main.fs" />
+    <Compile Include="Agents.fs" />
+    <Compile Include="ProcessAll.fs" />
+    <Compile Include="ArguCommands.fs" />
+    <Compile Include="CLI.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="SkiaSharp.NativeAssets.Tizen" />

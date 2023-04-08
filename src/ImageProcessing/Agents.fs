@@ -1,10 +1,10 @@
-module Streaming
+module Agents
 
 open MyImage
 
 let logger =
 
-    MailboxProcessor.Start (fun inbox ->
+    MailboxProcessor.Start(fun inbox ->
         async {
             while true do
                 let! message = inbox.Receive()
@@ -14,9 +14,6 @@ let logger =
 type imageMessage =
     | Image of MyImage
     | EOS of AsyncReplyChannel<unit>
-
-let generatePath outputDirectory (imageName: string) =
-    System.IO.Path.Combine(outputDirectory, imageName)
 
 let imageSaver outputDirectory =
 
@@ -32,7 +29,7 @@ let imageSaver outputDirectory =
                     channel.Reply()
 
                 | Image image ->
-                    save image (generatePath outputDirectory image.Name)
+                    save image (Helper.generatePath outputDirectory image.Name)
                     logger.Post $"Saved: %A{image.Name}! "
         }
 
@@ -56,6 +53,7 @@ let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
                     logger.Post $"Edited: %A{image.Name}! "
                     receiver.Post(Image filtered)
         }
+
     MailboxProcessor.Start initial
 
 type pathMessage =
@@ -80,8 +78,9 @@ let imageFullProcessor imageEditor outputDirectory =
                     logger.Post $"Opened: %A{image.Name}! "
                     let filtered = imageEditor image
                     logger.Post $"Edited: %A{image.Name}! "
-                    save filtered (generatePath outputDirectory image.Name)
+                    save filtered (Helper.generatePath outputDirectory image.Name)
                     logger.Post $"Saved: %A{image.Name}! "
 
         }
+
     MailboxProcessor.Start initial

@@ -1,8 +1,8 @@
-module ImageProcessing
+module ProcessAll
 
+open Agents
 open MyImage
 open Kernels
-open Streaming
 open Brahma.FSharp
 
 type AgentsSupport =
@@ -28,41 +28,45 @@ type ProcessingUnits =
 
 let transformationsParserCPU transformation =
     match transformation with
-    | Gauss -> CPUProcessing.applyFilter gaussianBlurKernel
-    | Sharpen -> CPUProcessing.applyFilter sharpenKernel
-    | Lighten -> CPUProcessing.applyFilter lightenKernel
-    | Darken -> CPUProcessing.applyFilter darkenKernel
-    | Edges -> CPUProcessing.applyFilter edgesKernel
-    | RotationR -> CPUProcessing.rotate true
-    | RotationL -> CPUProcessing.rotate false
-    | FlipV -> CPUProcessing.rotate true
-    | FlipH -> CPUProcessing.flip false
+    | Gauss -> CPU.applyFilter gaussianBlurKernel
+    | Sharpen -> CPU.applyFilter sharpenKernel
+    | Lighten -> CPU.applyFilter lightenKernel
+    | Darken -> CPU.applyFilter darkenKernel
+    | Edges -> CPU.applyFilter edgesKernel
+    | RotationR -> CPU.rotate true
+    | RotationL -> CPU.rotate false
+    | FlipV -> CPU.rotate true
+    | FlipH -> CPU.flip false
 
 let transformationsParserGPU transformation =
     match transformation with
-    | Gauss -> GPUProcessing.applyFilter gaussianBlurKernel
-    | Sharpen -> GPUProcessing.applyFilter sharpenKernel
-    | Lighten -> GPUProcessing.applyFilter lightenKernel
-    | Darken -> GPUProcessing.applyFilter darkenKernel
-    | Edges -> GPUProcessing.applyFilter edgesKernel
-    | RotationR -> GPUProcessing.rotate true
-    | RotationL -> GPUProcessing.rotate false
-    | FlipV -> GPUProcessing.flip true
-    | FlipH -> GPUProcessing.flip false
+    | Gauss -> GPU.applyFilter gaussianBlurKernel
+    | Sharpen -> GPU.applyFilter sharpenKernel
+    | Lighten -> GPU.applyFilter lightenKernel
+    | Darken -> GPU.applyFilter darkenKernel
+    | Edges -> GPU.applyFilter edgesKernel
+    | RotationR -> GPU.rotate true
+    | RotationL -> GPU.rotate false
+    | FlipV -> GPU.flip true
+    | FlipH -> GPU.flip false
 
 let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsSupport =
 
     let listAllImages directory =
 
-        let allowableExtensions = [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
+        let allowableExtensions =
+            [| ".jpg"; ".jpeg"; ".png"; ".gif"; ".webp"; ".pbm"; ".bmp"; ".tga"; ".tiff" |]
+
         let allFilesSeq = System.IO.Directory.EnumerateFiles directory
-        let allowableFilesSeq = Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
+
+        let allowableFilesSeq =
+            Seq.filter (fun (path: string) -> Array.contains (System.IO.Path.GetExtension path) allowableExtensions) allFilesSeq
 
         List.ofSeq allowableFilesSeq
 
     let filesToProcess =
         if System.IO.File.Exists inputPath then
-            [inputPath]
+            [ inputPath ]
         else
             listAllImages inputPath
 
@@ -70,11 +74,11 @@ let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsS
         match processingUnit with
         | CPU -> List.map transformationsParserCPU imageEditorsList
         | GPU platform ->
-                if ClDevice.GetAvailableDevices(platform) |> Seq.isEmpty then
-                    failwith $"No %A{platform} device was found. "
-                else
-                    let clContext = ClContext(ClDevice.GetAvailableDevices(platform) |> Seq.head)
-                    List.map (fun n -> transformationsParserGPU n clContext 64) imageEditorsList
+            if ClDevice.GetAvailableDevices(platform) |> Seq.isEmpty then
+                failwith $"No %A{platform} device was found. "
+            else
+                let clContext = ClContext(ClDevice.GetAvailableDevices(platform) |> Seq.head)
+                List.map (fun n -> transformationsParserGPU n clContext 64) imageEditorsList
 
     match agentsSupport with
     | Full ->
@@ -109,6 +113,6 @@ let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsS
         let imageProcessAndSave path =
             let image = load path
             let editedImage = image |> List.reduce (>>) imageEditorsList
-            generatePath outputPath image.Name |> save editedImage
+            Helper.generatePath outputPath image.Name |> save editedImage
 
         List.iter imageProcessAndSave filesToProcess

@@ -1,28 +1,28 @@
-module ArgCommands
+module ArguCommands
 
 open Argu
 
-type ArgProcessingUnits =
+type ArguProcessingUnits =
     | CPU
     | NvidiaGPU
     | IntelGPU
     | AmdGPU
     | AnyGPU
 
-let argProcessingUnitsParser unit =
+let arguProcessingUnitsParser unit =
     match unit with
-    | CPU -> ImageProcessing.CPU
-    | NvidiaGPU -> ImageProcessing.GPU Brahma.FSharp.Platform.Nvidia
-    | IntelGPU -> ImageProcessing.GPU Brahma.FSharp.Platform.Intel
-    | AmdGPU -> ImageProcessing.GPU Brahma.FSharp.Platform.Amd
-    | AnyGPU -> ImageProcessing.GPU Brahma.FSharp.Platform.Any
+    | CPU -> ProcessAll.CPU
+    | NvidiaGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Nvidia
+    | IntelGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Intel
+    | AmdGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Amd
+    | AnyGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Any
 
 type ClIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
-    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of ImageProcessing.AgentsSupport
-    | [<AltCommandLine("-unit"); EqualsAssignment>] ProcessingUnit of ArgProcessingUnits
-    | [<Mandatory; MainCommand>] Transformations of list<ImageProcessing.Transformations>
+    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of ProcessAll.AgentsSupport
+    | [<AltCommandLine("-unit"); EqualsAssignment>] ProcessingUnit of ArguProcessingUnits
+    | [<Mandatory; MainCommand>] Transformations of list<ProcessAll.Transformations>
 
     interface IArgParserTemplate with
         member s.Usage =

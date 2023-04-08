@@ -1,9 +1,7 @@
-module Main
+module CLI
 
 open Argu
-open MyImage
-open ArgCommands
-open ImageProcessing
+open ArguCommands
 
 [<EntryPoint>]
 let main argv =
@@ -34,7 +32,7 @@ let main argv =
         let unit = res.GetResult(ProcessingUnit)
         let agentsSupport = res.GetResult(AgentsSupport)
 
-        processAllFiles inputPath outputPath (unit |> argProcessingUnitsParser) processors agentsSupport
+        ProcessAll.processAllFiles inputPath outputPath (unit |> arguProcessingUnitsParser) processors agentsSupport
 
     | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
