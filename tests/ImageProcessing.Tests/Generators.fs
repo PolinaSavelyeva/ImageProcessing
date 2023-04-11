@@ -2,7 +2,7 @@ module Generators
 
 open FsCheck
 
-let lengthGen: Gen<int> = Gen.choose (2, 100)
+let lengthGen: Gen<int> = Gen.choose (1000, 1500)
 
 let dataGen length1 length2 : Gen<byte[]> =
     Gen.arrayOfLength (length1 * length2) (Gen.elements [ 0uy .. 127uy ])

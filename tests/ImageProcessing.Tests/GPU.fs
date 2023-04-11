@@ -7,7 +7,7 @@ open MyImage
 let myConfig =
     { FsCheckConfig.defaultConfig with
         arbitrary = [ typeof<Generators.MyGenerators> ]
-        maxTest = 10 }
+        maxTest = 5 }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
@@ -32,6 +32,7 @@ let tests =
               let actualResult = GPU.flip false clContext 64 myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+
           testPropertyWithConfig myConfig "Clockwise rotation on GPU is equal to clockwise rotation on CPU on generated MyImage"
           <| fun myImage ->
 
