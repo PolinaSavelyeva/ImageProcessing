@@ -7,7 +7,7 @@ open MyImage
 let myConfig =
     { FsCheckConfig.defaultConfig with
         arbitrary = [ typeof<Generators.MyGenerators> ]
-        maxTest = 5 }
+        maxTest = 10 }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)

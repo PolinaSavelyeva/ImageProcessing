@@ -45,9 +45,11 @@ let rotateGPUKernel (clContext: ClContext) localWorkSize =
                 let i = p / imageWidth
                 let j = p % imageWidth
                 let weight = weight.Value
-                let pw = j * weight + (imageWidth - 1 - j) * (1 - weight)
-                let ph = i * (1 - weight) + (imageHeight - 1 - i) * weight
-                result[ph + pw * imageHeight] <- image[p]
+
+                if i < imageHeight then
+                    let pw = j * weight + (imageWidth - 1 - j) * (1 - weight)
+                    let ph = i * (1 - weight) + (imageHeight - 1 - i) * weight
+                    result[ph + pw * imageHeight] <- image[p]
         @>
 
     let kernel = clContext.Compile kernel
@@ -70,9 +72,11 @@ let flipGPUKernel (clContext: ClContext) localWorkSize =
                 let i = p / imageWidth
                 let j = p % imageWidth
                 let weight = weight.Value
-                let pw = (imageWidth - j - 1) * weight + j * (1 - weight)
-                let ph = i * weight + (imageHeight - i - 1) * (1 - weight)
-                result[pw + ph * imageWidth] <- image[p]
+
+                if i < imageHeight then
+                    let pw = (imageWidth - j - 1) * weight + j * (1 - weight)
+                    let ph = i * weight + (imageHeight - i - 1) * (1 - weight)
+                    result[pw + ph * imageWidth] <- image[p]
         @>
 
     let kernel = clContext.Compile kernel
