@@ -17,35 +17,19 @@ let tests =
 
     testList
         "GPUTests"
-        [ testPropertyWithConfig myConfig "Vertical flip on GPU is equal to vertical flip on CPU on generated MyImage"
-          <| fun myImage ->
+        [ testPropertyWithConfig myConfig "Vertical/horizontal flip on GPU is equal to vertical/horizontal flip on CPU on generated MyImage"
+          <| fun myImage (rotation: bool) ->
 
-              let expectedResult = CPU.flip true myImage
-              let actualResult = GPU.flip true clContext 64 myImage
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-
-          testPropertyWithConfig myConfig "Horizontal flip on GPU is equal to horizontal flip on CPU on generated MyImage"
-          <| fun myImage ->
-
-              let expectedResult = CPU.flip false myImage
-              let actualResult = GPU.flip false clContext 64 myImage
+              let expectedResult = CPU.flip rotation myImage
+              let actualResult = GPU.flip rotation clContext 64 myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-          testPropertyWithConfig myConfig "Clockwise rotation on GPU is equal to clockwise rotation on CPU on generated MyImage"
-          <| fun myImage ->
+          testPropertyWithConfig myConfig "Clockwise/counterclockwise rotation on GPU is equal to clockwise/counterclockwise rotation on CPU on generated MyImage"
+          <| fun myImage (rotation: bool) ->
 
-              let expectedResult = CPU.rotate true myImage
-              let actualResult = GPU.rotate true clContext 64 myImage
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-
-          testPropertyWithConfig myConfig "Counterclockwise rotation on GPU is equal to counterclockwise rotation on CPU on generated MyImage"
-          <| fun myImage ->
-
-              let expectedResult = CPU.rotate false myImage
-              let actualResult = GPU.rotate false clContext 64 myImage
+              let expectedResult = CPU.rotate rotation myImage
+              let actualResult = GPU.rotate rotation clContext 64 myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
