@@ -41,17 +41,6 @@ jobs:
       runs-on: ${{ matrix.os }}
       
       steps:
-          - uses: actions/checkout@v2
-          - name: Use .NET Core 3.1 SDK
-            uses: actions/setup-dotnet@v1
-            with:
-                dotnet-version: '3.1.x'
-          - name: Use .NET Core 5.0.x SDK
-            uses: actions/setup-dotnet@v1
-            with:
-                dotnet-version: '5.0.x'
-          - name: Use .NET Core global.json
-            uses: actions/setup-dotnet@v1
           - name: Test
             if: runner.os != 'Windows'
             run: |
