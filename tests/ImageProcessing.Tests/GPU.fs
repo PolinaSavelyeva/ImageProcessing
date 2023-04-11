@@ -2,7 +2,33 @@ module GPU
 
 open Kernels
 open Expecto
+open FsCheck
 open MyImage
+
+let lengthGen : Gen<int> =
+        Gen.choose (2, 100)
+
+let dataGen length1 length2 : Gen<byte[]> =
+    Gen.arrayOfLength (length1 * length2) (Gen.elements [0uy..127uy])
+
+let myImageGen : Gen<MyImage> =
+    gen {
+        let! length1 = lengthGen
+        let! length2 = lengthGen
+        let! data = dataGen length1 length2
+        return! Gen.elements [ MyImage(data, length1, length2, "MyImage")]
+        }
+
+type MyGenerators =
+    (*static member MyImage() =
+        {new Arbitrary<MyImage>() with
+            override x.Generator = myImageGen
+            override x.Shrinker t = Seq.empty }*)
+    static member MyImage() = Arb.fromGen myImageGen
+
+Arb.register<MyGenerators>() |> ignore
+
+let myConfig = { FsCheckConfig.defaultConfig with arbitrary = [typeof<MyGenerators>] }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
@@ -53,6 +79,14 @@ let tests =
 
               let expectedResult = CPU.applyFilter lightenKernel image
               let actualResult = GPU.applyFilter lightenKernel clContext 64 image
+
+              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+
+          testPropertyWithConfig myConfig "Application of the filter (darken) on GPU is equal to the application on CPU on generated MyImage"
+          <| fun myImage ->
+
+              let expectedResult = CPU.applyFilter darkenKernel myImage
+              let actualResult = GPU.applyFilter darkenKernel clContext 64 myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
