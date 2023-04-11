@@ -5,7 +5,9 @@ open Expecto
 open MyImage
 
 let myConfig =
-    { FsCheckConfig.defaultConfig with arbitrary = [ typeof<Generators.MyGenerators> ] }
+    { FsCheckConfig.defaultConfig with
+        arbitrary = [ typeof<Generators.MyGenerators> ]
+        maxTest = 100 }
 
 [<Tests>]
 let tests =
