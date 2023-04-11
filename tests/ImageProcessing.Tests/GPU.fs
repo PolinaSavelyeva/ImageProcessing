@@ -5,19 +5,18 @@ open Expecto
 open FsCheck
 open MyImage
 
-let lengthGen : Gen<int> =
-        Gen.choose (2, 100)
+let lengthGen: Gen<int> = Gen.choose (2, 100)
 
 let dataGen length1 length2 : Gen<byte[]> =
-    Gen.arrayOfLength (length1 * length2) (Gen.elements [0uy..127uy])
+    Gen.arrayOfLength (length1 * length2) (Gen.elements [ 0uy .. 127uy ])
 
-let myImageGen : Gen<MyImage> =
+let myImageGen: Gen<MyImage> =
     gen {
         let! length1 = lengthGen
         let! length2 = lengthGen
         let! data = dataGen length1 length2
-        return! Gen.elements [ MyImage(data, length1, length2, "MyImage")]
-        }
+        return! Gen.elements [ MyImage(data, length1, length2, "MyImage") ]
+    }
 
 type MyGenerators =
     (*static member MyImage() =
@@ -26,9 +25,10 @@ type MyGenerators =
             override x.Shrinker t = Seq.empty }*)
     static member MyImage() = Arb.fromGen myImageGen
 
-Arb.register<MyGenerators>() |> ignore
+Arb.register<MyGenerators> () |> ignore
 
-let myConfig = { FsCheckConfig.defaultConfig with arbitrary = [typeof<MyGenerators>] }
+let myConfig =
+    { FsCheckConfig.defaultConfig with arbitrary = [ typeof<MyGenerators> ] }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
