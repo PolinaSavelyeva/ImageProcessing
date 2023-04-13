@@ -2,18 +2,26 @@ module Generators
 
 open FsCheck
 
-let lengthGen: Gen<int> = Gen.choose (2, 100)
+type Kernel =
+    val Data: float32[,]
+    val Length: int
+    new(data, length) = { Data = data; Length = length }
 
-let dataGen length1 length2 : Gen<byte[]> =
-    Gen.arrayOfLength (length1 * length2) (Gen.elements [ 0uy .. 127uy ])
-
-let myImageGen: Gen<MyImage.MyImage> =
+let myImageGen =
     gen {
-        let! length1 = lengthGen
-        let! length2 = lengthGen
-        let! data = dataGen length1 length2
+        let! length1 = Gen.choose (2, 100)
+        let! length2 = Gen.choose (2, 100)
+        let! data = Gen.arrayOfLength (length1 * length2) (Gen.elements [ 0uy .. 127uy ])
         return! Gen.elements [ MyImage.MyImage(data, length1, length2, "MyImage") ]
+    }
+
+let kernelGen =
+    gen {
+        let! length = Gen.elements [ 1; 3; 5 ]
+        let! data = Gen.array2DOfDim (length, length) (Gen.elements [ -255f .. 255f ])
+        return! Gen.elements [ Kernel(data, length) ]
     }
 
 type MyGenerators =
     static member MyImage() = Arb.fromGen myImageGen
+    static member Kernel() = Arb.fromGen kernelGen

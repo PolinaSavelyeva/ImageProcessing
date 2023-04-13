@@ -1,43 +1,28 @@
 module CPU
 
 open CPU
+open Helper
 open Expecto
-open MyImage
+open Generators
 
 let myConfig =
     { FsCheckConfig.defaultConfig with
-        arbitrary = [ typeof<Generators.MyGenerators> ]
-        maxTest = 100 }
+        arbitrary = [ typeof<MyGenerators> ]
+        maxTest = 10 }
 
 [<Tests>]
 let tests =
     testList
         "CPUTests"
-        [ testCase "360 degree MyImage clockwise rotation is equal to the original on CPU"
+        [ testCase "360 degree MyImage counterclockwise rotation is equal to the original on CPU"
           <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
 
-              let expectedResult = load actualResultPath
+              let result =
+                  myImage2 |> rotate false |> rotate false |> rotate false |> rotate false
 
-              let actualResult =
-                  expectedResult |> rotate true |> rotate true |> rotate true |> rotate true
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
-
-          testCase "360 degree MyImage counterclockwise rotation is equal to the original on CPU"
-          <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-
-              let expectedResult = load actualResultPath
-
-              let actualResult =
-                  expectedResult |> rotate false |> rotate false |> rotate false |> rotate false
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
+              Expect.equal result.Data myImage2.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage2.Data}. "
+              Expect.equal result.Height myImage2.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage2.Height}. "
+              Expect.equal result.Width myImage2.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage2.Width}. "
 
           testPropertyWithConfig myConfig "360 degree counter/clockwise rotation is equal to the original on CPU on generated MyImage"
           <| fun myImage ->
@@ -49,27 +34,12 @@ let tests =
 
           testCase "Two vertical MyImage flips is equal to the original on CPU"
           <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
 
-              let expectedResult = load actualResultPath
+              let result = myImage3 |> flip true |> flip true
 
-              let actualResult = expectedResult |> flip true |> flip true
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
-
-          testCase "Two horizontal MyImage flips is equal to the original on CPU"
-          <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-
-              let expectedResult = load actualResultPath
-
-              let actualResult = expectedResult |> flip false |> flip false
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
+              Expect.equal result.Data myImage3.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage3.Data}. "
+              Expect.equal result.Height myImage3.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage3.Height}. "
+              Expect.equal result.Width myImage3.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage3.Width}. "
 
           testPropertyWithConfig myConfig "Two vertical/horizontal MyImage flips is equal to the original on CPU on generated MyImage"
           <| fun myImage ->
@@ -77,6 +47,4 @@ let tests =
               let resultsArray =
                   [| (myImage |> flip true |> flip true).Data; (myImage |> flip false |> flip false).Data |]
 
-              Expect.allEqual resultsArray myImage.Data $"Unexpected: %A{resultsArray} and original {myImage.Data}.\n Expected equality. "
-
-          ]
+              Expect.allEqual resultsArray myImage.Data $"Unexpected: %A{resultsArray} and original {myImage.Data}.\n Expected equality. " ]

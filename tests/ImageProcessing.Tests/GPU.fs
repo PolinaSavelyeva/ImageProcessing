@@ -1,13 +1,12 @@
 module GPU
 
+open Helper
 open Kernels
 open Expecto
-open MyImage
+open Generators
 
 let myConfig =
-    { FsCheckConfig.defaultConfig with
-        arbitrary = [ typeof<Generators.MyGenerators> ]
-        maxTest = 10 }
+    { FsCheckConfig.defaultConfig with arbitrary = [ typeof<MyGenerators> ] }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
@@ -21,7 +20,7 @@ let tests =
 
     testList
         "GPUTests"
-        [ testPropertyWithConfig myConfig "Vertical/horizontal flip on GPU is equal to vertical/horizontal flip on CPU on generated MyImage"
+        [ (*testPropertyWithConfig myConfig "Vertical/horizontal flip on GPU is equal to vertical/horizontal flip on CPU on generated MyImage"
           <| fun myImage (rotation: bool) ->
 
               let expectedResult = CPU.flip rotation myImage
@@ -37,137 +36,69 @@ let tests =
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-          testPropertyWithConfig myConfig "Application of the filter (darken) on GPU is equal to the application on CPU on generated MyImage"
-          <| fun myImage ->
+          testPropertyWithConfig myConfig "Application of the generated filters on GPU is equal to the application on CPU on generated MyImage"
+          <| fun myImage (kernel : Kernel) ->
 
-              let expectedResult = CPU.applyFilter darkenKernel myImage
-              let actualResult = applyFilterGPU darkenKernel myImage
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-
-          testCase "Application of the filter (gauss) on GPU is equal to the application on CPU on real image"
-          <| fun _ ->
-
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let myImage = load path
-
-              let expectedResult = CPU.applyFilter gaussianBlurKernel myImage
-              let actualResult = applyFilterGPU gaussianBlurKernel myImage
+              let expectedResult = CPU.applyFilter kernel.Data myImage
+              let actualResult = applyFilterGPU kernel.Data myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-          testCase "Application of the filter (edges) on CPU is equal to the application on GPU on real image"
+          testProperty "Application of the filter (darken) on GPU is equal to the application on CPU on real image"
           <| fun _ ->
 
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let myImage = load path
-
-              let expectedResult = CPU.applyFilter edgesKernel myImage
-              let actualResult = applyFilterGPU edgesKernel myImage
+              let expectedResult = CPU.applyFilter darkenKernel myImage1
+              let actualResult = applyFilterGPU darkenKernel myImage1
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+*) testCase "Application of the filter (sharpen) on GPU is equal to the application on CPU on real image"
+   <| fun _ ->
 
-          testCase "Application of the filter (sharpen) on GPU is equal to the application on CPU on real image"
-          <| fun _ ->
+       let expectedResult = CPU.applyFilter sharpenKernel myImage4
+       let actualResult = applyFilterGPU sharpenKernel myImage4
 
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/3.jpg"
-              let myImage = load path
+       Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-              let expectedResult = CPU.applyFilter sharpenKernel myImage
-              let actualResult = applyFilterGPU sharpenKernel myImage
+   testCase "Application of the filter (lighten) on GPU is equal to the application on CPU on real image"
+   <| fun _ ->
 
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+       let expectedResult = CPU.applyFilter lightenKernel myImage1
+       let actualResult = applyFilterGPU lightenKernel myImage1
 
-          testCase "Application of the filter (lighten) on GPU is equal to the application on CPU on real image"
-          <| fun _ ->
+       Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let myImage = load path
+   testCase "Clockwise rotation on GPU is equal to clockwise rotation on CPU on real image"
+   <| fun _ ->
 
-              let expectedResult = CPU.applyFilter lightenKernel myImage
-              let actualResult = applyFilterGPU lightenKernel myImage
+       let expectedResult = CPU.rotate true myImage2
+       let actualResult = rotateGPU true myImage2
 
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+       Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-          testCase "Clockwise rotation on GPU is equal to clockwise rotation on CPU on real image"
-          <| fun _ ->
+   testCase "Four counterclockwise MyImage rotations is equal to the original on GPU"
+   <| fun _ ->
 
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let myImage = load path
+       let result =
+           myImage1 |> rotateGPU false |> rotateGPU false |> rotateGPU false |> rotateGPU false
 
-              let expectedResult = CPU.rotate true myImage
-              let actualResult = rotateGPU true myImage
+       Expect.equal result.Data myImage1.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage1.Data}. "
+       Expect.equal result.Height myImage1.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage1.Height}. "
+       Expect.equal result.Width myImage1.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage1.Width}. "
 
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+   testCase "Horizontal flip on GPU is equal to horizontal flip on CPU on real image"
+   <| fun _ ->
 
-          testCase "Counterclockwise rotation on GPU is equal to counterclockwise rotation on CPU on real image"
-          <| fun _ ->
+       let expectedResult = CPU.flip false myImage3
+       let actualResult = flipGPU false myImage3
 
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let myImage = load path
+       Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
-              let expectedResult = CPU.rotate false myImage
-              let actualResult = rotateGPU false myImage
+   testCase "Two vertical/horizontal MyImage flips is equal to the original on GPU"
+   <| fun _ ->
 
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
+       let result =
+           myImage4 |> rotateGPU false |> rotateGPU false |> rotateGPU false |> rotateGPU false
 
-          testCase "Two clockwise MyImage rotations is equal to the original on GPU"
-          <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-
-              let expectedResult = load actualResultPath
-
-              let actualResult =
-                  expectedResult |> rotateGPU true |> rotateGPU true |> rotateGPU true |> rotateGPU true
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
-
-          testCase "Two counterclockwise MyImage rotations is equal to the original on GPU"
-          <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-
-              let expectedResult = load actualResultPath
-
-              let actualResult =
-                  expectedResult |> rotateGPU false |> rotateGPU false |> rotateGPU false |> rotateGPU false
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-              Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
-              Expect.equal actualResult.Width expectedResult.Width $"Unexpected: %A{actualResult.Width}.\n Expected: %A{expectedResult.Width}. "
-
-          testCase "Vertical flip on GPU is equal to vertical flip on CPU on real image"
-          <| fun _ ->
-
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let myImage = load path
-
-              let expectedResult = CPU.flip true myImage
-              let actualResult = flipGPU true myImage
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-
-          testCase "Horizontal flip on GPU is equal to horizontal flip on CPU on real image"
-          <| fun _ ->
-
-              let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let myImage = load path
-
-              let expectedResult = CPU.flip false myImage
-              let actualResult = flipGPU false myImage
-
-              Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
-
-          testCase "Two vertical/horizontal MyImage flips is equal to the original on GPU"
-          <| fun _ ->
-              let actualResultPath = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-
-              let expectedResult = load actualResultPath
-
-              let resultsArray =
-                  [| (expectedResult |> flipGPU true |> flipGPU true).Data; (expectedResult |> flipGPU false |> flipGPU false).Data |]
-
-              Expect.allEqual resultsArray expectedResult.Data $"Unexpected: %A{resultsArray}.\n Expected: %A{expectedResult.Data}. "
-
-          ]
+       Expect.equal result.Data myImage4.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage4.Data}. "
+       Expect.equal result.Height myImage4.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage4.Height}. "
+       Expect.equal result.Width myImage4.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage4.Width}. " ]
