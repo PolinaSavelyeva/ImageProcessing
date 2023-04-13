@@ -38,17 +38,23 @@ let transformationsParserCPU transformation =
     | FlipV -> CPU.rotate true
     | FlipH -> CPU.flip false
 
-let transformationsParserGPU transformation =
-    match transformation with
-    | Gauss -> GPU.applyFilter gaussianBlurKernel
-    | Sharpen -> GPU.applyFilter sharpenKernel
-    | Lighten -> GPU.applyFilter lightenKernel
-    | Darken -> GPU.applyFilter darkenKernel
-    | Edges -> GPU.applyFilter edgesKernel
-    | RotationR -> GPU.rotate true
-    | RotationL -> GPU.rotate false
-    | FlipV -> GPU.flip true
-    | FlipH -> GPU.flip false
+let transformationsParserGPU (clContext: ClContext) (localWorkSize: int) =
+
+    let applyFilterKernel = GPU.applyFilter clContext localWorkSize
+    let flipKernel = GPU.flip clContext localWorkSize
+    let rotateKernel = GPU.rotate clContext localWorkSize
+
+    fun transformation ->
+        match transformation with
+        | Gauss -> applyFilterKernel gaussianBlurKernel
+        | Sharpen -> applyFilterKernel sharpenKernel
+        | Lighten -> applyFilterKernel lightenKernel
+        | Darken -> applyFilterKernel darkenKernel
+        | Edges -> applyFilterKernel edgesKernel
+        | RotationR -> rotateKernel true
+        | RotationL -> rotateKernel false
+        | FlipV -> flipKernel true
+        | FlipH -> flipKernel false
 
 let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsSupport =
 
@@ -78,7 +84,8 @@ let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsS
                 failwith $"No %A{platform} device was found. "
             else
                 let clContext = ClContext(ClDevice.GetAvailableDevices(platform) |> Seq.head)
-                List.map (fun n -> transformationsParserGPU n clContext 64) imageEditorsList
+                let parsingFunction = transformationsParserGPU clContext 64
+                List.map parsingFunction imageEditorsList
 
     match agentsSupport with
     | Full ->

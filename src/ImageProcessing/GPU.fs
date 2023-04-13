@@ -90,80 +90,89 @@ let flipGPUKernel (clContext: ClContext) localWorkSize =
         commandQueue.Post(Msg.CreateRunMsg<INDRange, obj> kernel)
         result
 
-let applyFilter (filter: float32[,]) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
+let applyFilter (clContext: ClContext) (localWorkSize: int) =
 
-    let kernel = applyFilterGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
+    let applyFilterKernel = applyFilterGPUKernel clContext localWorkSize
 
-    let input =
-        clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+    fun (filter: float32[,]) (image: MyImage.MyImage) ->
 
-    let output =
-        clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+        let queue = clContext.QueueProvider.CreateQueue()
 
-    let filterDiameter = (Array2D.length1 filter) / 2
-    let filter = Helper.toFlatArray filter
+        let input =
+            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-    let clFilter =
-        clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        let output =
+            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
 
-    let result = Array.zeroCreate (image.Height * image.Width)
+        let filterDiameter = (Array2D.length1 filter) / 2
+        let filter = Helper.toFlatArray filter
 
-    let result =
-        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clFilter filterDiameter input image.Height image.Width output, result, ch))
+        let clFilter =
+            clContext.CreateClArray<float32>(filter, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-    queue.Post(Msg.CreateFreeMsg clFilter)
-    queue.Post(Msg.CreateFreeMsg input)
-    queue.Post(Msg.CreateFreeMsg output)
+        let result = Array.zeroCreate (image.Height * image.Width)
 
-    MyImage.MyImage(result, image.Width, image.Height, image.Name)
+        let result =
+            queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(applyFilterKernel queue clFilter filterDiameter input image.Height image.Width output, result, ch))
 
-let rotate (isClockwise: bool) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
+        queue.Post(Msg.CreateFreeMsg clFilter)
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
 
-    let kernel = rotateGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
+        MyImage.MyImage(result, image.Width, image.Height, image.Name)
 
-    let input =
-        clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+let rotate (clContext: ClContext) (localWorkSize: int) =
 
-    let output =
-        clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+    let rotateKernel = rotateGPUKernel clContext localWorkSize
 
-    let weight = System.Convert.ToInt32 isClockwise
-    let clWeight = clContext.CreateClCell(weight)
+    fun (isClockwise: bool) (image: MyImage.MyImage) ->
 
-    let result = Array.zeroCreate (image.Height * image.Width)
+        let queue = clContext.QueueProvider.CreateQueue()
 
-    let result =
-        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clWeight input image.Height image.Width output, result, ch))
+        let input =
+            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
 
-    queue.Post(Msg.CreateFreeMsg clWeight)
-    queue.Post(Msg.CreateFreeMsg input)
-    queue.Post(Msg.CreateFreeMsg output)
+        let output =
+            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
 
-    MyImage.MyImage(result, image.Height, image.Width, image.Name)
+        let weight = System.Convert.ToInt32 isClockwise
+        let clWeight = clContext.CreateClCell(weight)
 
-let flip (isVertical: bool) (clContext: ClContext) localWorkSize (image: MyImage.MyImage) =
+        let result = Array.zeroCreate (image.Height * image.Width)
 
-    let kernel = flipGPUKernel clContext localWorkSize
-    let queue = clContext.QueueProvider.CreateQueue()
+        let result =
+            queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(rotateKernel queue clWeight input image.Height image.Width output, result, ch))
 
-    let input =
-        clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+        queue.Post(Msg.CreateFreeMsg clWeight)
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
 
-    let output =
-        clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+        MyImage.MyImage(result, image.Height, image.Width, image.Name)
 
-    let weight = System.Convert.ToInt32 isVertical
-    let clWeight = clContext.CreateClCell(weight)
+let flip (clContext: ClContext) (localWorkSize: int) =
 
-    let result = Array.zeroCreate (image.Height * image.Width)
+    let flipKernel = flipGPUKernel clContext localWorkSize
 
-    let result =
-        queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(kernel queue clWeight input image.Height image.Width output, result, ch))
+    fun (isVertical: bool) (image: MyImage.MyImage) ->
 
-    queue.Post(Msg.CreateFreeMsg clWeight)
-    queue.Post(Msg.CreateFreeMsg input)
-    queue.Post(Msg.CreateFreeMsg output)
+        let queue = clContext.QueueProvider.CreateQueue()
 
-    MyImage.MyImage(result, image.Width, image.Height, image.Name)
+        let input =
+            clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
+
+        let output =
+            clContext.CreateClArray(image.Height * image.Width, HostAccessMode.NotAccessible, DeviceAccessMode.WriteOnly, allocationMode = AllocationMode.Default)
+
+        let weight = System.Convert.ToInt32 isVertical
+        let clWeight = clContext.CreateClCell(weight)
+
+        let result = Array.zeroCreate (image.Height * image.Width)
+
+        let result =
+            queue.PostAndReply(fun ch -> Msg.CreateToHostMsg(flipKernel queue clWeight input image.Height image.Width output, result, ch))
+
+        queue.Post(Msg.CreateFreeMsg clWeight)
+        queue.Post(Msg.CreateFreeMsg input)
+        queue.Post(Msg.CreateFreeMsg output)
+
+        MyImage.MyImage(result, image.Width, image.Height, image.Name)

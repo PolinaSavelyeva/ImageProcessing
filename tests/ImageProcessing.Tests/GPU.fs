@@ -12,6 +12,10 @@ let myConfig =
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 
+let applyFilterGPU = GPU.applyFilter clContext 64
+let rotateGPU = GPU.rotate clContext 64
+let flipGPU = GPU.flip clContext 64
+
 [<Tests>]
 let tests =
 
@@ -21,7 +25,7 @@ let tests =
           <| fun myImage (rotation: bool) ->
 
               let expectedResult = CPU.flip rotation myImage
-              let actualResult = GPU.flip rotation clContext 64 myImage
+              let actualResult = flipGPU rotation myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -29,7 +33,7 @@ let tests =
           <| fun myImage (rotation: bool) ->
 
               let expectedResult = CPU.rotate rotation myImage
-              let actualResult = GPU.rotate rotation clContext 64 myImage
+              let actualResult = rotateGPU rotation myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -37,7 +41,7 @@ let tests =
           <| fun myImage ->
 
               let expectedResult = CPU.applyFilter darkenKernel myImage
-              let actualResult = GPU.applyFilter darkenKernel clContext 64 myImage
+              let actualResult = applyFilterGPU darkenKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -45,10 +49,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.applyFilter gaussianBlurKernel image
-              let actualResult = GPU.applyFilter gaussianBlurKernel clContext 64 image
+              let expectedResult = CPU.applyFilter gaussianBlurKernel myImage
+              let actualResult = applyFilterGPU gaussianBlurKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -56,10 +60,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.applyFilter edgesKernel image
-              let actualResult = GPU.applyFilter edgesKernel clContext 64 image
+              let expectedResult = CPU.applyFilter edgesKernel myImage
+              let actualResult = applyFilterGPU edgesKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -67,10 +71,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/3.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.applyFilter sharpenKernel image
-              let actualResult = GPU.applyFilter sharpenKernel clContext 64 image
+              let expectedResult = CPU.applyFilter sharpenKernel myImage
+              let actualResult = applyFilterGPU sharpenKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -78,10 +82,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.applyFilter lightenKernel image
-              let actualResult = GPU.applyFilter lightenKernel clContext 64 image
+              let expectedResult = CPU.applyFilter lightenKernel myImage
+              let actualResult = applyFilterGPU lightenKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -89,10 +93,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.rotate true image
-              let actualResult = GPU.rotate true clContext 64 image
+              let expectedResult = CPU.rotate true myImage
+              let actualResult = rotateGPU true myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -100,10 +104,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.rotate false image
-              let actualResult = GPU.rotate false clContext 64 image
+              let expectedResult = CPU.rotate false myImage
+              let actualResult = rotateGPU false myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -114,11 +118,7 @@ let tests =
               let expectedResult = load actualResultPath
 
               let actualResult =
-                  expectedResult
-                  |> GPU.rotate true clContext 64
-                  |> GPU.rotate true clContext 64
-                  |> GPU.rotate true clContext 64
-                  |> GPU.rotate true clContext 64
+                  expectedResult |> rotateGPU true |> rotateGPU true |> rotateGPU true |> rotateGPU true
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
               Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
@@ -131,11 +131,7 @@ let tests =
               let expectedResult = load actualResultPath
 
               let actualResult =
-                  expectedResult
-                  |> GPU.rotate false clContext 64
-                  |> GPU.rotate false clContext 64
-                  |> GPU.rotate false clContext 64
-                  |> GPU.rotate false clContext 64
+                  expectedResult |> rotateGPU false |> rotateGPU false |> rotateGPU false |> rotateGPU false
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
               Expect.equal actualResult.Height expectedResult.Height $"Unexpected: %A{actualResult.Height}.\n Expected: %A{expectedResult.Height}. "
@@ -145,10 +141,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/1.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.flip true image
-              let actualResult = GPU.flip true clContext 64 image
+              let expectedResult = CPU.flip true myImage
+              let actualResult = flipGPU true myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -156,10 +152,10 @@ let tests =
           <| fun _ ->
 
               let path = __SOURCE_DIRECTORY__ + "/Images/input/2.jpg"
-              let image = load path
+              let myImage = load path
 
-              let expectedResult = CPU.flip false image
-              let actualResult = GPU.flip false clContext 64 image
+              let expectedResult = CPU.flip false myImage
+              let actualResult = flipGPU false myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
 
@@ -170,10 +166,7 @@ let tests =
               let expectedResult = load actualResultPath
 
               let resultsArray =
-                  [| (expectedResult |> GPU.flip true clContext 64 |> GPU.flip true clContext 64)
-                         .Data
-                     (expectedResult |> GPU.flip false clContext 64 |> GPU.flip false clContext 64)
-                         .Data |]
+                  [| (expectedResult |> flipGPU true |> flipGPU true).Data; (expectedResult |> flipGPU false |> flipGPU false).Data |]
 
               Expect.allEqual resultsArray expectedResult.Data $"Unexpected: %A{resultsArray}.\n Expected: %A{expectedResult.Data}. "
 
