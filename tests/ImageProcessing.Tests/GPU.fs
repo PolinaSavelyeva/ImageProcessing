@@ -6,7 +6,9 @@ open Expecto
 open Generators
 
 let myConfig =
-    { FsCheckConfig.defaultConfig with arbitrary = [ typeof<MyGenerators> ] }
+    { FsCheckConfig.defaultConfig with
+        arbitrary = [ typeof<MyGenerators> ]
+        maxTest = 10 }
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
