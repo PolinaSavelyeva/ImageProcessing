@@ -17,7 +17,7 @@ let arguProcessingUnitsParser unit =
     | AmdGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Amd
     | AnyGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Any
 
-type ClIArguments =
+type CLIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
     | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of ProcessAll.AgentsSupport
@@ -27,8 +27,8 @@ type ClIArguments =
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | InputPath _ -> "path to a file or a directory where the images will be processed from."
-            | OutputPath _ -> "path to a file or a directory where the images will be saved."
-            | AgentsSupport _ -> "process files using different agents strategy."
-            | ProcessingUnit _ -> "process files using CPU or GPU."
-            | Transformations _ -> "list of available transformations."
+            | InputPath _ -> "Path to a file or a directory where the images will be processed from."
+            | OutputPath _ -> "Path to a file or a directory where the images will be saved."
+            | AgentsSupport _ -> "Process files using different agents strategy."
+            | ProcessingUnit _ -> "Process files using CPU or GPU."
+            | Transformations _ -> "List of available transformations."

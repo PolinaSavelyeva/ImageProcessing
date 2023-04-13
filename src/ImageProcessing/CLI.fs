@@ -14,7 +14,7 @@ let main argv =
                 | _ -> Some System.ConsoleColor.DarkYellow
         )
 
-    let parser = ArgumentParser.Create<ClIArguments>(errorHandler = errorHandler)
+    let parser = ArgumentParser.Create<CLIArguments>(errorHandler = errorHandler)
 
     match parser.ParseCommandLine argv with
 
