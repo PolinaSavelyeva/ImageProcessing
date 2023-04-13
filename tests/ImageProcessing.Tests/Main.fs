@@ -1,4 +1,4 @@
-namespace ImageProcessing.Tests
+namespace Tests
 
 module ExpectoTemplate =
 

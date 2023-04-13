@@ -3,18 +3,28 @@ module CPU
 open CPU
 open Helper
 open Expecto
-open Generators
+
 
 let myConfig =
     { FsCheckConfig.defaultConfig with
-        arbitrary = [ typeof<MyGenerators> ]
-        maxTest = 10 }
+        arbitrary = [ typeof<Generators.MyGenerators> ]
+        maxTest = 100 }
 
 [<Tests>]
 let tests =
     testList
         "CPUTests"
         [ testCase "360 degree MyImage counterclockwise rotation is equal to the original on CPU"
+          <| fun _ ->
+
+              let result =
+                  myImage1 |> rotate false |> rotate false |> rotate false |> rotate false
+
+              Expect.equal result.Data myImage1.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage1.Data}. "
+              Expect.equal result.Height myImage1.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage1.Height}. "
+              Expect.equal result.Width myImage1.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage1.Width}. "
+
+          testCase "360 degree MyImage clockwise rotation is equal to the original on CPU"
           <| fun _ ->
 
               let result =
@@ -40,6 +50,15 @@ let tests =
               Expect.equal result.Data myImage3.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage3.Data}. "
               Expect.equal result.Height myImage3.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage3.Height}. "
               Expect.equal result.Width myImage3.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage3.Width}. "
+
+          testCase "Two horizontal MyImage flips is equal to the original on CPU"
+          <| fun _ ->
+
+              let result = myImage4 |> flip false |> flip false
+
+              Expect.equal result.Data myImage4.Data $"Unexpected: %A{result.Data}.\n Expected: %A{myImage4.Data}. "
+              Expect.equal result.Height myImage4.Height $"Unexpected: %A{result.Height}.\n Expected: %A{myImage4.Height}. "
+              Expect.equal result.Width myImage4.Width $"Unexpected: %A{result.Width}.\n Expected: %A{myImage4.Width}. "
 
           testPropertyWithConfig myConfig "Two vertical/horizontal MyImage flips is equal to the original on CPU on generated MyImage"
           <| fun myImage ->
