@@ -93,10 +93,9 @@ let flipGPUKernel (clContext: ClContext) localWorkSize =
 let applyFilter (clContext: ClContext) (localWorkSize: int) =
 
     let applyFilterKernel = applyFilterGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
 
     fun (filter: float32[,]) (image: MyImage.MyImage) ->
-
-        let queue = clContext.QueueProvider.CreateQueue()
 
         let input =
             clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
@@ -124,10 +123,9 @@ let applyFilter (clContext: ClContext) (localWorkSize: int) =
 let rotate (clContext: ClContext) (localWorkSize: int) =
 
     let rotateKernel = rotateGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
 
     fun (isClockwise: bool) (image: MyImage.MyImage) ->
-
-        let queue = clContext.QueueProvider.CreateQueue()
 
         let input =
             clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
@@ -152,10 +150,9 @@ let rotate (clContext: ClContext) (localWorkSize: int) =
 let flip (clContext: ClContext) (localWorkSize: int) =
 
     let flipKernel = flipGPUKernel clContext localWorkSize
+    let queue = clContext.QueueProvider.CreateQueue()
 
     fun (isVertical: bool) (image: MyImage.MyImage) ->
-
-        let queue = clContext.QueueProvider.CreateQueue()
 
         let input =
             clContext.CreateClArray<byte>(image.Data, HostAccessMode.NotAccessible, DeviceAccessMode.ReadOnly)
