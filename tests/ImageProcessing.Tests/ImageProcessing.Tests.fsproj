@@ -7,7 +7,10 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
-        <Compile Include="CPUTests.fs" />
+        <Compile Include="Generators.fs" />
+        <Compile Include="Helper.fs" />
+        <Compile Include="CPU.fs" />
+        <Compile Include="GPU.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
