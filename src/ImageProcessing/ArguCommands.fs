@@ -11,18 +11,18 @@ type ArguProcessingUnits =
 
 let arguProcessingUnitsParser unit =
     match unit with
-    | CPU -> ProcessAll.CPU
-    | NvidiaGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Nvidia
-    | IntelGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Intel
-    | AmdGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Amd
-    | AnyGPU -> ProcessAll.GPU Brahma.FSharp.Platform.Any
+    | CPU -> Process.CPU
+    | NvidiaGPU -> Process.GPU Brahma.FSharp.Platform.Nvidia
+    | IntelGPU -> Process.GPU Brahma.FSharp.Platform.Intel
+    | AmdGPU -> Process.GPU Brahma.FSharp.Platform.Amd
+    | AnyGPU -> Process.GPU Brahma.FSharp.Platform.Any
 
 type CLIArguments =
     | [<Mandatory; AltCommandLine("-in")>] InputPath of inputPath: string
     | [<Mandatory; AltCommandLine("-out")>] OutputPath of outputPath: string
-    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of ProcessAll.AgentsSupport
+    | [<AltCommandLine("-agent"); EqualsAssignment>] AgentsSupport of Process.AgentsSupport
     | [<AltCommandLine("-unit"); EqualsAssignment>] ProcessingUnit of ArguProcessingUnits
-    | [<Mandatory; MainCommand>] Transformations of list<ProcessAll.Transformations>
+    | [<Mandatory; MainCommand>] Transformations of list<Process.Transformations>
 
     interface IArgParserTemplate with
         member s.Usage =

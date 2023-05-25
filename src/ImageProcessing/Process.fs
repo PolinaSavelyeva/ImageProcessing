@@ -1,4 +1,4 @@
-module ProcessAll
+module Process
 
 open Agents
 open MyImage

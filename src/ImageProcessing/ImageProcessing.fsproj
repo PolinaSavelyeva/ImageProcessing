@@ -23,7 +23,7 @@
     <Compile Include="GPU.fs" />
     <Compile Include="Kernels.fs" />
     <Compile Include="Agents.fs" />
-    <Compile Include="ProcessAll.fs" />
+    <Compile Include="Process.fs" />
     <Compile Include="ArguCommands.fs" />
     <Compile Include="CLI.fs" />
   </ItemGroup>

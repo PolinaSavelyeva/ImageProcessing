@@ -32,7 +32,7 @@ let main argv =
         let unit = res.GetResult(ProcessingUnit)
         let agentsSupport = res.GetResult(AgentsSupport)
 
-        ProcessAll.processAllFiles inputPath outputPath (unit |> arguProcessingUnitsParser) processors agentsSupport
+        Process.processImages inputPath outputPath (unit |> arguProcessingUnitsParser) processors agentsSupport
 
     | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
 
