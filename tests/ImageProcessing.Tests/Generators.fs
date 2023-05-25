@@ -5,6 +5,7 @@ open FsCheck
 type Kernel =
     val Data: float32[,]
     val Length: int
+
     new(data, length) = { Data = data; Length = length }
 
 let myImageGen =

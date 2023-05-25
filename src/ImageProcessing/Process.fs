@@ -56,7 +56,7 @@ let transformationsParserGPU (clContext: ClContext) (localWorkSize: int) =
         | FlipV -> flipKernel true
         | FlipH -> flipKernel false
 
-let processAllFiles inputPath outputPath processingUnit imageEditorsList agentsSupport =
+let processImages inputPath outputPath processingUnit imageEditorsList agentsSupport =
 
     let listAllImages directory =
 
