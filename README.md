@@ -1,11 +1,11 @@
 # ImageProcessing
 
-ImageProcessing is an easy-to-use image editing F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
+ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
 ### Supported Features
 - Loading images from a local source and saving them.
-- Ability to process all images within a specified directory.
+- Processing all images within a specified directory.
 - Filtering using one of five kernels, including "Gaussian blur" and "edges".
-- Transformations such as 90-degree rotation and flipping.
+- Other edits such as 90-degree rotation and flipping.
 - Combinations of existing transformations in four different scenarios.
 - Ability to utilize all of the features solely through the command line.
 
@@ -29,7 +29,7 @@ or
 
 ### Simple Usage
 
-To apply the Gaussian and sharpen filters using the command line, you can use the following commands:
+To process images you can use the following commands:
 ```sh
 $ cd /path/to/ImageProcessing/src/ImageProcessing
 $ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
@@ -58,4 +58,4 @@ The final result for all types of tranformations:
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
 
 ### Template
-To find more options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.
+To find more building and running options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.
