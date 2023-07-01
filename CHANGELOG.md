@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2017-03-17
+## [0.1.0] - 2023-07-02
 First release
 
 ### Added
-- This release already has lots of features
+- Implemented image rotation on the CPU, three new CPU filters, enabled console control over image processing parameters. (https://github.com/PolinaSavelyeva/ImageProcessing/pull/1)
+- Implemented image processing agents for sets of images, supporting sequential and parallel options. (https://github.com/PolinaSavelyeva/ImageProcessing/pull/3)
+- Implemented GPU kernels for image rotations and reflections, standardized agent functionality for CPU and GPU, and added a logging agent for event tracking.(https://github.com/PolinaSavelyeva/ImageProcessing/pull/4)
 
-[0.1.0]: https://github.com/user/MyCoolNewApp.git/releases/tag/v0.1.0
+[0.1.0]: https://github.com/user/MyCoolNewLib.git/releases/tag/v0.1.0
