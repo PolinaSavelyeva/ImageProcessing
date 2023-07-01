@@ -40,7 +40,7 @@ The final result for all types of tranformations:
 |:-------|:------|
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplash2.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg) |
 
-|Gaussian Blur|Edges|
+|Gauss|Edges|
 |:-------|:------|
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg) |
 
@@ -49,11 +49,11 @@ The final result for all types of tranformations:
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg) |
 
 
-|Clockwise Rotation|Counterclockwise Rotation|
+|Rotation R|Rotation L|
 |:-------|:------|
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg) |
 
-|Horizontal Flip|Vertical Flip|
+|Flip H|Flip V|
 |:-------|:------|
 | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
 
