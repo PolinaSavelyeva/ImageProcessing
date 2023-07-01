@@ -1,45 +1,61 @@
 # ImageProcessing
 
-Simple image processing on GPGPU in F# using [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp).
+ImageProcessing is an easy-to-use image editing F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
+### Supported Features
+- Loading images from a local source and saving them.
+- Ability to process all images within a specified directory.
+- Filtering using one of five kernels, including "Gaussian blur" and "edges".
+- Transformations such as 90-degree rotation and flipping.
+- Combinations of existing transformations in four different scenarios.
+- Ability to utilize all of the features solely through the command line.
 
----
+###  Documentation
+Detailed documentation, including additional conceptual explanations, is available for ImageProcessing package.
 
-## Builds
+## Installation
 
+| Package Name                   | Release (NuGet) |
+|--------------------------------|-----------------|
+| `ImageProcessing`              | [![NuGet]()]() | 
 
-GitHub Actions |
-:---: |
-[![GitHub Actions](https://github.com/gsvgit/ImageProcessing/workflows/Build%20master/badge.svg)](https://github.com/gsvgit/ImageProcessing/actions?query=branch%3Amaster) |
-[![Build History](https://buildstats.info/github/chart/gsvgit/ImageProcessing)](https://github.com/gsvgit/ImageProcessing/actions?query=branch%3Amaster) |
+### Requirements
 
-## NuGet
+Make sure the following requirements are installed on your system:
 
-Package | Stable | Prerelease
---- | --- | ---
-ImageProcessing |  | 
+- [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher (recommended 6.0+),
+- [Mono](http://www.mono-project.com/) if you're on Linux or macOS
+or
+- [VSCode Dev Container](https://code.visualstudio.com/docs/remote/containers).
 
+### Simple Usage
 
----
-
-### Developing
-
-Make sure the following **requirements** are installed on your system:
-
-- [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) 7.0 or higher
-- OpenCL-compatible device with respective driver installed.
-
----
-
-### Building
-
-
+To apply the Gaussian and sharpen filters using the command line, you can use the following commands:
 ```sh
-> build.cmd <optional buildtarget> // on windows
-$ ./build.sh  <optional buildtarget>// on unix
+$ cd /path/to/ImageProcessing/src/ImageProcessing
+$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
+$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
+The final result for all types of tranformations:
+|Original|Sharpen|
+|:-------|:------|
+| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplash2.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg) |
 
----
+|Gaussian Blur|Edges|
+|:-------|:------|
+| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg) |
 
-### Build Targets
+|Darken|Lighten|
+|:-------|:------|
+| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg) |
 
-For details look at [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold), we use it in our project.
+
+|Clockwise Rotation|Counterclockwise Rotation|
+|:-------|:------|
+| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg) |
+
+|Horizontal Flip|Vertical Flip|
+|:-------|:------|
+| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/package/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
+
+### Template
+To find more options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.
