@@ -2,11 +2,13 @@ module CLI
 
 open Argu
 open ArguCommands
+open BenchmarkDotNet.Running
+open Benchmarks
 
 [<EntryPoint>]
 let main argv =
 
-    let errorHandler =
+    (*let errorHandler =
         ProcessExiter(
             colorizer =
                 function
@@ -34,6 +36,7 @@ let main argv =
 
         ProcessAll.processAllFiles inputPath outputPath (unit |> arguProcessingUnitsParser) processors agentsSupport
 
-    | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"
-
+    | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"*)
+    let summaryResult1 = BenchmarkRunner.Run<RotationRWithoutCompilation>()
+    let summaryResult2 = BenchmarkRunner.Run<RotationRWithCompilation>()
     0

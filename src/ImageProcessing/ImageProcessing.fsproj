@@ -25,6 +25,7 @@
     <Compile Include="Agents.fs" />
     <Compile Include="ProcessAll.fs" />
     <Compile Include="ArguCommands.fs" />
+    <Compile Include="Benchmarks.fs" />
     <Compile Include="CLI.fs" />
   </ItemGroup>
   <ItemGroup>
