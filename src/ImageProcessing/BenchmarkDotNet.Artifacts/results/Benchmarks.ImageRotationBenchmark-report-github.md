@@ -8,6 +8,6 @@ AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
 
 
 ```
-|   Method |     Mean |     Error |    StdDev |
-|--------- |---------:|----------:|----------:|
-| myImage1 | 8.744 ms | 0.0637 ms | 0.0565 ms |
+|     Method |     Mean |    Error |   StdDev |
+|----------- |---------:|---------:|---------:|
+| smallImage | 97.61 μs | 0.324 μs | 0.271 μs |

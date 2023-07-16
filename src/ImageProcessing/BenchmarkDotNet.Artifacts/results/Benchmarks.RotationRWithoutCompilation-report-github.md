@@ -8,9 +8,6 @@ AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
 
 
 ```
-|   Method | Mean | Error |
-|--------- |-----:|------:|
-| myImage1 |   NA |    NA |
-
-Benchmarks with issues:
-  RotationRWithoutCompilation.myImage1: DefaultJob
+|   Method |     Mean |    Error |   StdDev |   Median |
+|--------- |---------:|---------:|---------:|---------:|
+| myImage1 | 438.5 μs | 14.51 μs | 39.48 μs | 450.3 μs |

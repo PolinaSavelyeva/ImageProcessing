@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>Benchmarks.RotationRWithCompilation-20230716-035739</title>
+<title>Benchmarks.ImageRotationBenchmarkStandard-20230716-225239</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -22,9 +22,12 @@ AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
 <pre><code></code></pre>
 
 <table>
-<thead><tr><th>Method</th><th>Mean</th><th>Error</th><th>StdDev</th>
+<thead><tr><th>               Method</th><th> Mean</th><th>Error</th><th>StdDev</th>
 </tr>
-</thead><tbody><tr><td>myImage1</td><td>8.744 ms</td><td>0.0637 ms</td><td>0.0565 ms</td>
+</thead><tbody><tr><td>ImageSharp</td><td>8,555.5 &mu;s</td><td>71.97 &mu;s</td><td>60.10 &mu;s</td>
+</tr><tr><td>ImageProcessingCompiled</td><td>555.5 &mu;s</td><td>22.42 &mu;s</td><td>65.04 &mu;s</td>
+</tr><tr><td>ImageProcessingNoneCompiled</td><td>10,310.7 &mu;s</td><td>198.02 &mu;s</td><td>228.04 &mu;s</td>
+</tr><tr><td>ImageMagick</td><td>3,078.9 &mu;s</td><td>56.95 &mu;s</td><td>69.94 &mu;s</td>
 </tr></tbody></table>
 </body>
 </html>

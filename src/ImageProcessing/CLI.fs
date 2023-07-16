@@ -37,6 +37,8 @@ let main argv =
         ProcessAll.processAllFiles inputPath outputPath (unit |> arguProcessingUnitsParser) processors agentsSupport
 
     | _ -> printfn $"Unexpected command.\n {parser.PrintUsage()}"*)
-    let summaryResult1 = BenchmarkRunner.Run<RotationRWithoutCompilation>()
-    let summaryResult2 = BenchmarkRunner.Run<RotationRWithCompilation>()
+    let summaryResultSmall = BenchmarkRunner.Run<ImageRotationBenchmarkSmall>()
+    let summaryResultStandard = BenchmarkRunner.Run<ImageRotationBenchmarkStandard>()
+    let summaryResultBig = BenchmarkRunner.Run<ImageRotationBenchmarkBig>()
+    let summaryResultBigBig = BenchmarkRunner.Run<ImageRotationBenchmarkBigBig>()
     0
