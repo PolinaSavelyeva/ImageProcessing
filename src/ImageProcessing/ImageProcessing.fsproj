@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="SkiaSharp.NativeAssets.Tizen" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13" />
     <PackageReference Include="Expecto.FsCheck" Version="9.0.4" />
     <PackageReference Update="System.CodeDom">
       <Version>8.0.0-preview.1.23110.8</Version>

@@ -2,9 +2,14 @@
 
 open BenchmarkDotNet.Attributes
 
-let smallImage = MyImage.load ("C:\Users\lissa\Документы\ImageProcessing\src\ImageProcessing\BenchmarkImages\300.jpg")
-let standardImage = MyImage.load ("C:\Users\lissa\Документы\ImageProcessing\src\ImageProcessing\BenchmarkImages\689.jpg")
-let bigImage = MyImage.load ("C:\Users\lissa\Документы\ImageProcessing\src\ImageProcessing\BenchmarkImages\1036.jpg")
+let smallImage =
+    MyImage.load ("/Users/lissa/Документы/ImageProcessing/src/ImageProcessing/BenchmarkImages/300.jpg")
+
+let standardImage =
+    MyImage.load ("/Users/lissa/Документы/ImageProcessing/src/ImageProcessing/BenchmarkImages/689.jpg")
+
+let bigImage =
+    MyImage.load ("/Users/lissa/Документы/ImageProcessing/src/ImageProcessing/BenchmarkImages/1036.jpg")
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
