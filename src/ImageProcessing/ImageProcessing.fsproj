@@ -9,7 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Title>ImageProcessing</Title>
-    <Description>ImageProcessing does the thing!</Description>
+    <Description>ImageProcessing provides the way to process images using GPU</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
