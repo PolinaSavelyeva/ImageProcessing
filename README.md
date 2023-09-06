@@ -37,6 +37,9 @@ $ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 ```sh
 $ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
+
+##  Examples
+
 The final result for all types of tranformations:
 |Original|Sharpen|
 |:-------|:------|
