@@ -4,7 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> 
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
     <Title>ImageProcessing</Title>
@@ -26,6 +27,7 @@
     <Compile Include="Process.fs" />
     <Compile Include="ArguCommands.fs" />
     <Compile Include="CLI.fs" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="SkiaSharp.NativeAssets.Tizen" />
