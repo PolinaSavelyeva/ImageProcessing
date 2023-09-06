@@ -10,13 +10,7 @@ ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https
 - Ability to utilize all of the features solely through the command line.
 
 ###  Documentation
-Detailed documentation, including additional conceptual explanations, is available for ImageProcessing package.
-
-## Installation
-
-| Package Name                   | Release (NuGet) |
-|--------------------------------|-----------------|
-| `ImageProcessing`              | [![NuGet]()]() | 
+See more information on [GitHub Pages](https://polinasavelyeva.github.io/ImageProcessing/).
 
 ### Requirements
 
