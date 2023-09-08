@@ -3,7 +3,7 @@ module ArguCommands
 open Argu
 
 /// <summary>
-/// Represents the available CPU/GPU platforms for image processing.
+/// Represents the available CPU/GPU platforms for image processing
 /// </summary>
 type ArguProcessingUnits =
     | CPU

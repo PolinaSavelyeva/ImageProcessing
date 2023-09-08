@@ -28,7 +28,7 @@ type imageMessage =
 /// Defines an image saver agent that listens to image-messages and
 /// saves them to a specified output directory
 /// </summary>
-/// <param name="outputDirectory">The directory where the images will be saved.</param>
+/// <param name="outputDirectory">The directory where the images will be saved</param>
 let imageSaver outputDirectory =
 
     let initial (inbox: MailboxProcessor<imageMessage>) =
@@ -53,8 +53,8 @@ let imageSaver outputDirectory =
 /// Defines an image processing agent that listens to image-messages and
 /// applies the given function
 /// </summary>
-/// <param name="imageEditor">The image editing function to apply to incoming images.</param>
-/// <param name="receiver">The MailboxProcessor that receives the processed images.</param>
+/// <param name="imageEditor">The image editing function to apply to incoming images</param>
+/// <param name="receiver">The MailboxProcessor that receives the processed images</param>
 let imageProcessor imageEditor (receiver: MailboxProcessor<_>) =
 
     let initial (inbox: MailboxProcessor<imageMessage>) =
@@ -89,8 +89,8 @@ type pathMessage =
 /// Creates an image processing and saving MailboxProcessor that continuously receives path messages from
 /// an input mailbox. It loads, edits, and saves images to the specified output directory
 /// </summary>
-/// <param name="imageEditor">The image editing function to apply to the loaded images.</param>
-/// <param name="outputDirectory">The directory where the edited images will be saved.</param>
+/// <param name="imageEditor">The image editing function to apply to the loaded images</param>
+/// <param name="outputDirectory">The directory where the edited images will be saved</param>
 let imageFullProcessor imageEditor outputDirectory =
 
     let initial (inbox: MailboxProcessor<pathMessage>) =

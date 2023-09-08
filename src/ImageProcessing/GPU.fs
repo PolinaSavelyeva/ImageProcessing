@@ -3,14 +3,14 @@ module GPU
 open Brahma.FSharp
 
 /// <summary>
-/// Creates compiled GPU filter kernel.
+/// Creates compiled GPU filter kernel
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
 /// A function that takes a command queue, filter parameters, image data, and result array as inputs
 /// and asynchronously applies the filter kernel to the image using the GPU.
-/// The resulting image data is stored in the result array.
+/// The resulting image data is stored in the result array
 /// </returns>
 let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
 
@@ -47,14 +47,14 @@ let applyFilterGPUKernel (clContext: ClContext) localWorkSize =
         result
 
 /// <summary>
-/// Creates compiled GPU rotation kernel.
+/// Creates compiled GPU rotation kernel
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
 /// A function that takes a command queue, rotation parameter, image data, and result array as inputs
 /// and asynchronously rotates the image using the GPU.
-/// The resulting image data is stored in the result array.
+/// The resulting image data is stored in the result array
 /// </returns>
 let rotateGPUKernel (clContext: ClContext) localWorkSize =
 
@@ -84,14 +84,14 @@ let rotateGPUKernel (clContext: ClContext) localWorkSize =
         result
 
 /// <summary>
-/// Creates compiled GPU flip kernel.
+/// Creates compiled GPU flip kernel
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
 /// A function that takes a command queue, flip parameter, image data, and result array as inputs
 /// and asynchronously flips the image using the GPU.
-/// The resulting image data is stored in the result array.
+/// The resulting image data is stored in the result array
 /// </returns>
 let flipGPUKernel (clContext: ClContext) localWorkSize =
 
@@ -121,12 +121,12 @@ let flipGPUKernel (clContext: ClContext) localWorkSize =
         result
 
 /// <summary>
-/// Applies a filter to the specified image using GPU.
+/// Applies a filter to the specified image using GPU
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
-/// A function that takes a filter kernel and an image, and asynchronously applies the filter to the image using GPU.
+/// A function that takes a filter kernel and an image, and asynchronously applies the filter to the image using GPU
 /// </returns>
 let applyFilter (clContext: ClContext) (localWorkSize: int) =
 
@@ -159,13 +159,13 @@ let applyFilter (clContext: ClContext) (localWorkSize: int) =
         MyImage.MyImage(result, image.Width, image.Height, image.Name)
 
 /// <summary>
-/// Rotates the image clockwise or counterclockwise using GPU.
+/// Rotates the image clockwise or counterclockwise using GPU
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
 /// A function that takes a boolean value indicating the rotation direction,
-/// and an image, and asynchronously rotates the image using the GPU.
+/// and an image, and asynchronously rotates the image using the GPU
 /// </returns>
 let rotate (clContext: ClContext) (localWorkSize: int) =
 
@@ -195,13 +195,13 @@ let rotate (clContext: ClContext) (localWorkSize: int) =
         MyImage.MyImage(result, image.Height, image.Width, image.Name)
 
 /// <summary>
-/// Flips the image vertically or horizontally using GPU.
+/// Flips the image vertically or horizontally using GPU
 /// </summary>
-/// <param name="clContext">The representation of OpenCL context.</param>
-/// <param name="localWorkSize">The size of the local work group.</param>
+/// <param name="clContext">The representation of OpenCL context</param>
+/// <param name="localWorkSize">The size of the local work group</param>
 /// <returns>
 /// A function that takes a boolean value indicating the flip direction,
-/// and an image, and asynchronously flips the image using the GPU.
+/// and an image, and asynchronously flips the image using the GPU
 /// </returns>
 let flip (clContext: ClContext) (localWorkSize: int) =
 

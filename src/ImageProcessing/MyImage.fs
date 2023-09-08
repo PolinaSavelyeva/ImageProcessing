@@ -19,9 +19,9 @@ type MyImage =
           Name = name }
 
 /// <summary>
-/// Loads the image located at the specified file path.
+/// Loads the image located at the specified file path
 /// </summary>
-/// <param name="filePath">The path where the image is located. The image name and extension are required.</param>
+/// <param name="filePath">The path where the image is located. The image name and extension are required</param>
 let load (filePath: string) =
 
     let image = Image.Load<L8> filePath
@@ -31,10 +31,10 @@ let load (filePath: string) =
     MyImage(buffer, image.Width, image.Height, System.IO.Path.GetFileName filePath)
 
 /// <summary>
-/// Saves the image to the specified directory in the same extension as the input.
+/// Saves the image to the specified directory in the same extension as the input
 /// </summary>
-/// <param name="image">Saved image.</param>
-/// <param name="filePath">Path to the directory where the image will be saved.</param>
+/// <param name="image">Saved image</param>
+/// <param name="filePath">Path to the directory where the image will be saved</param>
 let save (image: MyImage) filePath =
 
     let image = Image.LoadPixelData<L8>(image.Data, image.Width, image.Height)

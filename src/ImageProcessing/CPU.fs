@@ -5,8 +5,8 @@ open MyImage
 /// <summary>
 /// Applies a filter to an input image
 /// </summary>
-/// <param name="filter">The filter kernel to apply to the image.</param>
-/// <param name="image">The input image to process.</param>
+/// <param name="filter">The filter kernel to apply to the image</param>
+/// <param name="image">The input image to process</param>
 /// <returns>A new processed image</returns>
 let applyFilter filter (image: MyImage) =
 
@@ -31,10 +31,10 @@ let applyFilter filter (image: MyImage) =
     MyImage(Array.mapi (fun p _ -> byte (pixelProcessing p)) image.Data, image.Width, image.Height, image.Name)
 
 /// <summary>
-/// Rotates an input image either clockwise or counterclockwise.
+/// Rotates an input image either clockwise or counterclockwise
 /// </summary>
-/// <param name="isClockwise">True to rotate the image clockwise or false for counterclockwise rotation.</param>
-/// <param name="image">The input image to rotate.</param>
+/// <param name="isClockwise">True to rotate the image clockwise or false for counterclockwise rotation</param>
+/// <param name="image">The input image to rotate</param>
 /// <returns>A new rotated image</returns>
 let rotate (isClockwise: bool) (image: MyImage) =
 
@@ -52,10 +52,10 @@ let rotate (isClockwise: bool) (image: MyImage) =
     MyImage(buffer, image.Height, image.Width, image.Name)
 
 /// <summary>
-/// Flips an input image either vertically or horizontally.
+/// Flips an input image either vertically or horizontally
 /// </summary>
-/// <param name="isVertical">True to flip the image vertically or false for horizontal flip.</param>
-/// <param name="image">The input image to flip.</param>
+/// <param name="isVertical">True to flip the image vertically or false for horizontal flip</param>
+/// <param name="image">The input image to flip</param>
 /// <returns>A new flipped image</returns>
 let flip (isVertical: bool) (image: MyImage) =
 
