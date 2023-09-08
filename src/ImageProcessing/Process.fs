@@ -5,12 +5,18 @@ open MyImage
 open Kernels
 open Brahma.FSharp
 
+/// <summary>
+/// Specifies the level of agents support.
+/// </summary>
 type AgentsSupport =
     | Full // Uses a single agent to open, process and save
     | Partial // Uses different agents for each transformation and saving
     | PartialUsingComposition // Uses one agent for transformation and one for save
     | No // Uses naive image processing function
 
+/// <summary>
+/// Represents the available image transformations.
+/// </summary>
 type Transformations =
     | Gauss
     | Sharpen
@@ -22,10 +28,20 @@ type Transformations =
     | FlipV // Vertical flip
     | FlipH // Horizontal flip
 
+/// <summary>
+/// Represents processing device.
+/// </summary>
 type ProcessingUnits =
     | CPU
     | GPU of Platform
 
+/// <summary>
+/// Parses an image transformation and returns the corresponding CPU-based transformation function.
+/// </summary>
+/// <param name="transformation">The transformation type to apply.</param>
+/// <returns>
+/// A CPU-based transformation function corresponding to the specified transformation type.
+/// </returns>
 let transformationsParserCPU transformation =
     match transformation with
     | Gauss -> CPU.applyFilter gaussianBlurKernel
@@ -38,6 +54,15 @@ let transformationsParserCPU transformation =
     | FlipV -> CPU.rotate true
     | FlipH -> CPU.flip false
 
+/// <summary>
+/// Generates GPU kernel functions for applying various image transformations.
+/// </summary>
+/// <param name="clContext">The OpenCL context for GPU processing.</param>
+/// <param name="localWorkSize">The local work size for GPU computation.</param>
+/// <returns>
+/// A function that takes a transformation type and returns the corresponding GPU
+/// kernel function for applying the specified transformation.
+/// </returns>
 let transformationsParserGPU (clContext: ClContext) (localWorkSize: int) =
 
     let applyFilterKernel = GPU.applyFilter clContext localWorkSize
@@ -56,6 +81,14 @@ let transformationsParserGPU (clContext: ClContext) (localWorkSize: int) =
         | FlipV -> flipKernel true
         | FlipH -> flipKernel false
 
+/// <summary>
+/// Processes images located at the specified input path and saves the processed images to the specified output path.
+/// </summary>
+/// <param name="inputPath">The path where the input images are located.</param>
+/// <param name="outputPath">The path where the processed images will be saved.</param>
+/// <param name="processingUnit">The GPU platform to be used for processing.</param>
+/// <param name="imageEditorsList">A list of functions to be applied to the images.</param>
+/// <param name="agentsSupport">Specifies the level of agent support.</param>
 let processImages inputPath outputPath processingUnit imageEditorsList agentsSupport =
 
     let listAllImages directory =
