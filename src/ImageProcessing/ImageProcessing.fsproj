@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> 
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -27,7 +26,7 @@
     <Compile Include="Process.fs" />
     <Compile Include="ArguCommands.fs" />
     <Compile Include="CLI.fs" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="SkiaSharp.NativeAssets.Tizen" />
