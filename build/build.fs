@@ -291,7 +291,6 @@ module DocsTool =
     let build (configuration) =
         Fsdocs.build fsDocsDotnetOptions (fsDocsBuildParams configuration)
 
-
     let watch (configuration) =
         let buildParams bp =
             let bp =
