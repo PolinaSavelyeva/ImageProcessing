@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MyImage (ImageProcessing)</title>
+    <title>CPU (ImageProcessing)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="gsvgit">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -157,9 +157,21 @@
             </div>
         </div>
     </nav>
-    
+
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="https://PolinaSavelyeva.github.io/ImageProcessing/">ImageProcessing <small
+                        class="muted">0.1.0</small></a></h3>
+        </div>
+        <div class="float-right" id="edit-this-page"><span><a class="nav-link"
+                    href="https://github.com/gsvgit/ImageProcessing/edit/main/docsSrc/{{fsdocs-source-filename}}"><i
+                        class="fa-regular fa-pen-to-square pe-2"></i>Edit this page</a></span></div>
+        <hr />
+    </div>
+    <div class="container" id="fsdocs-content">
+        <div>
   <h2>
-    MyImage Type
+    CPU Module
   </h2>
   <dl class="fsdocs-metadata">
     <dt>
@@ -171,39 +183,23 @@
     <dt>
       Assembly: ImageProcessing.dll
     </dt>
-    <dt>
-      Parent Module: 
-      <a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/global-myimage.html">
-        MyImage
-      </a>
-    </dt>
-    <dt>
-      Base Type: 
-      <code>obj</code>
-    </dt>
   </dl>
   <div class="fsdocs-xmldoc">
     <div>
       <p class="fsdocs-summary">
         
- Encapsulates an image, which includes both the byte pixel data and its associated attributes.
- 
       </p>
     </div>
   </div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
   <div>
     <h3>
-      Record fields
+      Functions and values
     </h3>
     <table class="table outer-list fsdocs-member-list">
       <thead>
         <tr>
           <td class="fsdocs-member-list-header">
-            Record Field
+            Function or value
           </td>
           <td class="fsdocs-member-list-header">
             Description
@@ -214,229 +210,41 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '42', 42)" onmouseover="showTip(event, '42', 42)">
+              <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
                 <p>
-                  <a id="Data">
-                    <a href="#Data">
-                      <code>Data</code>
+                  <a id="applyFilter">
+                    <a href="#applyFilter">
+                      <code><span>applyFilter&#32;<span>filter&#32;image</span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="42">
+              <div class="fsdocs-tip" id="7">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code>Data</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code><span>byte&#32;array</span></code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code><span>byte&#32;array</span></code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '43', 43)" onmouseover="showTip(event, '43', 43)">
-                <p>
-                  <a id="Height">
-                    <a href="#Height">
-                      <code>Height</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="43">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Height</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>int</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '44', 44)" onmouseover="showTip(event, '44', 44)">
-                <p>
-                  <a id="Name">
-                    <a href="#Name">
-                      <code>Name</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="44">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Name</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>string</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>string</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '45', 45)" onmouseover="showTip(event, '45', 45)">
-                <p>
-                  <a id="Width">
-                    <a href="#Width">
-                      <code>Width</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="45">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Width</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>int</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div></div>
-  <div>
-    <h3>
-      Constructors
-    </h3>
-    <table class="table outer-list fsdocs-member-list">
-      <thead>
-        <tr>
-          <td class="fsdocs-member-list-header">
-            Constructor
-          </td>
-          <td class="fsdocs-member-list-header">
-            Description
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '46', 46)" onmouseover="showTip(event, '46', 46)">
-                <p>
-                  <a id="``.ctor``">
-                    <a href="#``.ctor``">
-                      <code><span>MyImage<span><span>(<span>data,&#32;width,&#32;height,&#32;name</span>)</span></span></span></code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="46">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code><span>MyImage<span><span>(<span>data,&#32;width,&#32;height,&#32;name</span>)</span></span></span></code>
+                  <code><span>applyFilter&#32;<span>filter&#32;image</span></span></code>
                   <br/>
                   <br/>
                   Parameters: 
                   <ul>
                     <span>
                       <b>
-                        data
+                        filter
                       </b>
                       :
-                      <code><span>byte&#32;array</span></code>
+                      <code><span>float32[,]</span></code>
+                       - 
+                      The filter kernel to apply to the image
                     </span>
                     <br/>
                     <span>
                       <b>
-                        width
+                        image
                       </b>
                       :
-                      <code>int</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        height
-                      </b>
-                      :
-                      <code>int</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        name
-                      </b>
-                      :
-                      <code>string</code>
+                      <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                       - 
+                      The input image to process
                     </span>
                     <br/>
                   </ul>
@@ -445,60 +253,320 @@
                     Returns: 
                     <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
                   </span>
+                  A new processed image
                   <br/>
                 </div>
               </div>
             </div>
           </td>
           <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-params">
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  data
-                </span>
-                :
-                <code><span>byte&#32;array</span></code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  width
-                </span>
-                :
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  height
-                </span>
-                :
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  name
-                </span>
-                :
-                <code>string</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-            </dl>
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Returns: 
-                </span>
-                <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:CPU.applyFilter`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:CPU.applyFilter\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/CPU.fs#L11-11" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Applies a filter to an input image
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-params">
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    filter
+                  </span>
+                  :
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    The filter kernel to apply to the image
+                  </p>
+                </dd>
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    image
+                  </span>
+                  :
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    The input image to process
+                  </p>
+                </dd>
+              </dl>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-return-docs">
+                  <p>
+                    A new processed image
+                  </p>
+                </dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+                <p>
+                  <a id="flip">
+                    <a href="#flip">
+                      <code><span>flip&#32;<span>isVertical&#32;image</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="8">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>flip&#32;<span>isVertical&#32;image</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        isVertical
+                      </b>
+                      :
+                      <code>bool</code>
+                       - 
+                      True to flip the image vertically or false for horizontal flip
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        image
+                      </b>
+                      :
+                      <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                       - 
+                      The input image to flip
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                  </span>
+                  A new flipped image
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:CPU.flip`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:CPU.flip\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/CPU.fs#L60-60" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Flips an input image either vertically or horizontally
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-params">
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    isVertical
+                  </span>
+                  :
+                  <code>bool</code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    True to flip the image vertically or false for horizontal flip
+                  </p>
+                </dd>
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    image
+                  </span>
+                  :
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    The input image to flip
+                  </p>
+                </dd>
+              </dl>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-return-docs">
+                  <p>
+                    A new flipped image
+                  </p>
+                </dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+                <p>
+                  <a id="rotate">
+                    <a href="#rotate">
+                      <code><span>rotate&#32;<span>isClockwise&#32;image</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="9">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>rotate&#32;<span>isClockwise&#32;image</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        isClockwise
+                      </b>
+                      :
+                      <code>bool</code>
+                       - 
+                      True to rotate the image clockwise or false for counterclockwise rotation
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        image
+                      </b>
+                      :
+                      <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                       - 
+                      The input image to rotate
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                  </span>
+                  A new rotated image
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:CPU.rotate`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:CPU.rotate\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/CPU.fs#L39-39" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Rotates an input image either clockwise or counterclockwise
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-params">
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    isClockwise
+                  </span>
+                  :
+                  <code>bool</code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    True to rotate the image clockwise or false for counterclockwise rotation
+                  </p>
+                </dd>
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    image
+                  </span>
+                  :
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-param-docs">
+                  <p>
+                    The input image to rotate
+                  </p>
+                </dd>
+              </dl>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                </dt>
+                <dd class="fsdocs-return-docs">
+                  <p>
+                    A new rotated image
+                  </p>
+                </dd>
+              </dl>
+            </details>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
   <div></div>
   <div></div>
 </div>

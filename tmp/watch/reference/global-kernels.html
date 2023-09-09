@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MyImage (ImageProcessing)</title>
+    <title>Kernels (ImageProcessing)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="gsvgit">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -157,9 +157,21 @@
             </div>
         </div>
     </nav>
-    
+
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="https://PolinaSavelyeva.github.io/ImageProcessing/">ImageProcessing <small
+                        class="muted">0.1.0</small></a></h3>
+        </div>
+        <div class="float-right" id="edit-this-page"><span><a class="nav-link"
+                    href="https://github.com/gsvgit/ImageProcessing/edit/main/docsSrc/{{fsdocs-source-filename}}"><i
+                        class="fa-regular fa-pen-to-square pe-2"></i>Edit this page</a></span></div>
+        <hr />
+    </div>
+    <div class="container" id="fsdocs-content">
+        <div>
   <h2>
-    MyImage Type
+    Kernels Module
   </h2>
   <dl class="fsdocs-metadata">
     <dt>
@@ -171,39 +183,23 @@
     <dt>
       Assembly: ImageProcessing.dll
     </dt>
-    <dt>
-      Parent Module: 
-      <a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/global-myimage.html">
-        MyImage
-      </a>
-    </dt>
-    <dt>
-      Base Type: 
-      <code>obj</code>
-    </dt>
   </dl>
   <div class="fsdocs-xmldoc">
     <div>
       <p class="fsdocs-summary">
         
- Encapsulates an image, which includes both the byte pixel data and its associated attributes.
- 
       </p>
     </div>
   </div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
   <div>
     <h3>
-      Record fields
+      Functions and values
     </h3>
     <table class="table outer-list fsdocs-member-list">
       <thead>
         <tr>
           <td class="fsdocs-member-list-header">
-            Record Field
+            Function or value
           </td>
           <td class="fsdocs-member-list-header">
             Description
@@ -214,236 +210,24 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '42', 42)" onmouseover="showTip(event, '42', 42)">
+              <code onmouseout="hideTip(event, '18', 18)" onmouseover="showTip(event, '18', 18)">
                 <p>
-                  <a id="Data">
-                    <a href="#Data">
-                      <code>Data</code>
+                  <a id="darkenKernel">
+                    <a href="#darkenKernel">
+                      <code><span>darkenKernel&#32;<span></span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="42">
+              <div class="fsdocs-tip" id="18">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code>Data</code>
+                  <code><span>darkenKernel&#32;<span></span></span></code>
                   <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code><span>byte&#32;array</span></code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code><span>byte&#32;array</span></code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '43', 43)" onmouseover="showTip(event, '43', 43)">
-                <p>
-                  <a id="Height">
-                    <a href="#Height">
-                      <code>Height</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="43">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Height</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>int</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '44', 44)" onmouseover="showTip(event, '44', 44)">
-                <p>
-                  <a id="Name">
-                    <a href="#Name">
-                      <code>Name</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="44">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Name</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>string</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>string</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '45', 45)" onmouseover="showTip(event, '45', 45)">
-                <p>
-                  <a id="Width">
-                    <a href="#Width">
-                      <code>Width</code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="45">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code>Width</code>
-                  <br/>
-                  <br/>
-                  <span>
-                    Field type: 
-                    <code>int</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Field type: 
-                </span>
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div></div>
-  <div>
-    <h3>
-      Constructors
-    </h3>
-    <table class="table outer-list fsdocs-member-list">
-      <thead>
-        <tr>
-          <td class="fsdocs-member-list-header">
-            Constructor
-          </td>
-          <td class="fsdocs-member-list-header">
-            Description
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '46', 46)" onmouseover="showTip(event, '46', 46)">
-                <p>
-                  <a id="``.ctor``">
-                    <a href="#``.ctor``">
-                      <code><span>MyImage<span><span>(<span>data,&#32;width,&#32;height,&#32;name</span>)</span></span></span></code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="46">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code><span>MyImage<span><span>(<span>data,&#32;width,&#32;height,&#32;name</span>)</span></span></span></code>
-                  <br/>
-                  <br/>
-                  Parameters: 
-                  <ul>
-                    <span>
-                      <b>
-                        data
-                      </b>
-                      :
-                      <code><span>byte&#32;array</span></code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        width
-                      </b>
-                      :
-                      <code>int</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        height
-                      </b>
-                      :
-                      <code>int</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        name
-                      </b>
-                      :
-                      <code>string</code>
-                    </span>
-                    <br/>
-                  </ul>
                   <br/>
                   <span>
                     Returns: 
-                    <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
+                    <code><span>float32[,]</span></code>
                   </span>
                   <br/>
                 </div>
@@ -451,54 +235,297 @@
             </div>
           </td>
           <td class="fsdocs-member-xmldoc">
-            <dl class="fsdocs-params">
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  data
-                </span>
-                :
-                <code><span>byte&#32;array</span></code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  width
-                </span>
-                :
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  height
-                </span>
-                :
-                <code>int</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-              <dt class="fsdocs-param">
-                <span class="fsdocs-param-name">
-                  name
-                </span>
-                :
-                <code>string</code>
-              </dt>
-              <dd class="fsdocs-param-docs"></dd>
-            </dl>
-            <dl class="fsdocs-returns">
-              <dt>
-                <span class="fsdocs-return-name">
-                  Returns: 
-                </span>
-                <code><a href="https://PolinaSavelyeva.github.io/ImageProcessing/reference/myimage-myimage.html">MyImage</a></code>
-              </dt>
-              <dd class="fsdocs-return-docs"></dd>
-            </dl>
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:P:Kernels.darkenKernel`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'P:Kernels.darkenKernel\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/Kernels.fs#L20-20" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Represents a darken kernel for filter applying on CPU as a 2D array
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
+                <p>
+                  <a id="edgesKernel">
+                    <a href="#edgesKernel">
+                      <code><span>edgesKernel&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="19">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>edgesKernel&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span>float32[,]</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:P:Kernels.edgesKernel`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'P:Kernels.edgesKernel\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/Kernels.fs#L13-13" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Represents a edges kernel for filter applying on CPU as a 2D array
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
+                <p>
+                  <a id="gaussianBlurKernel">
+                    <a href="#gaussianBlurKernel">
+                      <code><span>gaussianBlurKernel&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="20">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>gaussianBlurKernel&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span>float32[,]</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:P:Kernels.gaussianBlurKernel`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'P:Kernels.gaussianBlurKernel\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/Kernels.fs#L6-6" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Represents a Gaussian blur kernel for filter applying on CPU  as a 2D array
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '21', 21)" onmouseover="showTip(event, '21', 21)">
+                <p>
+                  <a id="lightenKernel">
+                    <a href="#lightenKernel">
+                      <code><span>lightenKernel&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="21">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>lightenKernel&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span>float32[,]</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:P:Kernels.lightenKernel`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'P:Kernels.lightenKernel\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/Kernels.fs#L25-25" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Represents a lighten kernel for filter applying on CPU as a 2D array
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
+                <p>
+                  <a id="sharpenKernel">
+                    <a href="#sharpenKernel">
+                      <code><span>sharpenKernel&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="22">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>sharpenKernel&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span>float32[,]</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:P:Kernels.sharpenKernel`')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-md-hover.png" class="hover"/>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'P:Kernels.sharpenKernel\'/>')">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/copy-xml-hover.png" class="hover"/>
+                  </div>
+                  <a href="https://github.com/gsvgit/ImageProcessing/tree/master/src/ImageProcessing/Kernels.fs#L30-30" class="fsdocs-source-link" title="Source on GitHub">
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github.png" class="normal"/>
+                    <img src="https://PolinaSavelyeva.github.io/ImageProcessing/content/img/github-hover.png" class="hover"/>
+                  </a>
+                  <p class="fsdocs-summary">
+                    
+ Represents a sharpen kernel for filter applying on CPU as a 2D array
+ 
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span>float32[,]</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
   <div></div>
   <div></div>
 </div>
