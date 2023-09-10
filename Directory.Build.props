@@ -12,6 +12,8 @@
     <FsDocsLogoLink>https://fsharp.org</FsDocsLogoLink>
     <FsDocsLicenseLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/LICENSE.md</FsDocsLicenseLink>
     <FsDocsReleaseNotesLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/CHANGELOG.md</FsDocsReleaseNotesLink>
+    <FsDocsLogoSrc>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/logo_dark.svg</FsDocsLogoSrc>
+    <FsDocsLogoLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/logo_dark.svg</FsDocsLogoLink>
 </PropertyGroup>
 <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>
