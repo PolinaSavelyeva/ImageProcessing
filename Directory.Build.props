@@ -8,9 +8,16 @@
     <RepositoryType>git</RepositoryType>
     <Authors>PolinaSavelyeva</Authors>
     <RepositoryUrl>https://github.com/PolinaSavelyeva/ImageProcessing</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/LICENSE.md</PackageLicenseUrl>
+    <FsDocsLogoLink>https://fsharp.org</FsDocsLogoLink>
+    <FsDocsLicenseLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/LICENSE.md</FsDocsLicenseLink>
+    <FsDocsReleaseNotesLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/CHANGELOG.md</FsDocsReleaseNotesLink>
 </PropertyGroup>
 <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>
     <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="/"/>
 </ItemGroup>
 </Project>
+
+
+    <!-- Example ultra-simple styling and generation settings for FsDocs default template-->
