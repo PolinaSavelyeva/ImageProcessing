@@ -97,8 +97,8 @@ let readme = "README.md"
 
 let changelogFile = "CHANGELOG.md"
 
-let READMElink = Uri(Uri(gitHubRepoUrl), $"blob/{releaseBranch}/{readme}")
-let CHANGELOGlink = Uri(Uri(gitHubRepoUrl), $"blob/{releaseBranch}/{changelogFile}")
+let READMElink = Uri(Uri(gitHubRepoUrl), $"{productName}/blob/{releaseBranch}/{readme}")
+let CHANGELOGlink = Uri(Uri(gitHubRepoUrl), $"{productName}/blob/{releaseBranch}/{changelogFile}")
 
 let tagFromVersionNumber versionNumber = sprintf "v%s" versionNumber
 

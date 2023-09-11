@@ -1,22 +1,17 @@
 <Project>
-<PropertyGroup>
-    <PackageTags>f#, fsharp</PackageTags>
-    <PackageProjectUrl>https://github.com/PolinaSavelyeva/ImageProcessing</PackageProjectUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile> <!--https://docs.microsoft.com/en-gb/nuget/reference/msbuild-targets#packagereadmefile -->
-    <RepositoryType>git</RepositoryType>
-    <Authors>PolinaSavelyeva</Authors>
-    <RepositoryUrl>https://github.com/PolinaSavelyeva/ImageProcessing</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/LICENSE.md</PackageLicenseUrl>
-    <FsDocsLicenseLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/LICENSE.md</FsDocsLicenseLink>
-    <FsDocsReadmeLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/README.md</FsDocsReadmeLink>
-    <FsDocsReleaseNotesLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/CHANGELOG.md</FsDocsReleaseNotesLink>
-    <FsDocsLogoSrc>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/logo_dark.png</FsDocsLogoSrc>
-    <FsDocsLogoLink>https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/logo_dark.png</FsDocsLogoLink>
-</PropertyGroup>
-<ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>
-    <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="/"/>
-</ItemGroup>
+    <PropertyGroup>
+        <PackageTags>f#, fsharp</PackageTags>
+        <PackageProjectUrl>https://github.com/PolinaSavelyeva/ImageProcessing</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile> <!--https://docs.microsoft.com/en-gb/nuget/reference/msbuild-targets#packagereadmefile -->
+        <RepositoryType>git</RepositoryType>
+        <Authors>PolinaSavelyeva</Authors>
+        <RepositoryUrl>https://github.com/PolinaSavelyeva/ImageProcessing</RepositoryUrl>
+        <FsDocsLogoSource>https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/dev/resources/logo_dark.png</FsDocsLogoSource>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>
+        <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
 </Project>
