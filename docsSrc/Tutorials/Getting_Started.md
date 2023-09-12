@@ -42,14 +42,18 @@ $ cd /path/to/ImageProcessing/src/ImageProcessing
 ```
 To process images from one directory and save them to another, you can use the following commands.
 
-- #### Оne transformation applied to each image in the directory
+* **Оne transformation applied to each image in the directory**
+
 ```sh
 $ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 ```
-- #### List of transformations that are sequentially applied
+
+* **List of transformations that are sequentially applied**
+
 ```sh
 $ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
+
 More details about CLI processing you can find [here]().
 
 ### Using Your Own Code

@@ -165,18 +165,16 @@
 </code></pre></td></tr></table>
 <p>To process images from one directory and save them to another, you can use the following commands.</p>
 <ul>
-<li>
-#### Оne transformation applied to each image in the directory
-<code>sh
-$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss</code>
-</li>
-<li>
-#### List of transformations that are sequentially applied
-<code>sh
-$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen</code>
-More details about CLI processing you can find <a href="">here</a>.
-</li>
+<li><strong>Оne transformation applied to each image in the directory</strong></li>
 </ul>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
+</code></pre></td></tr></table>
+<ul>
+<li><strong>List of transformations that are sequentially applied</strong></li>
+</ul>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
+</code></pre></td></tr></table>
+<p>More details about CLI processing you can find <a href="">here</a>.</p>
 <h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>
 <p>Open library and load image to process:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
