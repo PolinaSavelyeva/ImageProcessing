@@ -40,27 +40,29 @@ $ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sha
 
 ##  Examples
 
-The final result for all types of tranformations:
+The final result for all types of transformations and filters:
+
 |Original|Sharpen|
 |:-------|:------|
-| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplash2.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg) |
+| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplash2.jpg)  | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg) |
 
 |Gauss|Edges|
 |:-------|:------|
-| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg) |
+| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg) |
 
 |Darken|Lighten|
 |:-------|:------|
-| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg)  | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg) |
+| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg)  | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg) |
 
 
 |Rotation R|Rotation L|
 |:-------|:------|
-| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg) |
+| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg) |
 
 |Flip H|Flip V|
 |:-------|:------|
-| ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://github.com/PolinaSavelyeva/ImageProcessing/blob/main/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
+| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
+
 
 ### Template
 To find more building and running options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.

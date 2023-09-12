@@ -142,18 +142,210 @@
 <div class="container" id="fsdocs-content">
     
 <h1><a name="Getting-Started" class="anchor" href="#Getting-Started">Getting Started</a></h1>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">GPUImageProcessing</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">foo</span> <span class="o">=</span> <span class="pn">(</span><span class="pn">)</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">myAge</span> <span class="o">=</span> <span class="n">21</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">color</span> <span class="o">=</span> <span class="id">Say</span><span class="pn">.</span><span class="id">FavoriteColor</span><span class="pn">.</span><span class="id">Red</span>
-</code></pre>
-<h2><a name="Here-is-the-path-to-downloading" class="anchor" href="#Here-is-the-path-to-downloading">Here is the path to downloading</a></h2>
-<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">paket install GPUImageProcessing
+<h2><a name="Prepearing" class="anchor" href="#Prepearing">Prepearing</a></h2>
+<h3><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h3>
+<p>First of all, make sure the following requirements are installed on your system:</p>
+<ul>
+<li><a href="https://www.microsoft.com/net/download/core">dotnet SDK</a> 3.0 or higher (recommended 6.0+),</li>
+<li><a href="http://www.mono-project.com/">Mono</a> if you're on Linux or macOS or</li>
+<li><a href="https://code.visualstudio.com/docs/remote/containers">VSCode Dev Container</a>.</li>
+</ul>
+<p>To find more building and running options take a look at the <a href="https://github.com/TheAngryByrd/MiniScaffold">MiniScaffold</a> template.</p>
+<h3><a name="Package-Adding" class="anchor" href="#Package-Adding">Package Adding</a></h3>
+<p>Go to directory with your <code>build.fsproj</code> (or <code>build.csproj</code>) file and install ImageProcessing using command line:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">dotnet add package ImageProcessing --version 1.0.0
 </code></pre></td></tr></table>
+<p>For more information visit package main <a href="https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing">GitHub page</a>.</p>
+<h2><a name="Simple-Usage" class="anchor" href="#Simple-Usage">Simple Usage</a></h2>
+<h3><a name="Using-CLI" class="anchor" href="#Using-CLI">Using CLI</a></h3>
+<p>Before usage, go to specify directory:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ cd /path/to/ImageProcessing/src/ImageProcessing
+</code></pre></td></tr></table>
+<p>To process images from one directory and save them to another, you can use the following commands.</p>
+<ul>
+<li>
+#### Оne transformation applied to each image in the directory
+<code>sh
+$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss</code>
+</li>
+<li>
+#### List of transformations that are sequentially applied
+<code>sh
+$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen</code>
+More details about CLI processing you can find <a href="">here</a>.
+</li>
+</ul>
+<h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>
+<p>Open library and load image to process:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
 
-    <div class="fsdocs-tip" id="fs1">val foo: unit</div>
-<div class="fsdocs-tip" id="fs2">val myAge: int</div>
-<div class="fsdocs-tip" id="fs3">val color: obj</div>
+<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+</code></pre>
+<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on CPU:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyCustomFilterOnCPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
+</code></pre>
+<p>Create the same function for GPU. But before it we need to do some steps for diagnosing graphical device.</p>
+<p>Define the <code>device</code> value by specifying the brand of your GPU or whatever the program finds (embedded graphics cards are also suitable). And make OpenCL context of it:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
+<span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
+</code></pre>
+<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="">kernel function</a> once:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
+<span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
+</code></pre>
+<p>And the final function:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyCustomFilterOnGPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">rotateGPU</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
+</code></pre>
+<p>The result:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+
+<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+
+<span class="k">let</span> <span class="id">applyCustomFilterOnCPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
+
+<span class="k">let</span> <span class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
+<span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
+
+<span class="k">let</span> <span class="id">applyCustomFilterOnGPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 4)" onmouseover="showTip(event, 'fs1', 4)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">rotateGPU</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
+ 
+<span class="k">let</span> <span class="id">pathToSave</span> <span class="o">=</span> <span class="s">&quot;Path/To/Directory/image_name.jpg&quot;</span>
+<span class="id">applyCustomFilterOnCPU</span> <span class="id">myImage</span> <span class="id">pathToSave</span>
+<span class="id">applyCustomFilterOnGPU</span> <span class="id">myImage</span> <span class="id">pathToSave</span>
+</code></pre>
+<h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
+<p>The following features are implemented, even for CPU and GPU:</p>
+<ul>
+<li>
+<strong>Filters</strong>
+<ul>
+<li>Gaussian Blur</li>
+<li>Edges</li>
+<li>Sharpen</li>
+<li>Lighten</li>
+<li>Darken</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Transformations</strong>
+<ul>
+<li>Clockwise rotation</li>
+<li>Counterclockwise rotation</li>
+<li>Vertical flip (Y-axis)</li>
+<li>Horizontal flip (X-axis)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Multithreaded processing tools</strong>
+<ul>
+<li>Saving agent</li>
+<li>Processing agent</li>
+<li>Full processing agent, i.e saving plus processing</li>
+<li>Events logger</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Directory with pictures processing tool</strong></li>
+</ul>
+<p>For detailed descriptions of all features above visit <a href="">Api Reference</a>.</p>
+<p>The final result for all types of transformations and filters:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><p>Original</p></th>
+<th align="left"><p>Sharpen</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplash2.jpg" alt="image" /></p></td>
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg" alt="image" /></p></td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr class="header">
+<th align="left"><p>Gauss</p></th>
+<th align="left"><p>Edges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg" alt="image" /></p></td>
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg" alt="image" /></p></td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr class="header">
+<th align="left"><p>Darken</p></th>
+<th align="left"><p>Lighten</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg" alt="image" /></p></td>
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg" alt="image" /></p></td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr class="header">
+<th align="left"><p>Rotation R</p></th>
+<th align="left"><p>Rotation L</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg" alt="image" /></p></td>
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg" alt="image" /></p></td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr class="header">
+<th align="left"><p>Flip H</p></th>
+<th align="left"><p>Flip V</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg" alt="image" /></p></td>
+<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg" alt="image" /></p></td>
+</tr>
+</tbody>
+</table>
+
+
+    <div class="fsdocs-tip" id="fs1">Multiple items<br />val string: value: &#39;T -&gt; string<br /><br />--------------------<br />type string = System.String</div>
 
 </div>
 
