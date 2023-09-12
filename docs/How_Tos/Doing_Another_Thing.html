@@ -142,6 +142,98 @@
 <div class="container" id="fsdocs-content">
     
 <h1><a name="How-To-use-CLI" class="anchor" href="#How-To-use-CLI">How-To use CLI</a></h1>
+<h2><a name="Overview" class="anchor" href="#Overview">Overview</a></h2>
+<hr />
+<p>The CLI accepts several command-line arguments that control the behavior of the image processing application.
+Below is a list of available command-line arguments and their descriptions.</p>
+<h3><a name="InputPath" class="anchor" href="#InputPath">InputPath</a></h3>
+<ul>
+<li><strong>Syntax:</strong> <code>-in &lt;inputPath&gt;</code></li>
+<li><strong>Description:</strong> Specifies the path to a file or directory where the images to be processed are located.</li>
+</ul>
+<h3><a name="OutputPath" class="anchor" href="#OutputPath">OutputPath</a></h3>
+<ul>
+<li><strong>Syntax:</strong> <code>-out &lt;outputPath&gt;</code></li>
+<li><strong>Description:</strong> Specifies the path to a file or directory where the processed images will be saved.</li>
+</ul>
+<h3><a name="AgentsSupport" class="anchor" href="#AgentsSupport">AgentsSupport</a></h3>
+<ul>
+<li><strong>Syntax:</strong> <code>-agent=&lt;agentType&gt;</code></li>
+<li>
+<strong>Description:</strong> Allows you to specify the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html">agent strategy</a> to be used during image processing.  You can choose from the following options:
+<ul>
+<li><code>Full</code>, which uses a single agent for opening, processing and saving</li>
+<li><code>Partial</code>, which uses different agents for each transformation and saving</li>
+<li><code>PartialUsingComposition</code>, which uses one agent for transformation and one for saving</li>
+<li><code>No</code>, which uses naive image processing function</li>
+</ul>
+</li>
+</ul>
+<h3><a name="ProcessingUnit" class="anchor" href="#ProcessingUnit">ProcessingUnit</a></h3>
+<ul>
+<li><strong>Syntax:</strong> <code>-unit=&lt;unitType&gt;</code></li>
+<li>
+<strong>Description:</strong> Specifies the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html">processing unit</a> to be used for image processing. You can choose from the following options:
+<ul>
+<li><code>CPU</code></li>
+<li><code>NvidiaGPU</code></li>
+<li><code>IntelGPU</code></li>
+<li><code>AmdGPU</code></li>
+<li><code>AnyGPU</code></li>
+</ul>
+</li>
+</ul>
+<h3><a name="Transformations" class="anchor" href="#Transformations">Transformations</a></h3>
+<ul>
+<li><strong>Syntax:</strong> <code>&lt;transformation1&gt; &lt;transformation2&gt; ...</code></li>
+<li>
+<strong>Description:</strong> Provides a list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">available transformations</a> to be applied during image processing. You can choose from the following options:
+<ul>
+<li><code>Gauss</code></li>
+<li><code>Sharpen</code></li>
+<li><code>Lighten</code></li>
+<li><code>Darken</code></li>
+<li><code>Edges</code></li>
+<li><code>RotationR</code></li>
+<li><code>RotationL</code></li>
+<li><code>FlipV</code></li>
+<li><code>FlipH</code></li>
+</ul>
+</li>
+</ul>
+<h2><a name="Usage" class="anchor" href="#Usage">Usage</a></h2>
+<hr />
+<p>Before usage, go to specify directory:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">cd /path/to/ImageProcessing/src/ImageProcessing
+</code></pre></td></tr></table>
+<p>To process images from one directory and save them to another, you can use the following commands.</p>
+<ul>
+<li><strong>Оne transformation applied to each image in the directory</strong></li>
+</ul>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
+</code></pre></td></tr></table>
+<ul>
+<li><strong>List of transformations that are sequentially applied</strong></li>
+</ul>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
+</code></pre></td></tr></table>
+<h2><a name="Examples" class="anchor" href="#Examples">Examples</a></h2>
+<hr />
+<p>Before usage, go to specify directory:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">cd /path/to/ImageProcessing/src/ImageProcessing
+</code></pre></td></tr></table>
+<ol>
+<li>
+<p>Process images using the CPU with Gauss filter:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in "input_directory" -out "output_directory" -unit=cpu gauss
+</code></pre></td></tr></table>
+</li>
+<li>
+<p>Process images using an Nvidia GPU with full agent support and rotations:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in "input_directory" -out "output_directory" -unit=NvidiaGPU -agent=Full -rotationl -rotationr
+</code></pre></td></tr></table>
+</li>
+</ol>
 
     
 </div>

@@ -154,7 +154,7 @@
 <p>To find more building and running options take a look at the <a href="https://github.com/TheAngryByrd/MiniScaffold">MiniScaffold</a> template.</p>
 <h3><a name="Package-Adding" class="anchor" href="#Package-Adding">Package Adding</a></h3>
 <p>Go to directory with your <code>build.fsproj</code> (or <code>build.csproj</code>) file and install ImageProcessing using command line:</p>
-<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">dotnet add package ImageProcessing --version 1.0.0
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="shell">dotnet add package ImageProcessing --version 1.0.0
 </code></pre></td></tr></table>
 <p>For more information visit package main <a href="https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing">GitHub page</a>.</p>
 <h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
@@ -202,18 +202,18 @@
 <hr />
 <h3><a name="Using-CLI" class="anchor" href="#Using-CLI">Using CLI</a></h3>
 <p>Before usage, go to specify directory:</p>
-<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ cd /path/to/ImageProcessing/src/ImageProcessing
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">cd /path/to/ImageProcessing/src/ImageProcessing
 </code></pre></td></tr></table>
 <p>To process images from one directory and save them to another, you can use the following commands.</p>
 <ul>
 <li><strong>Оne transformation applied to each image in the directory</strong></li>
 </ul>
-<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 </code></pre></td></tr></table>
 <ul>
 <li><strong>List of transformations that are sequentially applied</strong></li>
 </ul>
-<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 </code></pre></td></tr></table>
 <p>More details about CLI processing you can find <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_Another_Thing.html">here</a>.</p>
 <h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>

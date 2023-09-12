@@ -26,8 +26,9 @@ To find more building and running options take a look at the [MiniScaffold](http
 
 Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and install ImageProcessing using command line:
 
-    [lang=bash]
-    dotnet add package ImageProcessing --version 1.0.0
+```shell
+dotnet add package ImageProcessing --version 1.0.0
+```
 
 For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
 
@@ -72,20 +73,20 @@ For detailed descriptions of all features above visit [Api Reference](https://po
 Before usage, go to specify directory:
 
 ```sh
-$ cd /path/to/ImageProcessing/src/ImageProcessing
+cd /path/to/ImageProcessing/src/ImageProcessing
 ```
 To process images from one directory and save them to another, you can use the following commands.
 
 * **Оne transformation applied to each image in the directory**
 
 ```sh
-$ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
+dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 ```
 
 * **List of transformations that are sequentially applied**
 
 ```sh
-$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
+dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
 
 More details about CLI processing you can find [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_Another_Thing.html).
