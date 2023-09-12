@@ -13,12 +13,12 @@ and GPU or agent-supported processing, all accessible within the included consol
 It can helps you to process your images quickly using GPU or only command-line. 
 
 There is some of the features implemented in ImageProcessing.
-- Loading images from a local source and saving them.
-- Processing all images within a specified directory.
-- Filtering using one of five kernels, including "Gaussian blur" and "edges".
-- Other edits such as 90-degree rotation and flipping.
-- Combinations of existing transformations in four different scenarios.
-- Ability to utilize all of the features solely through the command line.
+* Loading images from a local source and saving them.
+* Processing all images within a specified directory.
+* Filtering using one of five kernels, including "Gaussian blur" and "edges".
+* Other edits such as 90-degree rotation and flipping.
+* Combinations of existing transformations in four different scenarios.
+* Ability to utilize all of the features solely through the command line.
 
 ---
 
@@ -30,7 +30,7 @@ There is some of the features implemented in ImageProcessing.
         <p class="card-text">Create new processing function using "bricks" via ImageProcessing. </p>
       </div>
       <div class="card-footer text-right   border-top-0">
-        <a href="{{root}}How-Tos/Doing_A_Thing.html" class="btn btn-primary">Get started</a>
+        <a href="{{root}}How-Tos/Doing_A_Thing.html" class="btn btn-primary">Learn how to code</a>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@ There is some of the features implemented in ImageProcessing.
         <p class="card-text">Quickly process your images using command line. </p>
       </div>
       <div class="card-footer text-right   border-top-0">
-        <a href="{{root}}How_Tos/Doing_Another_Thing.html" class="btn btn-primary">Learn Usecases</a>
+        <a href="{{root}}How_Tos/Doing_Another_Thing.html" class="btn btn-primary">Learn CLI</a>
       </div>
     </div>
   </div>
