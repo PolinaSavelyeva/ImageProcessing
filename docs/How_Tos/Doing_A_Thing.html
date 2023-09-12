@@ -189,12 +189,12 @@
 </ul>
 </li>
 </ul>
-<p>For detailed descriptions of all features visit <a href="">Api Reference</a>.</p>
+<p>For detailed descriptions of all features visit <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/index.html">Api Reference</a>.</p>
 <h2><a name="Processing-on-CPU" class="anchor" href="#Processing-on-CPU">Processing on CPU</a></h2>
 <hr />
 <h3><a name="CPU-filter-kernels" class="anchor" href="#CPU-filter-kernels">CPU filter kernels</a></h3>
 <p>Filter kernels are used to call <code>applyFilter</code> function.
-You can create 2D byte array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
+You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
 <ul>
 <li>Gaussian Blur</li>
 <li>Edges</li>
@@ -204,13 +204,13 @@ You can create 2D byte array as new kernel or use implemented <a href="https://p
 </ul>
 <h3><a name="Multi-threaded-processing-on-CPU" class="anchor" href="#Multi-threaded-processing-on-CPU">Multi-threaded processing on CPU</a></h3>
 <p>You can use either single-threaded CPU-based image processing or multi-threaded image processing.
-Multithreading is performed using logger and agent functions, which specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html">section</a>.</p>
+Multithreading is performed using logger and agent functions, which is specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html">section</a>.</p>
 <p>Four of them are implemented:</p>
 <ul>
 <li>Logger, which is used to inform user about status of operations, i.e work of another agents</li>
-<li>Saver agent, which save images stored in queue and send messages to logger</li>
-<li>Processing agent, which process images stored in queue using specified transformation and and send messages to logger</li>
-<li>Full processing agent, which do both saving and processing</li>
+<li>Saver agent, which is used to save images stored in queue and to send messages to logger</li>
+<li>Processing agent, which is used to process images stored in queue using specified transformation and to send messages to logger</li>
+<li>Full processing agent, which does both saving and processing</li>
 </ul>
 <h3><a name="Simple-CPU-Example" class="anchor" href="#Simple-CPU-Example">Simple CPU Example</a></h3>
 <p>Open library and load image to process:</p>
@@ -219,7 +219,7 @@ Multithreading is performed using logger and agent functions, which specified in
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 </code></pre>
-<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on CPU:</p>
+<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves the result:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">applyCustomFilterOnCPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 7)" onmouseover="showTip(event, 'fs3', 7)" class="fn">image</span> <span class="o">|&gt;</span> <span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span class="id">rotate</span> <span class="k">true</span>
@@ -246,7 +246,7 @@ Multithreading is performed using logger and agent functions, which specified in
 <hr />
 <h3><a name="GPU-filter-kernels" class="anchor" href="#GPU-filter-kernels">GPU filter kernels</a></h3>
 <p>Filter kernels are used to call <code>applyFilter</code> function.
-You can create 2D byte array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
+You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
 <ul>
 <li>Gaussian Blur</li>
 <li>Edges</li>
@@ -259,9 +259,9 @@ You can create 2D byte array as new kernel or use implemented <a href="https://p
 They have specific defining style, so for more information about how they work I recommended to visit <a href="https://yaccconstructor.github.io/Brahma.FSharp/Articles/Custom_Kernels.html">Brahma.Fsharp tutorial</a>.
 But if you have no need in creating new GPU kernels just use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-gpu.html">ones</a>, such as:</p>
 <ul>
-<li>applyFilterGPUKernel</li>
-<li>rotateGPUKernel</li>
-<li>flipGPUKernel</li>
+<li><code>applyFilterGPUKernel</code></li>
+<li><code>rotateGPUKernel</code></li>
+<li><code>flipGPUKernel</code></li>
 </ul>
 <p>All of them take <code>clContext</code> (which is device's environment abstraction) and <code>localWorkSize</code> (which shows the size of local work group) as input parameters.</p>
 <h3><a name="Multi-threaded-processing-on-GPU" class="anchor" href="#Multi-threaded-processing-on-GPU">Multi-threaded processing on GPU</a></h3>
@@ -270,11 +270,10 @@ Multithreading is performed using logger and agent functions, which specified in
 <p>Four of them are implemented:</p>
 <ul>
 <li>Logger, which is used to inform user about status of operations, i.e work of another agents</li>
-<li>Saver agent, which save images stored in queue and send messages to logger</li>
-<li>Processing agent, which process images stored in queue using specified transformation and and send messages to logger</li>
-<li>Full processing agent, which do both saving and processing</li>
+<li>Saver agent, which is used to save images stored in queue and to send messages to logger</li>
+<li>Processing agent, which is used to process images stored in queue using specified transformation and to send messages to logger</li>
+<li>Full processing agent, which does both saving and processing</li>
 </ul>
-<p>Note that using logger via GPU-processing functions can cause unpredictable behavior, i.e the order in which the events occur will be broken due to the specifics of GPU operations.</p>
 <h3><a name="Simple-GPU-Example" class="anchor" href="#Simple-GPU-Example">Simple GPU Example</a></h3>
 <p>Open library and load image to process:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">MyImage</span>
@@ -282,19 +281,18 @@ Multithreading is performed using logger and agent functions, which specified in
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 27)" onmouseover="showTip(event, 'fs1', 27)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 </code></pre>
-<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on GPU.
-But before it we need to do some steps for diagnosing graphical device.</p>
+<p>Before creating our function we need to do some steps for diagnosing graphical device.</p>
 <p>Define the <code>device</code> value by specifying the brand of your GPU or whatever the program finds (embedded graphics cards are also suitable).
 And make OpenCL context of it:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 28)" onmouseover="showTip(event, 'fs8', 28)" class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 29)" onmouseover="showTip(event, 'fs9', 29)" class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 30)" onmouseover="showTip(event, 'fs8', 30)" class="id">device</span><span class="pn">)</span>
 </code></pre>
 <p>Next, define new values for filter and rotation functions.
-This action is necessary because of compiling <a href="#gpu-processing-kernels">kernel function</a> once:</p>
+This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels">kernel function</a> once:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 31)" onmouseover="showTip(event, 'fs10', 31)" class="fn">applyFilterGPU</span> <span class="o">=</span> <span class="id">applyFilter</span> <span onmouseout="hideTip(event, 'fs9', 32)" onmouseover="showTip(event, 'fs9', 32)" class="id">clContext</span> <span class="n">64</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 33)" onmouseover="showTip(event, 'fs11', 33)" class="fn">rotateGPU</span> <span class="o">=</span> <span class="id">rotate</span> <span onmouseout="hideTip(event, 'fs9', 34)" onmouseover="showTip(event, 'fs9', 34)" class="id">clContext</span> <span class="n">64</span>
 </code></pre>
-<p>And the final function:</p>
+<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves the result:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 35)" onmouseover="showTip(event, 'fs12', 35)" class="fn">applyCustomFilterOnGPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs13', 36)" onmouseover="showTip(event, 'fs13', 36)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 37)" onmouseover="showTip(event, 'fs4', 37)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 38)" onmouseover="showTip(event, 'fs5', 38)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 39)" onmouseover="showTip(event, 'fs6', 39)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 40)" onmouseover="showTip(event, 'fs13', 40)" class="fn">image</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 41)" onmouseover="showTip(event, 'fs10', 41)" class="fn">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 42)" onmouseover="showTip(event, 'fs7', 42)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 43)" onmouseover="showTip(event, 'fs6', 43)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 44)" onmouseover="showTip(event, 'fs11', 44)" class="fn">rotateGPU</span> <span class="k">true</span>
@@ -329,10 +327,10 @@ This action is necessary because of compiling <a href="#gpu-processing-kernels">
 <p>The <code>processImage</code> function is designed to process directories with various configuration options.
 It allows you to choose the type of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html">agent support</a> for processing:</p>
 <ul>
-<li>Full, which uses a single agent to open, process and save</li>
-<li>Partial, which uses different agents for each transformation and saving</li>
-<li>PartialUsingComposition, which uses one agent for transformation and one for save</li>
-<li>No, which uses naive image processing function</li>
+<li><code>Full</code>, which uses a single agent for opening, processing and saving</li>
+<li><code>Partial</code>, which uses different agents for each transformation and saving</li>
+<li><code>PartialUsingComposition</code>, which uses one agent for transformation and one for saving</li>
+<li><code>No</code>, which uses naive image processing function</li>
 </ul>
 <p>And define a list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">transformations</a> to apply to the image, and specify the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html">processing unit</a> (CPU or GPU) for the operation.</p>
 <h3><a name="Simple-Directory-Processing-Example" class="anchor" href="#Simple-Directory-Processing-Example">Simple Directory Processing Example</a></h3>
@@ -343,7 +341,7 @@ It allows you to choose the type of <a href="https://polinasavelyeva.github.io/I
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 71)" onmouseover="showTip(event, 'fs14', 71)" class="id">inputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Input/Images/Folder/&quot;</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 72)" onmouseover="showTip(event, 'fs15', 72)" class="id">outputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Output/Images/Folder/&quot;</span>
 </code></pre>
-<p>Define list of transformations and filters that will be used. <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">Transformations</a> type is used to define it:</p>
+<p>Define list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">transformations</a> and filters that will be used:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 73)" onmouseover="showTip(event, 'fs16', 73)" class="id">imageEditorsList</span> <span class="o">=</span> <span class="pn">[</span><span class="id">Darken</span><span class="pn">;</span> <span class="id">Edges</span><span class="pn">;</span> <span class="id">RotationL</span><span class="pn">]</span>
 </code></pre>
 <p>Note that transformations and filters will be applied sequentially, one-by-one on each image in the specific directory. Choose and define <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html#CPU">processing unit</a> and <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html">multithreading mode</a>.</p>
