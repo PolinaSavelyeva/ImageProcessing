@@ -185,7 +185,7 @@
 </ul>
 <ul>
 <li>
-<strong>Multithreaded processing tools</strong>
+<strong>Multi-threaded processing tools</strong>
 <ul>
 <li>Saving agent</li>
 <li>Processing agent</li>
@@ -197,7 +197,7 @@
 <ul>
 <li><strong>Directory with pictures processing tool</strong></li>
 </ul>
-<p>For detailed descriptions of all features above visit <a href="">Api Reference</a>.</p>
+<p>For detailed descriptions of all features above visit <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/index.html">Api Reference</a>.</p>
 <h2><a name="Simple-Usage" class="anchor" href="#Simple-Usage">Simple Usage</a></h2>
 <hr />
 <h3><a name="Using-CLI" class="anchor" href="#Using-CLI">Using CLI</a></h3>
@@ -215,7 +215,7 @@
 </ul>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 </code></pre></td></tr></table>
-<p>More details about CLI processing you can find <a href="">here</a>.</p>
+<p>More details about CLI processing you can find <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_Another_Thing.html">here</a>.</p>
 <h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>
 <p>Open library and load image to process:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
@@ -234,7 +234,7 @@
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
 <span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
 </code></pre>
-<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="">kernel function</a> once:</p>
+<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels">kernel function</a> once:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
 <span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
 </code></pre>

@@ -52,7 +52,7 @@ The following features are implemented, even for CPU and GPU:
     * Horizontal flip (X-axis)
 
 
-* **Multithreaded processing tools**
+* **Multi-threaded processing tools**
     * Saving agent
     * Processing agent
     * Full processing agent, i.e saving plus processing
@@ -61,13 +61,14 @@ The following features are implemented, even for CPU and GPU:
 
 * **Directory with pictures processing tool**
 
-For detailed descriptions of all features above visit [Api Reference]().
+For detailed descriptions of all features above visit [Api Reference](https://polinasavelyeva.github.io/ImageProcessing/reference/index.html).
 
 ## Simple Usage
 
 ---
 
 ### Using CLI
+
 Before usage, go to specify directory:
 
 ```sh
@@ -87,7 +88,7 @@ $ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 $ dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
 
-More details about CLI processing you can find [here]().
+More details about CLI processing you can find [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_Another_Thing.html).
 
 ### Using Your Own Code
 
@@ -118,7 +119,7 @@ let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 ```
 
-Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function]() once:
+Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels) once:
 
 ```fsharp
 let applyFilterGPU = GPU.applyFilter clContext 64
