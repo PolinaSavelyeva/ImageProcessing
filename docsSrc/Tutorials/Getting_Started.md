@@ -151,6 +151,9 @@ let applyCustomFilterOnCPU (image: MyImage) (pathToSave : string) =
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 
+let applyFilterGPU = GPU.applyFilter clContext 64
+let rotateGPU = GPU.rotate clContext 64
+
 let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) = 
     let blurredImage = image |> applyFilterGPU gaussianBlurKernel
     let rotatedImage = blurredImage |> rotateGPU true
