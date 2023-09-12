@@ -37,6 +37,7 @@ For more information visit package main [GitHub page](https://github.com/PolinaS
 
 ### Using CLI
 Before usage, go to specify directory:
+
 ```sh
 $ cd /path/to/ImageProcessing/src/ImageProcessing
 ```
@@ -59,6 +60,7 @@ More details about CLI processing you can find [here]().
 ### Using Your Own Code
 
 Open library and load image to process:
+
 ```fsharp
 open ImageProcessing
 
@@ -85,11 +87,14 @@ let clContext = Brahma.FSharp.ClContext(device)
 ```
 
 Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function]() once:
+
 ```fsharp
 let applyFilterGPU = GPU.applyFilter clContext 64
 let rotateGPU = GPU.rotate clContext 64
 ```
+
 And the final function:
+
 ```fsharp
 let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) = 
     let blurredImage = image |> applyFilterGPU gaussianBlurKernel
@@ -99,6 +104,7 @@ let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) =
 ```
 
 The result:
+
 ```fsharp
 open ImageProcessing
 
@@ -120,6 +126,7 @@ let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) =
     MyImage.save rotatedImage pathToSave
  
 let pathToSave = "Path/To/Directory/image_name.jpg"
+
 applyCustomFilterOnCPU myImage pathToSave
 applyCustomFilterOnGPU myImage pathToSave
 ```
