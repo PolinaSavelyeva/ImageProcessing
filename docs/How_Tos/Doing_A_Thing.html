@@ -141,9 +141,140 @@
 </nav>
 <div class="container" id="fsdocs-content">
     
-<h1><a name="How-To-do-a-first-thing" class="anchor" href="#How-To-do-a-first-thing">How To do a first thing</a></h1>
+<h1><a name="How-To-make-your-own-code" class="anchor" href="#How-To-make-your-own-code">How-To make your own code</a></h1>
+<h2><a name="Implemented-Features" class="anchor" href="#Implemented-Features">Implemented Features</a></h2>
+<hr />
+<p>ImageProcessing supports the following features, which you can use when implementing your examples:</p>
+<ul>
+<li>
+<strong>Filters for CPU/GPU</strong>
+<ul>
+<li>Gaussian Blur</li>
+<li>Edges</li>
+<li>Sharpen</li>
+<li>Lighten</li>
+<li>Darken</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Transformations for CPU/GPU</strong>
+<ul>
+<li>Clockwise rotation</li>
+<li>Counterclockwise rotation</li>
+<li>Vertical flip (Y-axis)</li>
+<li>Horizontal flip (X-axis)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Multithreaded processing tools</strong>
+<ul>
+<li>Saving agent</li>
+<li>Processing agent</li>
+<li>Full processing agent, i.e saving plus processing</li>
+<li>Events logger</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<p><strong>Directory with pictures processing tool</strong></p>
+<p>Also you can specify:</p>
+<ul>
+<li>Processing unit (CPU or GPU)</li>
+<li>Agents support</li>
+</ul>
+</li>
+</ul>
+<p>For detailed descriptions of all features visit <a href="">Api Reference</a>.</p>
+<h2><a name="Simple-CPU-Example" class="anchor" href="#Simple-CPU-Example">Simple CPU Example</a></h2>
+<hr />
+<p>Open library and load image to process:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 27)" onmouseover="showTip(event, 'fs1', 27)" class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+</code></pre>
+<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on CPU:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">applyCustomFilterOnCPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 7)" onmouseover="showTip(event, 'fs3', 7)" class="fn">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
     
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 11)" onmouseover="showTip(event, 'fs4', 11)" class="id">pathToSave</span>
+</code></pre>
+<p>The result:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 12)" onmouseover="showTip(event, 'fs1', 12)" class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 13)" onmouseover="showTip(event, 'fs2', 13)" class="fn">applyCustomFilterOnCPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs3', 14)" onmouseover="showTip(event, 'fs3', 14)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 15)" onmouseover="showTip(event, 'fs4', 15)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 16)" onmouseover="showTip(event, 'fs5', 16)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 17)" onmouseover="showTip(event, 'fs6', 17)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 18)" onmouseover="showTip(event, 'fs3', 18)" class="fn">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 19)" onmouseover="showTip(event, 'fs7', 19)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 20)" onmouseover="showTip(event, 'fs6', 20)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 21)" onmouseover="showTip(event, 'fs7', 21)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 22)" onmouseover="showTip(event, 'fs4', 22)" class="id">pathToSave</span>
+ 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 23)" onmouseover="showTip(event, 'fs4', 23)" class="id">pathToSave</span> <span class="o">=</span> <span class="s">&quot;Path/To/Directory/image_name.jpg&quot;</span>
+
+<span onmouseout="hideTip(event, 'fs2', 24)" onmouseover="showTip(event, 'fs2', 24)" class="fn">applyCustomFilterOnCPU</span> <span onmouseout="hideTip(event, 'fs1', 25)" onmouseover="showTip(event, 'fs1', 25)" class="id">myImage</span> <span onmouseout="hideTip(event, 'fs4', 26)" onmouseover="showTip(event, 'fs4', 26)" class="id">pathToSave</span>
+</code></pre>
+<h2><a name="Simple-GPU-Example" class="anchor" href="#Simple-GPU-Example">Simple GPU Example</a></h2>
+<hr />
+<p>Open library and load image to process:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 27)" onmouseover="showTip(event, 'fs1', 27)" class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+</code></pre>
+<p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on GPU. But before it we need to do some steps for diagnosing graphical device.</p>
+<p>Define the <code>device</code> value by specifying the brand of your GPU or whatever the program finds (embedded graphics cards are also suitable). And make OpenCL context of it:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 28)" onmouseover="showTip(event, 'fs8', 28)" class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 29)" onmouseover="showTip(event, 'fs9', 29)" class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 30)" onmouseover="showTip(event, 'fs8', 30)" class="id">device</span><span class="pn">)</span>
+</code></pre>
+<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="">kernel function</a> once:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 31)" onmouseover="showTip(event, 'fs10', 31)" class="fn">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span onmouseout="hideTip(event, 'fs9', 32)" onmouseover="showTip(event, 'fs9', 32)" class="id">clContext</span> <span class="n">64</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 33)" onmouseover="showTip(event, 'fs11', 33)" class="fn">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span onmouseout="hideTip(event, 'fs9', 34)" onmouseover="showTip(event, 'fs9', 34)" class="id">clContext</span> <span class="n">64</span>
+</code></pre>
+<p>And the final function:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 35)" onmouseover="showTip(event, 'fs12', 35)" class="fn">applyCustomFilterOnGPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs13', 36)" onmouseover="showTip(event, 'fs13', 36)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 37)" onmouseover="showTip(event, 'fs4', 37)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 38)" onmouseover="showTip(event, 'fs5', 38)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 39)" onmouseover="showTip(event, 'fs6', 39)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 40)" onmouseover="showTip(event, 'fs13', 40)" class="fn">image</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 41)" onmouseover="showTip(event, 'fs10', 41)" class="fn">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 42)" onmouseover="showTip(event, 'fs7', 42)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 43)" onmouseover="showTip(event, 'fs6', 43)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 44)" onmouseover="showTip(event, 'fs11', 44)" class="fn">rotateGPU</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 45)" onmouseover="showTip(event, 'fs7', 45)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 46)" onmouseover="showTip(event, 'fs4', 46)" class="id">pathToSave</span>
+</code></pre>
+<p>The result:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 47)" onmouseover="showTip(event, 'fs1', 47)" class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 48)" onmouseover="showTip(event, 'fs8', 48)" class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 49)" onmouseover="showTip(event, 'fs9', 49)" class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 50)" onmouseover="showTip(event, 'fs8', 50)" class="id">device</span><span class="pn">)</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 51)" onmouseover="showTip(event, 'fs12', 51)" class="fn">applyCustomFilterOnGPU</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs13', 52)" onmouseover="showTip(event, 'fs13', 52)" class="fn">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 53)" onmouseover="showTip(event, 'fs4', 53)" class="fn">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs5', 54)" onmouseover="showTip(event, 'fs5', 54)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 55)" onmouseover="showTip(event, 'fs6', 55)" class="fn">blurredImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 56)" onmouseover="showTip(event, 'fs13', 56)" class="fn">image</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 57)" onmouseover="showTip(event, 'fs10', 57)" class="fn">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 58)" onmouseover="showTip(event, 'fs7', 58)" class="fn">rotatedImage</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 59)" onmouseover="showTip(event, 'fs6', 59)" class="fn">blurredImage</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 60)" onmouseover="showTip(event, 'fs11', 60)" class="fn">rotateGPU</span> <span class="k">true</span>
+    
+    <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 61)" onmouseover="showTip(event, 'fs7', 61)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 62)" onmouseover="showTip(event, 'fs4', 62)" class="id">pathToSave</span>
+ 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 63)" onmouseover="showTip(event, 'fs4', 63)" class="id">pathToSave</span> <span class="o">=</span> <span class="s">&quot;Path/To/Directory/image_name.jpg&quot;</span>
+
+<span onmouseout="hideTip(event, 'fs12', 64)" onmouseover="showTip(event, 'fs12', 64)" class="fn">applyCustomFilterOnGPU</span> <span onmouseout="hideTip(event, 'fs1', 65)" onmouseover="showTip(event, 'fs1', 65)" class="id">myImage</span> <span onmouseout="hideTip(event, 'fs4', 66)" onmouseover="showTip(event, 'fs4', 66)" class="id">pathToSave</span>
+</code></pre>
+
+    <div class="fsdocs-tip" id="fs1">val myImage: obj</div>
+<div class="fsdocs-tip" id="fs2">val applyCustomFilterOnCPU: image: &#39;a -&gt; pathToSave: string -&gt; &#39;b</div>
+<div class="fsdocs-tip" id="fs3">val image: &#39;a</div>
+<div class="fsdocs-tip" id="fs4">val pathToSave: string</div>
+<div class="fsdocs-tip" id="fs5">Multiple items<br />val string: value: &#39;T -&gt; string<br /><br />--------------------<br />type string = System.String</div>
+<div class="fsdocs-tip" id="fs6">val blurredImage: obj</div>
+<div class="fsdocs-tip" id="fs7">val rotatedImage: obj</div>
+<div class="fsdocs-tip" id="fs8">val device: obj</div>
+<div class="fsdocs-tip" id="fs9">val clContext: obj</div>
+<div class="fsdocs-tip" id="fs10">val applyFilterGPU: (obj -&gt; obj -&gt; obj)</div>
+<div class="fsdocs-tip" id="fs11">val rotateGPU: (bool -&gt; obj -&gt; obj)</div>
+<div class="fsdocs-tip" id="fs12">val applyCustomFilterOnGPU: image: obj -&gt; pathToSave: string -&gt; &#39;a</div>
+<div class="fsdocs-tip" id="fs13">val image: obj</div>
+
 </div>
 
 <!-- BEGIN SEARCH BOX: this adds support for the search box -->

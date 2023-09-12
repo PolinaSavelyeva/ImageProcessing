@@ -5,5 +5,5 @@ categoryindex: 2
 index: 2
 ---
 
-# How To do a second thing
+# How-To use CLI
 

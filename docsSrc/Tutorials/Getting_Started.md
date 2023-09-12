@@ -31,6 +31,38 @@ Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and instal
 
 For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
 
+## Features
+
+---
+
+The following features are implemented, even for CPU and GPU:
+
+* **Filters**
+    * Gaussian Blur
+    * Edges
+    * Sharpen
+    * Lighten
+    * Darken
+
+
+* **Transformations**
+    * Clockwise rotation
+    * Counterclockwise rotation
+    * Vertical flip (Y-axis)
+    * Horizontal flip (X-axis)
+
+
+* **Multithreaded processing tools**
+    * Saving agent
+    * Processing agent
+    * Full processing agent, i.e saving plus processing
+    * Events logger
+
+
+* **Directory with pictures processing tool**
+
+For detailed descriptions of all features above visit [Api Reference]().
+
 ## Simple Usage
 
 ---
@@ -130,35 +162,3 @@ let pathToSave = "Path/To/Directory/image_name.jpg"
 applyCustomFilterOnCPU myImage pathToSave
 applyCustomFilterOnGPU myImage pathToSave
 ```
-
-## Features
-
----
-
-The following features are implemented, even for CPU and GPU:
-
-* **Filters**
-  * Gaussian Blur
-  * Edges
-  * Sharpen
-  * Lighten
-  * Darken
-
-
-* **Transformations**
-  * Clockwise rotation
-  * Counterclockwise rotation
-  * Vertical flip (Y-axis)
-  * Horizontal flip (X-axis)
-
-
-* **Multithreaded processing tools**
-  * Saving agent
-  * Processing agent
-  * Full processing agent, i.e saving plus processing
-  * Events logger
-
-
-* **Directory with pictures processing tool**
-
-For detailed descriptions of all features above visit [Api Reference]().

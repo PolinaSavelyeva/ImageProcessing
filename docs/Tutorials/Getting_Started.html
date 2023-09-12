@@ -157,6 +157,47 @@
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">dotnet add package ImageProcessing --version 1.0.0
 </code></pre></td></tr></table>
 <p>For more information visit package main <a href="https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing">GitHub page</a>.</p>
+<h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
+<hr />
+<p>The following features are implemented, even for CPU and GPU:</p>
+<ul>
+<li>
+<strong>Filters</strong>
+<ul>
+<li>Gaussian Blur</li>
+<li>Edges</li>
+<li>Sharpen</li>
+<li>Lighten</li>
+<li>Darken</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Transformations</strong>
+<ul>
+<li>Clockwise rotation</li>
+<li>Counterclockwise rotation</li>
+<li>Vertical flip (Y-axis)</li>
+<li>Horizontal flip (X-axis)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<strong>Multithreaded processing tools</strong>
+<ul>
+<li>Saving agent</li>
+<li>Processing agent</li>
+<li>Full processing agent, i.e saving plus processing</li>
+<li>Events logger</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Directory with pictures processing tool</strong></li>
+</ul>
+<p>For detailed descriptions of all features above visit <a href="">Api Reference</a>.</p>
 <h2><a name="Simple-Usage" class="anchor" href="#Simple-Usage">Simple Usage</a></h2>
 <hr />
 <h3><a name="Using-CLI" class="anchor" href="#Using-CLI">Using CLI</a></h3>
@@ -229,47 +270,6 @@
 <span class="id">applyCustomFilterOnCPU</span> <span class="id">myImage</span> <span class="id">pathToSave</span>
 <span class="id">applyCustomFilterOnGPU</span> <span class="id">myImage</span> <span class="id">pathToSave</span>
 </code></pre>
-<h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
-<hr />
-<p>The following features are implemented, even for CPU and GPU:</p>
-<ul>
-<li>
-<strong>Filters</strong>
-<ul>
-<li>Gaussian Blur</li>
-<li>Edges</li>
-<li>Sharpen</li>
-<li>Lighten</li>
-<li>Darken</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>
-<strong>Transformations</strong>
-<ul>
-<li>Clockwise rotation</li>
-<li>Counterclockwise rotation</li>
-<li>Vertical flip (Y-axis)</li>
-<li>Horizontal flip (X-axis)</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>
-<strong>Multithreaded processing tools</strong>
-<ul>
-<li>Saving agent</li>
-<li>Processing agent</li>
-<li>Full processing agent, i.e saving plus processing</li>
-<li>Events logger</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>Directory with pictures processing tool</strong></li>
-</ul>
-<p>For detailed descriptions of all features above visit <a href="">Api Reference</a>.</p>
 
     <div class="fsdocs-tip" id="fs1">Multiple items<br />val string: value: &#39;T -&gt; string<br /><br />--------------------<br />type string = System.String</div>
 
