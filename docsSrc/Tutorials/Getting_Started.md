@@ -5,9 +5,12 @@ categoryindex: 1
 index: 1
 ---
 
-# Getting Started
+# Getting Started with ImageProcessing
+
 
 ## Prepearing
+
+---
 
 ### Requirements
 
@@ -29,6 +32,8 @@ Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and instal
 For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
 
 ## Simple Usage
+
+---
 
 ### Using CLI
 Before usage, go to specify directory:
@@ -117,6 +122,8 @@ applyCustomFilterOnGPU myImage pathToSave
 
 ## Features
 
+---
+
 The following features are implemented, even for CPU and GPU:
 
 * **Filters**
@@ -144,27 +151,3 @@ The following features are implemented, even for CPU and GPU:
 * **Directory with pictures processing tool**
 
 For detailed descriptions of all features above visit [Api Reference]().
-
-The final result for all types of transformations and filters:
-
-|Original|Sharpen|
-|:-------|:------|
-| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplash2.jpg)  | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg) |
-
-|Gauss|Edges|
-|:-------|:------|
-| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg) |
-
-|Darken|Lighten|
-|:-------|:------|
-| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg)  | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg) |
-
-
-|Rotation R|Rotation L|
-|:-------|:------|
-| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg) |
-
-|Flip H|Flip V|
-|:-------|:------|
-| ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg) | ![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg) |
-

@@ -141,8 +141,9 @@
 </nav>
 <div class="container" id="fsdocs-content">
     
-<h1><a name="Getting-Started" class="anchor" href="#Getting-Started">Getting Started</a></h1>
+<h1><a name="Getting-Started-with-ImageProcessing" class="anchor" href="#Getting-Started-with-ImageProcessing">Getting Started with ImageProcessing</a></h1>
 <h2><a name="Prepearing" class="anchor" href="#Prepearing">Prepearing</a></h2>
+<hr />
 <h3><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h3>
 <p>First of all, make sure the following requirements are installed on your system:</p>
 <ul>
@@ -157,6 +158,7 @@
 </code></pre></td></tr></table>
 <p>For more information visit package main <a href="https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing">GitHub page</a>.</p>
 <h2><a name="Simple-Usage" class="anchor" href="#Simple-Usage">Simple Usage</a></h2>
+<hr />
 <h3><a name="Using-CLI" class="anchor" href="#Using-CLI">Using CLI</a></h3>
 <p>Before usage, go to specify directory:</p>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">$ cd /path/to/ImageProcessing/src/ImageProcessing
@@ -229,6 +231,7 @@ More details about CLI processing you can find <a href="">here</a>.
 <span class="id">applyCustomFilterOnGPU</span> <span class="id">myImage</span> <span class="id">pathToSave</span>
 </code></pre>
 <h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
+<hr />
 <p>The following features are implemented, even for CPU and GPU:</p>
 <ul>
 <li>
@@ -268,82 +271,6 @@ More details about CLI processing you can find <a href="">here</a>.
 <li><strong>Directory with pictures processing tool</strong></li>
 </ul>
 <p>For detailed descriptions of all features above visit <a href="">Api Reference</a>.</p>
-<p>The final result for all types of transformations and filters:</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Original</p></th>
-<th align="left"><p>Sharpen</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplash2.jpg" alt="image" /></p></td>
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashSharpen.jpg" alt="image" /></p></td>
-</tr>
-</tbody>
-</table>
-
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Gauss</p></th>
-<th align="left"><p>Edges</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashGauss.jpg" alt="image" /></p></td>
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashEdges.jpg" alt="image" /></p></td>
-</tr>
-</tbody>
-</table>
-
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Darken</p></th>
-<th align="left"><p>Lighten</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashDarken.jpg" alt="image" /></p></td>
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashLighten.jpg" alt="image" /></p></td>
-</tr>
-</tbody>
-</table>
-
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Rotation R</p></th>
-<th align="left"><p>Rotation L</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotation.jpg" alt="image" /></p></td>
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashRotationF.jpg" alt="image" /></p></td>
-</tr>
-</tbody>
-</table>
-
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Flip H</p></th>
-<th align="left"><p>Flip V</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlipF.jpg" alt="image" /></p></td>
-<td align="left"><p><img src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/david-clode-78YxP3PP05A-unsplashFlip.jpg" alt="image" /></p></td>
-</tr>
-</tbody>
-</table>
-
 
     <div class="fsdocs-tip" id="fs1">Multiple items<br />val string: value: &#39;T -&gt; string<br /><br />--------------------<br />type string = System.String</div>
 
