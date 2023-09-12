@@ -13,9 +13,9 @@ index: 1
 
 First of all, make sure the following requirements are installed on your system:
 
-- [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher (recommended 6.0+),
-- [Mono](http://www.mono-project.com/) if you're on Linux or macOS or
-- [VSCode Dev Container](https://code.visualstudio.com/docs/remote/containers).
+* [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher (recommended 6.0+),
+* [Mono](http://www.mono-project.com/) if you're on Linux or macOS or
+* [VSCode Dev Container](https://code.visualstudio.com/docs/remote/containers).
 
 To find more building and running options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.
 

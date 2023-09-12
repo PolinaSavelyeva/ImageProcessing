@@ -13,6 +13,7 @@ and GPU or agent-supported processing, all accessible within the included consol
 It can helps you to process your images quickly using GPU or only command-line. 
 
 There is some of the features implemented in ImageProcessing.
+
 * Loading images from a local source and saving them.
 * Processing all images within a specified directory.
 * Filtering using one of five kernels, including "Gaussian blur" and "edges".
