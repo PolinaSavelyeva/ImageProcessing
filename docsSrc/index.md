@@ -31,7 +31,7 @@ There is some of the features implemented in ImageProcessing.
         <p class="card-text">Create new processing function using "bricks" via ImageProcessing. </p>
       </div>
       <div class="card-footer text-right   border-top-0">
-        <a href="{{root}}How-Tos/Doing_A_Thing.html" class="btn btn-primary">Learn how to code</a>
+        <a href="{{root}}How_Tos/Doing_A_Thing.html" class="btn btn-primary">Learn how to code</a>
       </div>
     </div>
   </div>

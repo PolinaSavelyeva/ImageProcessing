@@ -5,7 +5,7 @@ categoryindex: 2
 index: 2
 ---
 
-# How-To use CLI
+# How-To use ImageProcessing CLI
 
 ## Overview
 

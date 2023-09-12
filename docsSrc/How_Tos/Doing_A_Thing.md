@@ -5,7 +5,7 @@ categoryindex: 2
 index: 1
 ---
 
-# How-To make your own code
+# How-To make your own ImageProcessing code
 
 ## Implemented Features
 

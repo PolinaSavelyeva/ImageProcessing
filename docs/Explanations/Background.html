@@ -141,8 +141,22 @@
 </nav>
 <div class="container" id="fsdocs-content">
     
-<h1><a name="Background" class="anchor" href="#Background">Background</a></h1>
-<p>Here's a core concept and reasons why this exists at a deeper level. CHECK</p>
+<h1><a name="Structure-of-ImageProcessing" class="anchor" href="#Structure-of-ImageProcessing">Structure of ImageProcessing</a></h1>
+<h2><a name="Core-Concepts" class="anchor" href="#Core-Concepts">Core Concepts</a></h2>
+<hr />
+<h3><a name="1-Agents" class="anchor" href="#1-Agents">1. Agents</a></h3>
+<p>The code uses agents as a fundamental concept for concurrent and asynchronous processing of images.
+Agents are lightweight, concurrent execution units that can receive and process messages independently.</p>
+<h3><a name="2-Image-Processing" class="anchor" href="#2-Image-Processing">2. Image Processing</a></h3>
+<p>Image processing is a key operation performed on images, which involves applying various transformations.
+These transformations can include filters like Gaussian blur, sharpening, and flip operations (both horizontal and vertical).</p>
+<h3><a name="3-CPU-and-GPU-Processing" class="anchor" href="#3-CPU-and-GPU-Processing">3. CPU and GPU Processing</a></h3>
+<p>The code supports image processing on both CPU and GPU platforms.
+CPU processing is done using standard F# functions, while GPU processing utilizes the <a href="https://github.com/YaccConstructor/Brahma.FSharp">Brahma.FSharp</a> library to leverage the power of Graphics Processing Units for parallel processing.</p>
+<h2><a name="Diagram" class="anchor" href="#Diagram">Diagram</a></h2>
+<hr />
+<p>There is a UML diagram representing the dependencies between modules:</p>
+<p>[UML_diagram]((<a href="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/image_processing_uml.png)">https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/image_processing_uml.png)</a></p>
 
     
 </div>
