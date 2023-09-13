@@ -62,18 +62,18 @@ blockquote {
 
 #fsdocs-content h2 {
     font-size: 1.6rem;
-    margin: 40px 0px 10px 0px;
+    margin: 45px 0px 20px 0px;
     font-weight: 400;
 }
 
 #fsdocs-content h3 {
-    font-size: 1.2rem;
-    margin: 15px 0px 10px 0px;
+    font-size: 1.6rem;
+    margin: 30px 0px 15px 0px;
     font-weight: 400;
 }
 
 #fsdocs-content hr {
-    margin: 0px 0px 20px 0px;
+    margin: 0px 0px 30px 0px;
 }
 
 #fsdocs-content li {
