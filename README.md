@@ -1,13 +1,8 @@
 # ImageProcessing
 
----
-
 ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
 
 ## Supported Features
-
----
-
 - Loading images from a local source and saving them.
 - Processing all images within a specified directory.
 - Filtering using one of five kernels, including "Gaussian blur" and "edges".
@@ -16,14 +11,9 @@ ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https
 - Ability to utilize all of the features solely through the command line.
 
 ##  Documentation
-
----
-
 See more information on [GitHub Pages](https://polinasavelyeva.github.io/ImageProcessing/).
 
 ## Requirements
-
----
 
 Make sure the following requirements are installed on your system:
 
@@ -34,8 +24,6 @@ or
 
 ## Package Adding
 
----
-
 Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and install ImageProcessing using command line:
 
 ```shell
@@ -45,8 +33,6 @@ dotnet add package ImageProcessing --version 1.0.0
 For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
 
 ## Simple Usage
-
----
 
 Before usage, go to specify directory:
 ```sh
@@ -64,8 +50,6 @@ To process images from one directory and save them to another, you can use the f
 ```
 
 ##  Examples
-
----
 
 The final result for all types of transformations and filters:
 
