@@ -17,8 +17,8 @@ blockquote {
     margin-bottom: 0px;
     margin-left: 0.25em;
     padding: 0 .75em 0 1em;
-    border-left: 1px solid #777;
-    border-right: 0px solid #777;
+    border-left: 1px solid #919191;
+    border-right: 0px solid #919191;
 }
 
 /* Format the heading - nicer spacing etc. */
@@ -28,7 +28,7 @@ blockquote {
 
     .masthead .muted a {
         text-decoration: none;
-        color: #999999;
+        color: #a7a7a7;
     }
 
     .masthead ul, .masthead li {
@@ -93,7 +93,7 @@ blockquote {
 }
 
 #fsdocs-content a:not(.btn) {
-    color: #4974D1;
+    color: #908c94;
 }
 /* remove the default bootstrap bold on dt elements */
 #fsdocs-content dt {
@@ -312,7 +312,7 @@ blockquote {
 
 /* omitted */
 #fsdocs-content span.omitted {
-    background: #3c4e52;
+    background: #948c8c;
     border-radius: 5px;
     color: #808080;
     padding: 0px 0px 1px 0px;
@@ -589,7 +589,7 @@ blockquote {
 
 /* tool tip */
 div.fsdocs-tip {
-    background: #475b5f;
+    background: #656565;
     border-radius: 4px;
     font: 0.85rem 'Roboto Mono', monospace;
     padding: 6px 8px 6px 8px;
