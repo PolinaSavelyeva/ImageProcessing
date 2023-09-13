@@ -93,7 +93,7 @@ blockquote {
 }
 
 #fsdocs-content a:not(.btn) {
-    color: #908c94;
+    color: var(--fsdocs-content-text-color);;;
 }
 /* remove the default bootstrap bold on dt elements */
 #fsdocs-content dt {
