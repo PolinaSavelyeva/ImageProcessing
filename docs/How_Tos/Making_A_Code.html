@@ -288,7 +288,7 @@ And make OpenCL context of it:</p>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 29)" onmouseover="showTip(event, 'fs9', 29)" class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 30)" onmouseover="showTip(event, 'fs8', 30)" class="id">device</span><span class="pn">)</span>
 </code></pre>
 <p>Next, define new values for filter and rotation functions.
-This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels">kernel function</a> once:</p>
+This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels">kernel function</a> once:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 31)" onmouseover="showTip(event, 'fs10', 31)" class="fn">applyFilterGPU</span> <span class="o">=</span> <span class="id">applyFilter</span> <span onmouseout="hideTip(event, 'fs9', 32)" onmouseover="showTip(event, 'fs9', 32)" class="id">clContext</span> <span class="n">64</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 33)" onmouseover="showTip(event, 'fs11', 33)" class="fn">rotateGPU</span> <span class="o">=</span> <span class="id">rotate</span> <span onmouseout="hideTip(event, 'fs9', 34)" onmouseover="showTip(event, 'fs9', 34)" class="id">clContext</span> <span class="n">64</span>
 </code></pre>

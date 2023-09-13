@@ -89,7 +89,7 @@ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
 
-More details about CLI processing you can find [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_Another_Thing.html).
+More details about CLI processing you can find [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html).
 
 ### Using Your Own Code
 

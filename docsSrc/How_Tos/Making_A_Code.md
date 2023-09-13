@@ -174,7 +174,7 @@ let clContext = Brahma.FSharp.ClContext(device)
 ```
 
 Next, define new values for filter and rotation functions. 
-This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels) once:
+This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels) once:
 
 ```fsharp
 let applyFilterGPU = applyFilter clContext 64
