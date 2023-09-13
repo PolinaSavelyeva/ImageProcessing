@@ -1,5 +1,5 @@
 ---
-title: Background
+title: Structure
 category: Explanations
 categoryindex: 3
 index: 1

@@ -1,5 +1,5 @@
 ---
-title: How To do a second thing
+title: How To use CLI
 category: How To Guides
 categoryindex: 2
 index: 2

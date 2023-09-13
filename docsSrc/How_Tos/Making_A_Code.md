@@ -1,5 +1,5 @@
 ---
-title: How To do a first thing
+title: How To make a code
 category: How To Guides
 categoryindex: 2
 index: 1

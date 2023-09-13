@@ -270,3 +270,5 @@ coverage.*.xml
 out/
 .DS_Store
 .fsdocs/cache
+docs/content/navbar-fixed-left.css
+docs/content/navbar-fixed-right.css
