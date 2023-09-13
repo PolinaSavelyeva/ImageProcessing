@@ -269,3 +269,4 @@ coverage.*.xml
 
 out/
 .DS_Store
+.fsdocs/cache
