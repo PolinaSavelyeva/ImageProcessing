@@ -89,7 +89,7 @@ dotnet run -in /input/path -out /output/path -agent=full -unit=cpu gauss
 dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 ```
 
-More details about CLI processing you can find [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html).
+You can find more details about CLI processing [here](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html).
 
 ### Using Your Own Code
 
@@ -120,7 +120,7 @@ let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 ```
 
-Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels) once:
+Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels) once:
 
 ```fsharp
 let applyFilterGPU = GPU.applyFilter clContext 64

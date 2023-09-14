@@ -29,7 +29,7 @@
 <body>
 <nav class="navbar sticky-top navbar-expand-lg bg-body">
     <div class="container">
-        <a class="navbar-brand" href="https://PolinaSavelyeva.github.io/ImageProcessing/"><img id="fsdocs-logo" src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/dev/resources/logo_down_scaled.png" /></a>
+        <a class="navbar-brand" href="https://PolinaSavelyeva.github.io/ImageProcessing/"><img id="fsdocs-logo" src="https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/logo_down_scaled.png" /></a>
         <div id="header">
             <div class="searchbox">
                 <input data-search-input="" class="m-3" id="search-by" type="search" placeholder="Search..." />
@@ -215,7 +215,7 @@
 </ul>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="sh">dotnet run -in /input/path -out /output/path  -agent=no -unit=anygpu gauss sharpen
 </code></pre></td></tr></table>
-<p>More details about CLI processing you can find <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html">here</a>.</p>
+<p>You can find more details about CLI processing <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html">here</a>.</p>
 <h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>
 <p>Open library and load image to process:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
@@ -234,7 +234,7 @@
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
 <span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
 </code></pre>
-<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Doing_A_Thing.html#GPU-processing-kernels">kernel function</a> once:</p>
+<p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels">kernel function</a> once:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
 <span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
 </code></pre>

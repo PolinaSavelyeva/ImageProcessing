@@ -8,7 +8,7 @@
         <RepositoryType>git</RepositoryType>
         <Authors>PolinaSavelyeva</Authors>
         <RepositoryUrl>https://github.com/PolinaSavelyeva/ImageProcessing</RepositoryUrl>
-        <FsDocsLogoSource>https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/dev/resources/logo_down_scaled.png</FsDocsLogoSource>
+        <FsDocsLogoSource>https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/logo_down_scaled.png</FsDocsLogoSource>
     </PropertyGroup>
     <ItemGroup>
         <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>

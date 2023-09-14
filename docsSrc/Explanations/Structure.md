@@ -30,4 +30,4 @@ CPU processing is done using standard F# functions, while GPU processing utilize
 
 There is a UML diagram representing the dependencies between modules: 
 
-![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/dev/resources/image_processing_uml.svg)
+![image](https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/image_processing_uml.svg)
