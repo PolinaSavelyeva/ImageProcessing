@@ -218,14 +218,16 @@
 <p>You can find more details about CLI processing <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Using_A_CLI.html">here</a>.</p>
 <h3><a name="Using-Your-Own-Code" class="anchor" href="#Using-Your-Own-Code">Using Your Own Code</a></h3>
 <p>Open library and load image to process:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">CPU</span>
+<span class="k">open</span> <span class="id">GPU</span>
 
-<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 </code></pre>
 <p>Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on CPU:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyCustomFilterOnCPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
-    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
-    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">rotate</span> <span class="k">true</span>
     
     <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
 </code></pre>
@@ -235,8 +237,8 @@
 <span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
 </code></pre>
 <p>Next, define new values for filter and rotation functions. This action is necessary because of compiling <a href="https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels">kernel function</a> once:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
-<span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
+<span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
 </code></pre>
 <p>And the final function:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">applyCustomFilterOnGPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
@@ -246,21 +248,23 @@
     <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
 </code></pre>
 <p>The result:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">CPU</span>
+<span class="k">open</span> <span class="id">GPU</span>
 
-<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">MyImage</span><span class="pn">.</span><span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
+<span class="k">let</span> <span class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 
 <span class="k">let</span> <span class="id">applyCustomFilterOnCPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
-    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
-    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">CPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="k">true</span>
+    <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">applyFilter</span> <span class="id">gaussianBlurKernel</span>
+    <span class="k">let</span> <span class="id">rotatedImage</span> <span class="o">=</span> <span class="id">blurredImage</span> <span class="o">|&gt;</span> <span class="id">rotate</span> <span class="k">true</span>
     
     <span class="id">MyImage</span><span class="pn">.</span><span class="id">save</span> <span class="id">rotatedImage</span> <span class="id">pathToSave</span>
 
 <span class="k">let</span> <span class="id">device</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClDevice</span><span class="pn">.</span><span class="id">GetFirstAppropriateDevice</span><span class="pn">(</span><span class="pn">)</span>
 <span class="k">let</span> <span class="id">clContext</span> <span class="o">=</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">ClContext</span><span class="pn">(</span><span class="id">device</span><span class="pn">)</span>
 
-<span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
-<span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">GPU</span><span class="pn">.</span><span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
+<span class="k">let</span> <span class="id">applyFilterGPU</span> <span class="o">=</span> <span class="id">applyFilter</span> <span class="id">clContext</span> <span class="n">64</span>
+<span class="k">let</span> <span class="id">rotateGPU</span> <span class="o">=</span> <span class="id">rotate</span> <span class="id">clContext</span> <span class="n">64</span>
 
 <span class="k">let</span> <span class="id">applyCustomFilterOnGPU</span> <span class="pn">(</span><span class="id">image</span><span class="pn">:</span> <span class="id">MyImage</span><span class="pn">)</span> <span class="pn">(</span><span class="id">pathToSave</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs1', 4)" onmouseover="showTip(event, 'fs1', 4)" class="id">string</span><span class="pn">)</span> <span class="o">=</span> 
     <span class="k">let</span> <span class="id">blurredImage</span> <span class="o">=</span> <span class="id">image</span> <span class="o">|&gt;</span> <span class="id">applyFilterGPU</span> <span class="id">gaussianBlurKernel</span>

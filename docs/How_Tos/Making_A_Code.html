@@ -214,8 +214,8 @@ Multithreading is performed using logger and agent functions, which is specified
 </ul>
 <h3><a name="Simple-CPU-Example" class="anchor" href="#Simple-CPU-Example">Simple CPU Example</a></h3>
 <p>Open library and load image to process:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">MyImage</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">CPU</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">CPU</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 </code></pre>
@@ -227,8 +227,8 @@ Multithreading is performed using logger and agent functions, which is specified
     <span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 11)" onmouseover="showTip(event, 'fs4', 11)" class="id">pathToSave</span>
 </code></pre>
 <p>The result:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">MyImage</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">CPU</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">CPU</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 12)" onmouseover="showTip(event, 'fs1', 12)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 
@@ -276,8 +276,8 @@ Multithreading is performed using logger and agent functions, which specified in
 </ul>
 <h3><a name="Simple-GPU-Example" class="anchor" href="#Simple-GPU-Example">Simple GPU Example</a></h3>
 <p>Open library and load image to process:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">MyImage</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">GPU</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">GPU</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 27)" onmouseover="showTip(event, 'fs1', 27)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 </code></pre>
@@ -300,8 +300,8 @@ This action is necessary because of compiling <a href="https://polinasavelyeva.g
     <span class="id">save</span> <span onmouseout="hideTip(event, 'fs7', 45)" onmouseover="showTip(event, 'fs7', 45)" class="id">rotatedImage</span> <span onmouseout="hideTip(event, 'fs4', 46)" onmouseover="showTip(event, 'fs4', 46)" class="id">pathToSave</span>
 </code></pre>
 <p>The result:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">MyImage</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">GPU</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">MyImage</span>
+<span class="k">open</span> <span class="id">GPU</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 47)" onmouseover="showTip(event, 'fs1', 47)" class="id">myImage</span> <span class="o">=</span> <span class="id">load</span> <span class="pn">(</span><span class="s">&quot;Full/Path/To/Images/Folder/image_name.jpg&quot;</span><span class="pn">)</span>
 
@@ -335,8 +335,8 @@ It allows you to choose the type of <a href="https://polinasavelyeva.github.io/I
 <p>And define a list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html">transformations</a> to apply to the image, and specify the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-processingunits.html">processing unit</a> (CPU or GPU) for the operation.</p>
 <h3><a name="Simple-Directory-Processing-Example" class="anchor" href="#Simple-Directory-Processing-Example">Simple Directory Processing Example</a></h3>
 <p>Open library and define directories:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">Process</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">AgentSupport</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">Process</span>
+<span class="k">open</span> <span class="id">AgentSupport</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 71)" onmouseover="showTip(event, 'fs14', 71)" class="id">inputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Input/Images/Folder/&quot;</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 72)" onmouseover="showTip(event, 'fs15', 72)" class="id">outputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Output/Images/Folder/&quot;</span>
@@ -349,8 +349,8 @@ It allows you to choose the type of <a href="https://polinasavelyeva.github.io/I
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 75)" onmouseover="showTip(event, 'fs18', 75)" class="id">agentsSupport</span> <span class="o">=</span> <span class="id">AgentSupport</span><span class="pn">.</span><span class="id">Full</span>
 </code></pre>
 <p>The result:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">Process</span>
-<span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">AgentSupport</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">Process</span>
+<span class="k">open</span> <span class="id">AgentSupport</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 76)" onmouseover="showTip(event, 'fs14', 76)" class="id">inputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Input/Images/Folder/&quot;</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 77)" onmouseover="showTip(event, 'fs15', 77)" class="id">outputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Output/Images/Folder/&quot;</span>

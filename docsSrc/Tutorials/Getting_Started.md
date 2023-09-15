@@ -96,17 +96,19 @@ You can find more details about CLI processing [here](https://polinasavelyeva.gi
 Open library and load image to process:
 
 ```fsharp
-open ImageProcessing
+open MyImage
+open CPU
+open GPU
 
-let myImage = MyImage.load ("Full/Path/To/Images/Folder/image_name.jpg")
+let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 ```
 
 Create new function which sequentially applies blur filter and clockwise rotation to images and saves it on CPU:
 
 ```fsharp
 let applyCustomFilterOnCPU (image: MyImage) (pathToSave : string) = 
-    let blurredImage = image |> CPU.applyFilter gaussianBlurKernel
-    let rotatedImage = blurredImage |> CPU.rotate true
+    let blurredImage = image |> applyFilter gaussianBlurKernel
+    let rotatedImage = blurredImage |> rotate true
     
     MyImage.save rotatedImage pathToSave
 ```
@@ -123,8 +125,8 @@ let clContext = Brahma.FSharp.ClContext(device)
 Next, define new values for filter and rotation functions. This action is necessary because of compiling [kernel function](https://polinasavelyeva.github.io/ImageProcessing/How_Tos/Making_A_Code.html#GPU-processing-kernels) once:
 
 ```fsharp
-let applyFilterGPU = GPU.applyFilter clContext 64
-let rotateGPU = GPU.rotate clContext 64
+let applyFilterGPU = applyFilter clContext 64
+let rotateGPU = rotate clContext 64
 ```
 
 And the final function:
@@ -140,21 +142,23 @@ let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) =
 The result:
 
 ```fsharp
-open ImageProcessing
+open MyImage
+open CPU
+open GPU
 
-let myImage = MyImage.load ("Full/Path/To/Images/Folder/image_name.jpg")
+let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 
 let applyCustomFilterOnCPU (image: MyImage) (pathToSave : string) = 
-    let blurredImage = image |> CPU.applyFilter gaussianBlurKernel
-    let rotatedImage = blurredImage |> CPU.rotate true
+    let blurredImage = image |> applyFilter gaussianBlurKernel
+    let rotatedImage = blurredImage |> rotate true
     
     MyImage.save rotatedImage pathToSave
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 
-let applyFilterGPU = GPU.applyFilter clContext 64
-let rotateGPU = GPU.rotate clContext 64
+let applyFilterGPU = applyFilter clContext 64
+let rotateGPU = rotate clContext 64
 
 let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) = 
     let blurredImage = image |> applyFilterGPU gaussianBlurKernel

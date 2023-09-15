@@ -78,8 +78,8 @@ Four of them are implemented:
 Open library and load image to process:
 
 ```fsharp
-open ImageProcessing.MyImage
-open ImageProcessing.CPU
+open MyImage
+open CPU
 
 let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 ```
@@ -97,8 +97,8 @@ let applyCustomFilterOnCPU (image: MyImage) (pathToSave : string) =
 The result:
 
 ```fsharp
-open ImageProcessing.MyImage
-open ImageProcessing.CPU
+open MyImage
+open CPU
 
 let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 
@@ -157,8 +157,8 @@ Four of them are implemented:
 Open library and load image to process:
 
 ```fsharp
-open ImageProcessing.MyImage
-open ImageProcessing.GPU
+open MyImage
+open GPU
 
 let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 ```
@@ -194,8 +194,8 @@ let applyCustomFilterOnGPU (image: MyImage) (pathToSave : string) =
 The result:
 
 ```fsharp
-open ImageProcessing.MyImage
-open ImageProcessing.GPU
+open MyImage
+open GPU
 
 let myImage = load ("Full/Path/To/Images/Folder/image_name.jpg")
 
@@ -237,8 +237,8 @@ And define a list of [transformations](https://polinasavelyeva.github.io/ImagePr
 Open library and define directories:
 
 ```fsharp
-open ImageProcessing.Process
-open ImageProcessing.AgentSupport
+open Process
+open AgentSupport
 
 let inputDirectory = "Full/Path/To/Input/Images/Folder/"
 let outputDirectory = "Full/Path/To/Output/Images/Folder/"
@@ -260,8 +260,8 @@ let agentsSupport = AgentSupport.Full
 The result:
 
 ```fsharp
-open ImageProcessing.Process
-open ImageProcessing.AgentSupport
+open Process
+open AgentSupport
 
 let inputDirectory = "Full/Path/To/Input/Images/Folder/"
 let outputDirectory = "Full/Path/To/Output/Images/Folder/"
