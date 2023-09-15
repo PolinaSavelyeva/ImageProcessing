@@ -1,4 +1,4 @@
-module CPU
+module ImageProcessing.CPU
 
 open MyImage
 

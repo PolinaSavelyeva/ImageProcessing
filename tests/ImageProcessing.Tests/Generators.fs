@@ -13,7 +13,7 @@ let myImageGen =
         let! length1 = Gen.choose (2, 100)
         let! length2 = Gen.choose (2, 100)
         let! data = Gen.arrayOfLength (length1 * length2) (Gen.elements [ 0uy .. 127uy ])
-        return! Gen.constant (MyImage.MyImage(data, length1, length2, "MyImage"))
+        return! Gen.constant (ImageProcessing.MyImage.MyImage(data, length1, length2, "MyImage"))
     }
 
 let kernelGen =

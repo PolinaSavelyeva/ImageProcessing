@@ -1,4 +1,4 @@
-module Helper
+module ImageProcessing.Helper
 
 /// <summary>
 /// Converts a 2D array to a flat 1D array

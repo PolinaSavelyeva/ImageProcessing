@@ -1,4 +1,4 @@
-module Kernels
+module ImageProcessing.Kernels
 
 /// <summary>
 /// Represents a Gaussian blur kernel for filter applying on CPU  as a 2D array

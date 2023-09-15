@@ -1,4 +1,4 @@
-module Agents
+module ImageProcessing.Agents
 
 open MyImage
 

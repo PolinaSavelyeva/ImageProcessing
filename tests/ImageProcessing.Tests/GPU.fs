@@ -1,15 +1,16 @@
 module GPU
 
 open Helper
-open Kernels
+open ImageProcessing.Kernels
 open Expecto
+open ImageProcessing.CPU
 
 let device = Brahma.FSharp.ClDevice.GetFirstAppropriateDevice()
 let clContext = Brahma.FSharp.ClContext(device)
 
-let applyFilterGPU = GPU.applyFilter clContext 64
-let rotateGPU = GPU.rotate clContext 64
-let flipGPU = GPU.flip clContext 64
+let applyFilterGPU = ImageProcessing.GPU.applyFilter clContext 64
+let rotateGPU = ImageProcessing.GPU.rotate clContext 64
+let flipGPU = ImageProcessing.GPU.flip clContext 64
 
 let myConfig =
     { FsCheckConfig.defaultConfig with
@@ -24,7 +25,7 @@ let tests =
         [ testPropertyWithConfig myConfig "Vertical/horizontal flip on GPU is equal to vertical/horizontal flip on CPU on generated MyImage"
           <| fun myImage (rotation: bool) ->
 
-              let expectedResult = CPU.flip rotation myImage
+              let expectedResult = flip rotation myImage
               let actualResult = flipGPU rotation myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -32,7 +33,7 @@ let tests =
           testPropertyWithConfig myConfig "Clockwise/counterclockwise rotation on GPU is equal to clockwise/counterclockwise rotation on CPU on generated MyImage"
           <| fun myImage (rotation: bool) ->
 
-              let expectedResult = CPU.rotate rotation myImage
+              let expectedResult = rotate rotation myImage
               let actualResult = rotateGPU rotation myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -40,7 +41,7 @@ let tests =
           testPropertyWithConfig myConfig "Application of the generated filters on GPU is equal to the application on CPU on generated MyImage"
           <| fun myImage (kernel: Generators.Kernel) ->
 
-              let expectedResult = CPU.applyFilter kernel.Data myImage
+              let expectedResult = applyFilter kernel.Data myImage
               let actualResult = applyFilterGPU kernel.Data myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -48,7 +49,7 @@ let tests =
           testPropertyWithConfig myConfig "Application of the filter (darken) on GPU is equal to the application on CPU on generated MyImage"
           <| fun myImage ->
 
-              let expectedResult = CPU.applyFilter darkenKernel myImage
+              let expectedResult = applyFilter darkenKernel myImage
               let actualResult = applyFilterGPU darkenKernel myImage
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -56,7 +57,7 @@ let tests =
           testCase "Application of the filter (gauss) on GPU is equal to the application on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.applyFilter sharpenKernel myImage3
+              let expectedResult = applyFilter sharpenKernel myImage3
               let actualResult = applyFilterGPU sharpenKernel myImage3
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -64,7 +65,7 @@ let tests =
           testCase "Application of the filter (sharpen) on GPU is equal to the application on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.applyFilter sharpenKernel myImage4
+              let expectedResult = applyFilter sharpenKernel myImage4
               let actualResult = applyFilterGPU sharpenKernel myImage4
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -72,7 +73,7 @@ let tests =
           testCase "Application of the filter (edges) on GPU is equal to the application on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.applyFilter edgesKernel myImage4
+              let expectedResult = applyFilter edgesKernel myImage4
               let actualResult = applyFilterGPU edgesKernel myImage4
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -80,7 +81,7 @@ let tests =
           testCase "Application of the filter (lighten) on GPU is equal to the application on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.applyFilter lightenKernel myImage1
+              let expectedResult = applyFilter lightenKernel myImage1
               let actualResult = applyFilterGPU lightenKernel myImage1
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -88,7 +89,7 @@ let tests =
           testCase "Clockwise rotation on GPU is equal to clockwise rotation on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.rotate true myImage2
+              let expectedResult = rotate true myImage2
               let actualResult = rotateGPU true myImage2
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -96,7 +97,7 @@ let tests =
           testCase "Counterclockwise rotation on GPU is equal to Counterclockwise rotation on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.rotate false myImage2
+              let expectedResult = rotate false myImage2
               let actualResult = rotateGPU false myImage2
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -124,7 +125,7 @@ let tests =
           testCase "Vertical flip on GPU is equal to Vertical flip on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.flip true myImage3
+              let expectedResult = flip true myImage3
               let actualResult = flipGPU true myImage3
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "
@@ -132,7 +133,7 @@ let tests =
           testCase "Horizontal flip on GPU is equal to horizontal flip on CPU on real image"
           <| fun _ ->
 
-              let expectedResult = CPU.flip false myImage3
+              let expectedResult = flip false myImage3
               let actualResult = flipGPU false myImage3
 
               Expect.equal actualResult.Data expectedResult.Data $"Unexpected: %A{actualResult.Data}.\n Expected: %A{expectedResult.Data}. "

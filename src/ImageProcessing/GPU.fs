@@ -1,4 +1,4 @@
-module GPU
+module ImageProcessing.GPU
 
 open Brahma.FSharp
 

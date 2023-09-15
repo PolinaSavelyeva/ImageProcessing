@@ -1,4 +1,4 @@
-module ArguCommands
+module ImageProcessing.ArguCommands
 
 open Argu
 

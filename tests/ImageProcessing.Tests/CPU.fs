@@ -1,6 +1,6 @@
 module CPU
 
-open CPU
+open ImageProcessing.CPU
 open Helper
 open Expecto
 

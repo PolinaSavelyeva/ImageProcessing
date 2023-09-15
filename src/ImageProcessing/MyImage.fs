@@ -1,4 +1,4 @@
-module MyImage
+module ImageProcessing.MyImage
 
 open SixLabors.ImageSharp
 open SixLabors.ImageSharp.PixelFormats
