@@ -35,6 +35,8 @@ let rootDirectory =
     __SOURCE_DIRECTORY__
     </> ".."
 
+let packageName = "ImageProcessingByPolinaSavelyeva"
+
 let productName = "ImageProcessing"
 let sln = __SOURCE_DIRECTORY__ </> ".." </> "ImageProcessing.sln"
 
@@ -577,7 +579,7 @@ let createPackages _ =
                 sprintf "/p:RuntimeIdentifier=%s" runtime
                 sprintf "/p:Configuration=%s" "Release"
                 sprintf "/p:PackageVersion=%s" latestEntry.NuGetVersion
-                sprintf "/p:PackagePath=\"%s\"" (distDir @@ (sprintf "%s-%s-%s" productName latestEntry.NuGetVersion runtime ))
+                sprintf "/p:PackagePath=\"%s\"" (distDir @@ (sprintf "%s-%s-%s" packageName latestEntry.NuGetVersion runtime ))
             ] |> String.concat " "
 
         DotNet.exec (fun opt ->

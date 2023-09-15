@@ -27,7 +27,7 @@ To find more building and running options take a look at the [MiniScaffold](http
 Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and install ImageProcessing using command line:
 
 ```shell
-dotnet add package ImageProcessing --version 1.0.0
+dotnet add package ImageProcessingByPolinaSavelyeva --version 1.0.0
 ```
 
 For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
