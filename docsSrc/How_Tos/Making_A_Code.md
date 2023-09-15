@@ -230,7 +230,7 @@ It allows you to choose the type of [agent support](https://polinasavelyeva.gith
 * ``PartialUsingComposition``, which uses one agent for transformation and one for saving
 * ``No``, which uses naive image processing function
 
-And define a list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html) to apply to the image, and specify the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html) (CPU or GPU) for the operation. 
+And define a list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html) to apply to the image, and specify the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-processingunits.html) (CPU or GPU) for the operation. 
 
 ### Simple Directory Processing Example
 
