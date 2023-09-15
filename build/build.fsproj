@@ -5,6 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <IsPackable>false</IsPackable>
+    <PackageIcon>logo_down_scaled.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FsDocs.fs" />
@@ -186,6 +187,13 @@
     <PackageReference Update="System.Text.Json">
       <Version>8.0.0-preview.1.23110.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resources\logo_down_scaled.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+      <Link>logo_down_scaled.png</Link>
+    </None>
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

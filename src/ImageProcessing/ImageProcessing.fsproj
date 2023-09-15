@@ -4,7 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> 
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile> 
+    <AssemblyName>ImageProcessing.PolinaSavelyeva</AssemblyName> 
+    <PackageIcon>logo_down_scaled.png</PackageIcon>
   </PropertyGroup>
   <PropertyGroup>
     <Title>ImageProcessing</Title>
@@ -16,6 +18,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <None Include="..\..\resources\logo_down_scaled.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+      <Link>logo_down_scaled.png</Link>
+    </None>
     <None Include="App.config" />
     <Compile Include="MyImage.fs" />
     <Compile Include="Helper.fs" />

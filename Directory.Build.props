@@ -7,6 +7,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile> <!--https://docs.microsoft.com/en-gb/nuget/reference/msbuild-targets#packagereadmefile -->
         <RepositoryType>git</RepositoryType>
         <Authors>PolinaSavelyeva</Authors>
+        <PackageId>ImageProcessing.PolinaSavelyeva</PackageId>
         <RepositoryUrl>https://github.com/PolinaSavelyeva/ImageProcessing</RepositoryUrl>
         <FsDocsLogoSource>https://raw.githubusercontent.com/PolinaSavelyeva/ImageProcessing/main/resources/logo_down_scaled.png</FsDocsLogoSource>
     </PropertyGroup>
