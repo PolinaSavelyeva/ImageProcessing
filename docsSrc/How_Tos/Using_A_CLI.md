@@ -27,7 +27,7 @@ Below is a list of available command-line arguments and their descriptions.
 ### AgentsSupport
 
 * **Syntax:** `-agent=<agentType>`
-* **Description:** Allows you to specify the [agent strategy](https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html) to be used during image processing.  You can choose from the following options:
+* **Description:** Allows you to specify the [agent strategy](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-agentssupport.html) to be used during image processing.  You can choose from the following options:
   * ``Full``, which uses a single agent for opening, processing and saving
   * ``Partial``, which uses different agents for each transformation and saving
   * ``PartialUsingComposition``, which uses one agent for transformation and one for saving
@@ -36,7 +36,7 @@ Below is a list of available command-line arguments and their descriptions.
 ### ProcessingUnit
 
 * **Syntax:** `-unit=<unitType>`
-* **Description:** Specifies the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html) to be used for image processing. You can choose from the following options:
+* **Description:** Specifies the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-processingunits.html) to be used for image processing. You can choose from the following options:
   * ``CPU``
   * ``NvidiaGPU``
   * ``IntelGPU``
@@ -46,7 +46,7 @@ Below is a list of available command-line arguments and their descriptions.
 ### Transformations
 
 - **Syntax:** `<transformation1> <transformation2> ...`
-- **Description:** Provides a list of [available transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html) to be applied during image processing. You can choose from the following options:
+- **Description:** Provides a list of [available transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html) to be applied during image processing. You can choose from the following options:
   * ``Gauss``
   * ``Sharpen``
   * ``Lighten``

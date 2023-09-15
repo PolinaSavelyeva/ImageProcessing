@@ -194,7 +194,7 @@
 <hr />
 <h3><a name="CPU-filter-kernels" class="anchor" href="#CPU-filter-kernels">CPU filter kernels</a></h3>
 <p>Filter kernels are used to call <code>applyFilter</code> function.
-You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
+You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-kernels.html">kernels</a> such as:</p>
 <ul>
 <li>Gaussian Blur</li>
 <li>Edges</li>
@@ -204,7 +204,7 @@ You can create 2D float32 array as new kernel or use implemented <a href="https:
 </ul>
 <h3><a name="Multi-threaded-processing-on-CPU" class="anchor" href="#Multi-threaded-processing-on-CPU">Multi-threaded processing on CPU</a></h3>
 <p>You can use either single-threaded CPU-based image processing or multi-threaded image processing.
-Multithreading is performed using logger and agent functions, which is specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html">section</a>.</p>
+Multithreading is performed using logger and agent functions, which is specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-agents.html">section</a>.</p>
 <p>Four of them are implemented:</p>
 <ul>
 <li>Logger, which is used to inform user about status of operations, i.e work of another agents</li>
@@ -246,7 +246,7 @@ Multithreading is performed using logger and agent functions, which is specified
 <hr />
 <h3><a name="GPU-filter-kernels" class="anchor" href="#GPU-filter-kernels">GPU filter kernels</a></h3>
 <p>Filter kernels are used to call <code>applyFilter</code> function.
-You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html">kernels</a> such as:</p>
+You can create 2D float32 array as new kernel or use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-kernels.html">kernels</a> such as:</p>
 <ul>
 <li>Gaussian Blur</li>
 <li>Edges</li>
@@ -257,7 +257,7 @@ You can create 2D float32 array as new kernel or use implemented <a href="https:
 <h3><a name="GPU-processing-kernels" class="anchor" href="#GPU-processing-kernels">GPU processing kernels</a></h3>
 <p>GPU kernels are used to call GPU-processing functions.
 They have specific defining style, so for more information about how they work I recommended to visit <a href="https://yaccconstructor.github.io/Brahma.FSharp/Articles/Custom_Kernels.html">Brahma.Fsharp tutorial</a>.
-But if you have no need in creating new GPU kernels just use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-gpu.html">ones</a>, such as:</p>
+But if you have no need in creating new GPU kernels just use implemented <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-gpu.html">ones</a>, such as:</p>
 <ul>
 <li><code>applyFilterGPUKernel</code></li>
 <li><code>rotateGPUKernel</code></li>
@@ -266,7 +266,7 @@ But if you have no need in creating new GPU kernels just use implemented <a href
 <p>All of them take <code>clContext</code> (which is device's environment abstraction) and <code>localWorkSize</code> (which shows the size of local work group) as input parameters.</p>
 <h3><a name="Multi-threaded-processing-on-GPU" class="anchor" href="#Multi-threaded-processing-on-GPU">Multi-threaded processing on GPU</a></h3>
 <p>You can use either single-threaded GPU-based image processing or multi-threaded image processing.
-Multithreading is performed using logger and agent functions, which specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html">section</a>.</p>
+Multithreading is performed using logger and agent functions, which specified in this <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-agents.html">section</a>.</p>
 <p>Four of them are implemented:</p>
 <ul>
 <li>Logger, which is used to inform user about status of operations, i.e work of another agents</li>
@@ -325,14 +325,14 @@ This action is necessary because of compiling <a href="https://polinasavelyeva.g
 <hr />
 <h3><a name="Process-parameters" class="anchor" href="#Process-parameters">Process parameters</a></h3>
 <p>The <code>processImage</code> function is designed to process directories with various configuration options.
-It allows you to choose the type of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html">agent support</a> for processing:</p>
+It allows you to choose the type of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-agentssupport.html">agent support</a> for processing:</p>
 <ul>
 <li><code>Full</code>, which uses a single agent for opening, processing and saving</li>
 <li><code>Partial</code>, which uses different agents for each transformation and saving</li>
 <li><code>PartialUsingComposition</code>, which uses one agent for transformation and one for saving</li>
 <li><code>No</code>, which uses naive image processing function</li>
 </ul>
-<p>And define a list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">transformations</a> to apply to the image, and specify the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html">processing unit</a> (CPU or GPU) for the operation.</p>
+<p>And define a list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html">transformations</a> to apply to the image, and specify the <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html">processing unit</a> (CPU or GPU) for the operation.</p>
 <h3><a name="Simple-Directory-Processing-Example" class="anchor" href="#Simple-Directory-Processing-Example">Simple Directory Processing Example</a></h3>
 <p>Open library and define directories:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">ImageProcessing</span><span class="pn">.</span><span class="id">Process</span>
@@ -341,10 +341,10 @@ It allows you to choose the type of <a href="https://polinasavelyeva.github.io/I
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 71)" onmouseover="showTip(event, 'fs14', 71)" class="id">inputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Input/Images/Folder/&quot;</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 72)" onmouseover="showTip(event, 'fs15', 72)" class="id">outputDirectory</span> <span class="o">=</span> <span class="s">&quot;Full/Path/To/Output/Images/Folder/&quot;</span>
 </code></pre>
-<p>Define list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html">transformations</a> and filters that will be used:</p>
+<p>Define list of <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html">transformations</a> and filters that will be used:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 73)" onmouseover="showTip(event, 'fs16', 73)" class="id">imageEditorsList</span> <span class="o">=</span> <span class="pn">[</span><span class="id">Darken</span><span class="pn">;</span> <span class="id">Edges</span><span class="pn">;</span> <span class="id">RotationL</span><span class="pn">]</span>
 </code></pre>
-<p>Note that transformations and filters will be applied sequentially, one-by-one on each image in the specific directory. Choose and define <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html#CPU">processing unit</a> and <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html">multithreading mode</a>.</p>
+<p>Note that transformations and filters will be applied sequentially, one-by-one on each image in the specific directory. Choose and define <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-processingunits.html#CPU">processing unit</a> and <a href="https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-agentssupport.html">multithreading mode</a>.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 74)" onmouseover="showTip(event, 'fs17', 74)" class="id">processingUnit</span> <span class="o">=</span> <span class="id">GPU</span> <span class="id">Brahma</span><span class="pn">.</span><span class="id">FSharp</span><span class="pn">.</span><span class="id">Platform</span><span class="pn">.</span><span class="id">Nvidia</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 75)" onmouseover="showTip(event, 'fs18', 75)" class="id">agentsSupport</span> <span class="o">=</span> <span class="id">AgentSupport</span><span class="pn">.</span><span class="id">Full</span>
 </code></pre>

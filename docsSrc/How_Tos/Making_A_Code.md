@@ -52,7 +52,7 @@ For detailed descriptions of all features visit [Api Reference](https://polinasa
 ### CPU filter kernels
 
 Filter kernels are used to call ``applyFilter`` function. 
-You can create 2D float32 array as new kernel or use implemented [kernels](https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html) such as:
+You can create 2D float32 array as new kernel or use implemented [kernels](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-kernels.html) such as:
 
 * Gaussian Blur
 * Edges
@@ -63,7 +63,7 @@ You can create 2D float32 array as new kernel or use implemented [kernels](https
 ### Multi-threaded processing on CPU
 
 You can use either single-threaded CPU-based image processing or multi-threaded image processing.
-Multithreading is performed using logger and agent functions, which is specified in this [section](https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html).
+Multithreading is performed using logger and agent functions, which is specified in this [section](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-agents.html).
 
 Four of them are implemented:
 
@@ -120,7 +120,7 @@ applyCustomFilterOnCPU myImage pathToSave
 ### GPU filter kernels
 
 Filter kernels are used to call ``applyFilter`` function.
-You can create 2D float32 array as new kernel or use implemented [kernels](https://polinasavelyeva.github.io/ImageProcessing/reference/global-kernels.html) such as:
+You can create 2D float32 array as new kernel or use implemented [kernels](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-kernels.html) such as:
 
 * Gaussian Blur
 * Edges
@@ -132,7 +132,7 @@ You can create 2D float32 array as new kernel or use implemented [kernels](https
 
 GPU kernels are used to call GPU-processing functions.
 They have specific defining style, so for more information about how they work I recommended to visit [Brahma.Fsharp tutorial](https://yaccconstructor.github.io/Brahma.FSharp/Articles/Custom_Kernels.html).
-But if you have no need in creating new GPU kernels just use implemented [ones](https://polinasavelyeva.github.io/ImageProcessing/reference/global-gpu.html), such as:
+But if you have no need in creating new GPU kernels just use implemented [ones](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-gpu.html), such as:
 
 * ``applyFilterGPUKernel``
 * ``rotateGPUKernel``
@@ -143,7 +143,7 @@ All of them take ``clContext`` (which is device's environment abstraction) and `
 ### Multi-threaded processing on GPU
 
 You can use either single-threaded GPU-based image processing or multi-threaded image processing.
-Multithreading is performed using logger and agent functions, which specified in this [section](https://polinasavelyeva.github.io/ImageProcessing/reference/global-agents.html).
+Multithreading is performed using logger and agent functions, which specified in this [section](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-agents.html).
 
 Four of them are implemented:
 
@@ -223,14 +223,14 @@ applyCustomFilterOnGPU myImage pathToSave
 ### Process parameters
 
 The ``processImage`` function is designed to process directories with various configuration options. 
-It allows you to choose the type of [agent support](https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html) for processing:
+It allows you to choose the type of [agent support](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-agentssupport.html) for processing:
 
 * ``Full``, which uses a single agent for opening, processing and saving
 * ``Partial``, which uses different agents for each transformation and saving
 * ``PartialUsingComposition``, which uses one agent for transformation and one for saving
 * ``No``, which uses naive image processing function
 
-And define a list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html) to apply to the image, and specify the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html) (CPU or GPU) for the operation. 
+And define a list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html) to apply to the image, and specify the [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html) (CPU or GPU) for the operation. 
 
 ### Simple Directory Processing Example
 
@@ -244,13 +244,13 @@ let inputDirectory = "Full/Path/To/Input/Images/Folder/"
 let outputDirectory = "Full/Path/To/Output/Images/Folder/"
 ```
 
-Define list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/process-transformations.html) and filters that will be used:
+Define list of [transformations](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-transformations.html) and filters that will be used:
 
 ```fsharp
 let imageEditorsList = [Darken; Edges; RotationL]
 ```
 
-Note that transformations and filters will be applied sequentially, one-by-one on each image in the specific directory. Choose and define [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/process-processingunits.html#CPU) and [multithreading mode](https://polinasavelyeva.github.io/ImageProcessing/reference/process-agentssupport.html).
+Note that transformations and filters will be applied sequentially, one-by-one on each image in the specific directory. Choose and define [processing unit](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-processingunits.html#CPU) and [multithreading mode](https://polinasavelyeva.github.io/ImageProcessing/reference/imageprocessing-process-agentssupport.html).
 
 ```fsharp
 let processingUnit = GPU Brahma.FSharp.Platform.Nvidia
