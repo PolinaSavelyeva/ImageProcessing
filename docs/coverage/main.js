@@ -227,12 +227,12 @@ var assemblies = [
       { "name": "Agents", "rp": "ImageProcessing_Agents.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 117, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 6, "lch": [], "bch": [], "hc": [] },
       { "name": "ArguCommands", "rp": "ImageProcessing_ArguCommands.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 37, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 10, "lch": [], "bch": [], "hc": [] },
       { "name": "CLI", "rp": "ImageProcessing_CLI.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 39, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 10, "lch": [], "bch": [], "hc": [] },
-      { "name": "CPU", "rp": "ImageProcessing_CPU.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 28, "lch": [], "bch": [], "hc": [] },
+      { "name": "CPU", "rp": "ImageProcessing_CPU.html", "cl": 27, "ucl": 0, "cal": 27, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 28, "lch": [], "bch": [], "hc": [] },
       { "name": "GPU", "rp": "ImageProcessing_GPU.html", "cl": 111, "ucl": 0, "cal": 111, "tl": 231, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Helper", "rp": "ImageProcessing_Helper.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 23, "ct": "LineCoverage", "mc": "-", "cb": 4, "tb": 4, "lch": [], "bch": [], "hc": [] },
       { "name": "Kernels", "rp": "ImageProcessing_Kernels.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 31, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MyImage", "rp": "ImageProcessing_MyImage.html", "cl": 8, "ucl": 2, "cal": 10, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Process", "rp": "ImageProcessing_Process.html", "cl": 0, "ucl": 62, "cal": 62, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 40, "lch": [], "bch": [], "hc": [] },
+      { "name": "MyImage", "rp": "ImageProcessing_MyImage.html", "cl": 8, "ucl": 1, "cal": 9, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "Process", "rp": "ImageProcessing_Process.html", "cl": 0, "ucl": 60, "cal": 60, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 38, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -248,15 +248,22 @@ var riskHotspots = [
   {
     "assembly": "ImageProcessing", "class": "Process", "reportPath": "ImageProcessing_Process.html", "methodName": "System.Void Process::processImages(System.String,System.String,Process/ProcessingUnits,Microsoft.FSharp.Collections.FSharpList`1<Process/Transformations>,Process/AgentsSupport)", "methodShortName": "processImages(...)", "fileIndex": 0, "line": 107,
     "metrics": [
-      { "value": 18, "exceeded": false },
-      { "value": 2048, "exceeded": true },
-      { "value": 342, "exceeded": true },
+      { "value": 10, "exceeded": false },
+      { "value": 256, "exceeded": true },
+      { "value": 110, "exceeded": true },
     ]},
   {
     "assembly": "ImageProcessing", "class": "Process", "reportPath": "ImageProcessing_Process.html", "methodName": "Microsoft.FSharp.Core.FSharpFunc`2<MyImage/MyImage,MyImage/MyImage> Process::transformationsParserCPU(Process/Transformations)", "methodShortName": "transformationsParserCPU(...)", "fileIndex": 0, "line": 46,
     "metrics": [
       { "value": 9, "exceeded": false },
       { "value": 9, "exceeded": false },
+      { "value": 90, "exceeded": true },
+    ]},
+  {
+    "assembly": "ImageProcessing", "class": "Process", "reportPath": "ImageProcessing_Process.html", "methodName": "System.Void Process::processImages$cont@125(System.String,Microsoft.FSharp.Collections.FSharpList`1<System.String>,Microsoft.FSharp.Collections.FSharpList`1<Microsoft.FSharp.Core.FSharpFunc`2<MyImage/MyImage,MyImage/MyImage>>,Microsoft.FSharp.Core.Unit)", "methodShortName": "processImages$cont@125(...)", "fileIndex": 0, "line": 125,
+    "metrics": [
+      { "value": 9, "exceeded": false },
+      { "value": 4, "exceeded": false },
       { "value": 90, "exceeded": true },
     ]},
   {
@@ -288,7 +295,7 @@ var riskHotspots = [
       { "value": 30, "exceeded": true },
     ]},
   {
-    "assembly": "ImageProcessing", "class": "Process", "reportPath": "ImageProcessing_Process.html", "methodName": "System.Boolean Process/allowableFilesSeq@102::Invoke(System.String)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 102,
+    "assembly": "ImageProcessing", "class": "Process", "reportPath": "ImageProcessing_Process.html", "methodName": "System.Boolean Process/listAllImages@102-1::Invoke(System.String)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 102,
     "metrics": [
       { "value": 4, "exceeded": false },
       { "value": 0, "exceeded": false },
