@@ -5,8 +5,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> 
     <PackageReadmeFile>README.md</PackageReadmeFile> 
-    <AssemblyName>ImageProcessing.PolinaSavelyeva</AssemblyName> 
-    <PackageIcon>logo_down_scaled.png</PackageIcon>
+    <AssemblyName>PolinaSavelyeva.ImageProcessing</AssemblyName> 
+    <PackageIcon>logo_down_scaled.png</PackageIcon> 
+    <PackageId>PolinaSavelyeva.ImageProcessing</PackageId>
   </PropertyGroup>
   <PropertyGroup>
     <Title>ImageProcessing</Title>
