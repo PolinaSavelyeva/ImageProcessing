@@ -5,7 +5,7 @@
 ## What is ImageProcessing?
 
 ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp)
-and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU
+and [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU
 and GPU or agent-supported processing, all accessible within the included console application.
 
 ## Why use ImageProcessing?

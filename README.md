@@ -1,6 +1,6 @@
 # ImageProcessing
 
-ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharph](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
+ImageProcessing is an easy-to-use F# package that utilizes [Brahma.FSharp](https://github.com/YaccConstructor/Brahma.FSharp) and [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp). It offers two primary image processing options: CPU and GPU or agent-supported processing, all accessible within the included console application.
 
 ## Supported Features
 - Loading images from a local source and saving them.
@@ -30,7 +30,7 @@ Go to directory with your ``build.fsproj`` (or ``build.csproj``) file and instal
 dotnet add package ImageProcessing.PolinaSavelyeva --version 1.0.0
 ```
 
-For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/ImageProcessing).
+For more information visit package main [GitHub page](https://github.com/PolinaSavelyeva/ImageProcessing/pkgs/nuget/PolinaSavelyeva.ImageProcessing).
 
 ## Simple Usage
 
